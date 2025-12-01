@@ -1,0 +1,115 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+         https://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.9.xsd">
+
+    <!--  创建用户、凭证 表结构   -->
+    <changeSet id="1748008821470-1" author="bichon">
+        <createTable tableName="security_user">
+            <column name="id" type="BIGINT" autoIncrement="true" remarks="主键">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="user_type" type="VARCHAR(20)"/>
+            <column name="is_super_admin" type="boolean" defaultValue="false"/>
+            <column name="create_time" defaultValueComputed="CURRENT_TIMESTAMP" type="DATETIME" remarks="创建时间"/>
+            <column name="update_time" type="DATETIME" remarks="更新时间"
+                    defaultValueComputed="CURRENT_TIMESTAMP on update CURRENT_TIMESTAMP"/>
+            <column name="version" type="BIGINT" defaultValue="0" remarks="版本"/>
+        </createTable>
+
+        <createTable tableName="security_credential">
+            <column name="id" type="BIGINT" autoIncrement="true">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="identifier" type="VARCHAR(200)"/>
+            <column name="password" type="VARCHAR(200)"/>
+            <column name="type" type="VARCHAR(40)"/>
+            <column name="user_id" type="BIGINT"/>
+            <column name="create_time" defaultValueComputed="CURRENT_TIMESTAMP" type="DATETIME" remarks="创建时间"/>
+            <column name="update_time" type="DATETIME" remarks="更新时间"
+                    defaultValueComputed="CURRENT_TIMESTAMP on update CURRENT_TIMESTAMP"/>
+            <column name="version" type="BIGINT" defaultValue="0" remarks="版本"/>
+        </createTable>
+
+        <createIndex tableName="security_credential" unique="false" indexName="idx_credential_identifier_type">
+            <column name="identifier"/>
+            <column name="type"/>
+        </createIndex>
+    </changeSet>
+
+    <!--  创建角色、权限、权限组、角色权限关系、用户角色关系 表结构  -->
+    <changeSet id="1748008844475-1" author="bichon">
+
+        <!--创建角色表-->
+        <createTable tableName="security_role">
+            <column name="id" type="BIGINT" autoIncrement="true" remarks="主键">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+
+            <column name="name" type="VARCHAR(40)"/>
+            <column name="description" type="VARCHAR(100)"/>
+            <column name="version" type="BIGINT" defaultValue="0"/>
+            <column name="create_time" defaultValueComputed="CURRENT_TIMESTAMP" type="DATETIME"/>
+            <column name="update_time" type="DATETIME"
+                    defaultValueComputed="CURRENT_TIMESTAMP on update CURRENT_TIMESTAMP"/>
+        </createTable>
+
+        <!--创建权限表-->
+        <createTable tableName="security_permission">
+            <column name="id" type="BIGINT" autoIncrement="true">
+                <constraints nullable="false" primaryKey="true"/>
+            </column>
+            <column name="name" type="VARCHAR(255)"/>
+            <column name="permission_group_id" type="BIGINT"/>
+            <column name="code" type="VARCHAR(50)"/>
+            <column name="description" type="VARCHAR(100)"/>
+            <column name="version" type="BIGINT" defaultValue="0"/>
+            <column name="create_time" type="DATETIME" defaultValueComputed="CURRENT_TIMESTAMP"/>
+            <column name="update_time" type="DATETIME"
+                    defaultValueComputed="CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP"/>
+        </createTable>
+
+        <createTable tableName="security_permission_group">
+            <column name="id" type="BIGINT" autoIncrement="true">
+                <constraints nullable="false" primaryKey="true"/>
+            </column>
+            <column name="version" type="BIGINT" defaultValue="0"/>
+            <column name="name" type="VARCHAR(50)"/>
+            <column name="description" type="VARCHAR(100)"/>
+            <column name="sort_order" type="INT"/>
+            <column defaultValueComputed="CURRENT_TIMESTAMP" name="create_time" type="TIMESTAMP"/>
+            <column defaultValueComputed="CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP" name="update_time"
+                    type="TIMESTAMP"/>
+        </createTable>
+
+        <createTable tableName="security_user_role">
+            <column name="id" type="BIGINT" autoIncrement="true">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="user_id" type="BIGINT" remarks="用户id"/>
+            <column name="role_id" type="BIGINT" remarks="角色id"/>
+            <column name="create_time" defaultValueComputed="CURRENT_TIMESTAMP" type="DATETIME"/>
+        </createTable>
+
+        <createTable tableName="security_role_permission">
+            <column name="id" type="BIGINT" autoIncrement="true">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="role_id" type="BIGINT" remarks="角色id"/>
+            <column name="permission_id" type="BIGINT" remarks="权限id"/>
+            <column name="create_time" defaultValueComputed="CURRENT_TIMESTAMP" type="DATETIME"/>
+        </createTable>
+
+        <sql>
+            INSERT INTO test.security_permission_group (id, name, description, sort_order) VALUES (1, '系统管理', '用户管理相关权限', 1);
+            INSERT INTO test.security_permission_group (id, name, description, sort_order) VALUES (2, '部门管理', '部门管理相关权限', 2);
+
+            INSERT INTO test.security_permission (id, name, permission_group_id, code, description) VALUES (1, '用户管理', 1, 'manager:user:write', '管理用户权限');
+            INSERT INTO test.security_permission (id, name, permission_group_id, code, description) VALUES (2, '用户查询', 1, 'manager:user:read', '查询用户权限');
+            INSERT INTO test.security_permission (id, name, permission_group_id, code, description) VALUES (3, '部门管理', 2, 'manager:department:write', '管理部门权限');
+            INSERT INTO test.security_permission (id, name, permission_group_id, code, description) VALUES (4, '部门查询', 2, 'manager:department:read', '查询部门权限');
+        </sql>
+    </changeSet>
+</databaseChangeLog>

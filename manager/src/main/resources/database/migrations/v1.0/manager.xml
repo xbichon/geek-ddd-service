@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+         https://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.9.xsd">
+    <!--  创建部门表结构  -->
+    <changeSet id="1750312342960-1" author="bichon">
+        <createTable tableName="manager_department">
+            <column name="id" type="BIGINT" autoIncrement="true" remarks="主键">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="name" type="VARCHAR(50)" remarks="部门名称"/>
+            <column name="sort_order" type="INT" defaultValue="99" remarks="排序号"/>
+            <column name="manager" type="VARCHAR(50)" remarks="负责人"/>
+            <column name="parent_id" type="BIGINT" remarks="上级部门ID"/>
+            <column name="phone" type="VARCHAR(20)" remarks="联系电话"/>
+            <column name="status" type="VARCHAR(20)" defaultValue="ENABLED" remarks="部门状态"/>
+            <column name="level" type="INT" defaultValue="1" remarks="部门层级"/>
+            <column name="description" type="VARCHAR(200)" remarks="描述"/>
+            <column name="create_time" defaultValueComputed="CURRENT_TIMESTAMP" type="DATETIME" remarks="创建时间"/>
+            <column name="update_time" type="DATETIME" remarks="更新时间"
+                    defaultValueComputed="CURRENT_TIMESTAMP on update CURRENT_TIMESTAMP"/>
+            <column name="version" type="BIGINT" defaultValue="0" remarks="版本"/>
+        </createTable>
+
+        <!-- 创建索引 -->
+        <createIndex tableName="manager_department" indexName="idx_department_parent_id">
+            <column name="parent_id"/>
+        </createIndex>
+
+        <createIndex tableName="manager_department" indexName="idx_department_status">
+            <column name="status"/>
+        </createIndex>
+
+        <sql>
+            INSERT INTO test.manager_department (id, name, sort_order, manager, parent_id, phone, status, level,
+                                                 description, create_time, update_time, version)
+            VALUES (1, '极客学院', 1, 'leo', null, '18800000000', 'ENABLED', 1, null, '2025-06-22 20:24:48',
+                    '2025-06-22 20:24:48', 0);
+            INSERT INTO test.manager_department (id, name, sort_order, manager, parent_id, phone, status, level,
+                                                 description, create_time, update_time, version)
+            VALUES (2, '计算机系', 1, 'jim', 1, null, 'ENABLED', 2, null, '2025-08-20 15:18:46', '2025-08-20 15:18:46',
+                    0);
+            INSERT INTO test.manager_department (id, name, sort_order, manager, parent_id, phone, status, level,
+                                                 description, create_time, update_time, version)
+            VALUES (3, '财经系', 2, 'susan', 1, null, 'ENABLED', 2, null, '2025-08-20 15:19:24', '2025-08-20 15:19:24',
+                    0);
+        </sql>
+    </changeSet>
+</databaseChangeLog>

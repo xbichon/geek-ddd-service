@@ -1,0 +1,80 @@
+spring:
+  application:
+    name: arc
+  datasource:
+    url: jdbc:mysql://localhost:3306/test?useSSL=true&serverTimezone=Asia/Shanghai&useUnicode=true&characterEncoding=utf-8
+    username: root
+    password: 12345678
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    type: com.alibaba.druid.pool.DruidDataSource
+    druid:
+      initial-size: 5
+      min-idle: 5
+      max-active: 20
+      max-wait: 60000
+      validation-query: SELECT 1
+      test-while-idle: true
+      test-on-borrow: false
+      test-on-return: false
+      filters: stat,wall
+      web-stat-filter:
+        enabled: true
+        url-pattern: /*
+        exclusions: "*.js,*.gif,*.jpg,*.png,*.css,*.ico,/druid/*"
+      stat-view-servlet:
+        enabled: true
+        url-pattern: /druid/*
+        login-username: admin
+        login-password: admin
+  jpa:
+    hibernate:
+      ddl-auto: none
+    show-sql: false
+    properties:
+      javax:
+        persistence:
+          validation:
+            mode: AUTO
+      hibernate:
+        format_sql: false
+        jdbc:
+          batch_size: 20
+    open-in-view: false
+  liquibase:
+    change-log: classpath:/database/migrations/master.xml
+    clear-checksums: true
+    enabled: false
+  data:
+    redis:
+      host: localhost
+      port: 6379
+      repositories:
+        enabled: false
+#  jackson:
+#    property-naming-strategy: SNAKE_CASE
+
+# JWT配置
+config:
+  jwt:
+    # JWT签名密钥（生产环境应该使用环境变量或配置中心）
+    secret-key: Geek2024SecurityDianComChina12987T23001Y-Q8Y05OOD
+    # 过期时间（天）
+    expiration-days: 7
+    # 发行人
+    issuer: geekclub.vip
+  # 微信小程序配置
+  wechat:
+    mini-program:
+      # 小程序AppID（生产环境应该使用环境变量或配置中心）
+      app-id: wx4169de1d28757b63
+      # 小程序AppSecret（生产环境应该使用环境变量或配置中心）
+      app-secret: 630ce71078cbc6d87f1e96efe0b4b09d
+      # 微信API基础URL
+      api-base-url: ${WECHAT_API_BASE_URL:https://api.weixin.qq.com}
+      # 获取session_key的接口路径
+      jscode2session-url: ${WECHAT_JSCODE2SESSION_URL:/sns/jscode2session}
+
+server:
+  port: 8090
+  servlet:
+    context-path: /api

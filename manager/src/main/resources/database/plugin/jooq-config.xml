@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration>
+    <generator>
+        <database>
+            <!-- 生成表的过滤 -->
+            <includes>manager_.*</includes>
+        </database>
+    </generator>
+</configuration>

@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+         https://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.9.xsd">
+
+    <changeSet id="1753017235406-1" author="bichon">
+        <createTable tableName="student_student">
+            <column name="id"
+                    type="BIGINT" autoIncrement="true">
+                <constraints nullable="false"
+                             primaryKey="true"
+                             primaryKeyName="pk_student_student"/>
+            </column>
+            <column name="sex"
+                    type="SMALLINT"/>
+            <column name="xm"
+                    type="VARCHAR(40)"/>
+        </createTable>
+    </changeSet>
+</databaseChangeLog>

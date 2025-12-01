@@ -1,0 +1,20 @@
+package vip.geekclub.config;
+
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
+import vip.geekclub.common.command.*;
+import vip.geekclub.config.command.CommandValidatorInterceptor;
+
+import java.util.List;
+
+@Configuration
+public class CommandBusConfig {
+
+    @Bean
+    public CommandBus commandBus(List<CommandHandler<?, ?>> commandHandlers, CommandValidatorInterceptor commandValidatorInterceptor) {
+        return SimpleCommandBus.builder()
+                .addHandlers(commandHandlers)
+                .addInterceptor(commandValidatorInterceptor)
+                .build();
+    }
+}
