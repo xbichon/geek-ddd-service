@@ -1,6 +1,7 @@
 package vip.geekclub.common.command;
 
-import org.springframework.lang.NonNull;
+
+import lombok.NonNull;
 
 /**
  * 命令执行结果类

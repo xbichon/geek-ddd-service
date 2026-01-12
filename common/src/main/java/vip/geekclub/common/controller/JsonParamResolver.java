@@ -1,5 +1,6 @@
 package vip.geekclub.common.controller;
 
+import lombok.NonNull;
 import vip.geekclub.common.exception.ValidationException;
 import vip.geekclub.common.utils.JsonUtils;
 import vip.geekclub.common.utils.AssertUtil;
@@ -7,7 +8,6 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.core.MethodParameter;
-import org.springframework.lang.NonNull;
 import org.springframework.stereotype.Component;
 import org.springframework.web.bind.support.WebDataBinderFactory;
 import org.springframework.web.context.request.NativeWebRequest;

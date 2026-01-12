@@ -1,8 +1,8 @@
 package vip.geekclub.common.utils;
 
+import lombok.NonNull;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextAware;
-import org.springframework.lang.NonNull;
 import org.springframework.stereotype.Component;
 
 /**
