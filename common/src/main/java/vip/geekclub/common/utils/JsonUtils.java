@@ -20,8 +20,6 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
-import java.util.ArrayList;
-import java.util.List;
 
 /**
  * @author xiongrui
@@ -30,7 +28,6 @@ import java.util.List;
 public final class JsonUtils {
 
     /**
-     * -- GETTER --
      *  获取ObjectMapper
      */
     @Getter
@@ -70,13 +67,5 @@ public final class JsonUtils {
      */
     public static <T> T jsonToObject(JsonNode jsonNode, Class<T> T) throws JsonProcessingException {
         return objectMapper.treeToValue(jsonNode, T);
-    }
-
-    /**
-     * Json 转成List集合
-     */
-    static List<?> jsonToList(String json, Class<?> T) throws IOException {
-        JavaType javaType = objectMapper.getTypeFactory().constructParametricType(ArrayList.class, T);
-        return objectMapper.readValue(json, javaType);
     }
 }
