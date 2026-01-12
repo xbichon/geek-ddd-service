@@ -4,8 +4,6 @@ import com.fasterxml.jackson.annotation.JsonInclude.Include;
 import com.fasterxml.jackson.core.JsonGenerator;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.*;
-import com.fasterxml.jackson.databind.ser.impl.SimpleBeanPropertyFilter;
-import com.fasterxml.jackson.databind.ser.impl.SimpleFilterProvider;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import com.fasterxml.jackson.datatype.jsr310.deser.LocalDateDeserializer;
 import com.fasterxml.jackson.datatype.jsr310.deser.LocalDateTimeDeserializer;
@@ -67,60 +65,11 @@ public final class JsonUtils {
         });
     }
 
-    public static String toJsonString(Object object) throws JsonProcessingException {
-        return toJsonString(object, false);
-    }
-
-    public static String toJsonString(Object object, boolean isPretty) throws JsonProcessingException {
-        return toJsonString(object, null, null, null, isPretty);
-    }
-
-    public static String toJsonString(Object object, String[] include, String[] filter, String filterId) throws JsonProcessingException {
-        return toJsonString(object, include, filter, filterId, false);
-    }
-
-    public static String toJsonString(Object object, String[] include, String[] filter, String filterId, boolean isPretty) throws JsonProcessingException {
-
-        if (null != filterId && !filterId.isEmpty()) {
-            if (null != include && include.length > 0) {
-                objectMapper.setFilterProvider((new SimpleFilterProvider()).addFilter(filterId, SimpleBeanPropertyFilter.filterOutAllExcept(include)));
-            } else if (null != filter && filter.length > 0) {
-                objectMapper.setFilterProvider((new SimpleFilterProvider()).addFilter(filterId, SimpleBeanPropertyFilter.serializeAllExcept(filter)));
-            } else {
-                objectMapper.setFilterProvider((new SimpleFilterProvider()).addFilter(filterId, SimpleBeanPropertyFilter.serializeAllExcept("")));
-            }
-        }
-
-        String json;
-        if (isPretty) {
-            json = objectMapper.writerWithDefaultPrettyPrinter().writeValueAsString(object);
-        } else {
-            json = objectMapper.writeValueAsString(object);
-        }
-
-        return json;
-    }
-
-
-    /**
-     * Json 转成指定的Class对象
-     */
-    public static <T> T parseJsonToCertainClass(String json, Class<T> clz) throws IOException {
-        return objectMapper.readValue(json, clz);
-    }
-
     /**
      * JsonNode 转成指定的Class对象
      */
     public static <T> T jsonToObject(JsonNode jsonNode, Class<T> T) throws JsonProcessingException {
         return objectMapper.treeToValue(jsonNode, T);
-    }
-
-    /**
-     * Json 转成List集合
-     */
-    public static List<?> jsonToList(JsonNode jsonNode, Class<?> T) throws IOException {
-        return jsonToList(jsonNode.toString(), T);
     }
 
     /**
