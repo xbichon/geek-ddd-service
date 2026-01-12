@@ -50,6 +50,9 @@ spring:
       port: 6379
       repositories:
         enabled: false
+    jpa:
+      repositories:
+        bootstrap-mode: deferred
 #  jackson:
 #    property-naming-strategy: SNAKE_CASE
 
