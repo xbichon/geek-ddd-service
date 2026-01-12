@@ -20,12 +20,12 @@
         <java.version>21</java.version>
         <querydsl.version>5.1.0</querydsl.version>
         <!-- 数据库配置属性 -->
-        <db.driver>com.mysql.cj.jdbc.Driver</db.driver>
-        <db.url>
-            <![CDATA[jdbc:mysql://localhost:3306/test?useSSL=true&serverTimezone=Asia/Shanghai&useUnicode=true&characterEncoding=utf-8]]></db.url>
-        <db.user>root</db.user>
-        <db.password>12345678</db.password>
-        <db.schema>test</db.schema>
+<!--        <db.driver>com.mysql.cj.jdbc.Driver</db.driver>-->
+<!--        <db.url>-->
+<!--            <![CDATA[jdbc:mysql://localhost:3306/test?useSSL=true&serverTimezone=Asia/Shanghai&useUnicode=true&characterEncoding=utf-8]]></db.url>-->
+<!--        <db.user>root</db.user>-->
+<!--        <db.password>12345678</db.password>-->
+<!--        <db.schema>test</db.schema>-->
     </properties>
     <parent>
         <groupId>org.springframework.boot</groupId>
@@ -61,6 +61,27 @@
     <build>
         <pluginManagement>
             <plugins>
+
+                <plugin>
+                    <groupId>org.codehaus.mojo</groupId>
+                    <artifactId>properties-maven-plugin</artifactId>
+                    <version>1.2.1</version>
+                    <executions>
+                        <execution>
+                            <phase>generate-resources</phase>
+                            <goals>
+                                <goal>read-project-properties</goal>
+                            </goals>
+                            <configuration>
+                                <files>
+                                    <!-- 读取子模块的配置文件 -->
+                                    <file>${project.basedir}/../adapter/src/main/resources/jooq-config.properties</file>
+                                </files>
+                            </configuration>
+                        </execution>
+                    </executions>
+                </plugin>
+
                 <!-- LiQiuBase数据库生成插件-->
                 <plugin>
                     <groupId>org.liquibase</groupId>
@@ -74,9 +95,13 @@
                         </execution>
                     </executions>
                     <configuration>
+                        <!--suppress UnresolvedMavenProperty -->
                         <driver>${db.driver}</driver>
+                        <!--suppress UnresolvedMavenProperty -->
                         <url>${db.url}</url>
+                        <!--suppress UnresolvedMavenProperty -->
                         <username>${db.user}</username>
+                        <!--suppress UnresolvedMavenProperty -->
                         <password>${db.password}</password>
                         <changeLogFile>/src/main/resources/database/plugin/liquibase-config.xml</changeLogFile>
                     </configuration>
@@ -95,19 +120,21 @@
                     </executions>
                     <configuration>
                         <jdbc>
+                            <!--suppress UnresolvedMavenProperty -->
                             <driver>${db.driver}</driver>
+                            <!--suppress UnresolvedMavenProperty -->
                             <url>${db.url}</url>
+                            <!--suppress UnresolvedMavenProperty -->
                             <user>${db.user}</user>
+                            <!--suppress UnresolvedMavenProperty -->
                             <password>${db.password}</password>
                         </jdbc>
                         <generator>
                             <database>
                                 <name>org.jooq.meta.mysql.MySQLDatabase</name>
+                                <!--suppress UnresolvedMavenProperty -->
                                 <inputSchema>${db.schema}</inputSchema>
                             </database>
-                            <!--                            <target>-->
-                            <!--                                <packageName>vip.geekclub.security.query.dsl</packageName>-->
-                            <!--                            </target>-->
                             <generate>
                                 <records>false</records>
                                 <interfaces>true</interfaces>
