@@ -14,8 +14,6 @@ import java.util.Optional;
 @AllArgsConstructor
 public class HttpUtil {
 
-    private final String AUTHORIZATION_KEY = "authorization";
-    private final String JWT_TYPE = "Bearer ";
     private ObjectMapper objectMapper;
 
     /**
@@ -28,22 +26,15 @@ public class HttpUtil {
     }
 
     /**
-     * 设置JWT令牌到HTTP响应头
-     *
-     * @param response HTTP响应对象
-     * @param encode   编码后的JWT令牌字符串
-     */
-    public void setJwtToResponse(HttpServletResponse response, String encode) {
-        response.setHeader(AUTHORIZATION_KEY, JWT_TYPE + encode);
-    }
-
-    /**
      * 从HTTP请求头中获取JWT令牌
      *
      * @param request HTTP请求对象
      * @return 包含JWT令牌的Optional对象，如果请求头中不存在JWT令牌，则返回空的Optional对象
      */
     public Optional<String> getJwtFromRequest(HttpServletRequest request) {
+        final String AUTHORIZATION_KEY = "authorization";
+        final String JWT_TYPE = "Bearer ";
+
         String authorization = request.getHeader(AUTHORIZATION_KEY);
 
         if (authorization == null || authorization.isBlank() || !authorization.startsWith(JWT_TYPE)) {
