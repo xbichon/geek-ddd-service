@@ -1,6 +1,9 @@
 package vip.geekclub.config.security;
 
 import org.springframework.security.authentication.AbstractAuthenticationToken;
+import org.springframework.security.core.GrantedAuthority;
+
+import java.util.Collection;
 
 /**
  * 微信小程序登录使用的 AuthenticationToken，承载小程序前端传入的 code。
@@ -11,7 +14,7 @@ public class WechatAuthenticationToken extends AbstractAuthenticationToken {
 
     // 未认证前的构造（仅包含 code）
     public WechatAuthenticationToken(String code) {
-        super(null);
+        super((Collection<? extends GrantedAuthority>) null);
         this.code = code;
         super.setAuthenticated(false);
     }

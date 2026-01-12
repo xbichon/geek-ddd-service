@@ -1,12 +1,10 @@
 package vip.geekclub.common.utils;
 
-import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.AllArgsConstructor;
-import org.springframework.lang.NonNull;
 import org.springframework.stereotype.Component;
+import tools.jackson.databind.ObjectMapper;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -19,27 +17,6 @@ public class HttpUtil {
     private final String AUTHORIZATION_KEY = "authorization";
     private final String JWT_TYPE = "Bearer ";
     private ObjectMapper objectMapper;
-
-    /**
-     * 获取请求的JSON内容
-     */
-    public JsonNode getJsonNode(HttpServletRequest request) throws IOException {
-        return objectMapper.readTree(request.getInputStream());
-    }
-
-    /**
-     * 获取请求的数据
-     */
-    public <T> T getValue(HttpServletRequest request, Class<T> type) throws IOException {
-        StringBuilder content = new StringBuilder();
-        BufferedReader reader = request.getReader();
-        String line;
-        while ((line = reader.readLine()) != null) {
-            content.append(line);
-        }
-
-        return objectMapper.readValue(content.toString(), type);
-    }
 
     /**
      * 统一处理返回结果
@@ -66,7 +43,7 @@ public class HttpUtil {
      * @param request HTTP请求对象
      * @return 包含JWT令牌的Optional对象，如果请求头中不存在JWT令牌，则返回空的Optional对象
      */
-    public Optional<String> getJwtFromRequest(@NonNull HttpServletRequest request) {
+    public Optional<String> getJwtFromRequest(HttpServletRequest request) {
         String authorization = request.getHeader(AUTHORIZATION_KEY);
 
         if (authorization == null || authorization.isBlank() || !authorization.startsWith(JWT_TYPE)) {

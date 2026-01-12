@@ -18,7 +18,6 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import java.io.IOException;
-import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
@@ -39,11 +38,11 @@ public final class JsonUtils {
     @Getter
     private static final ObjectMapper objectMapper;
 
+
     static {
         objectMapper = new ObjectMapper();
-        objectMapper.setSerializationInclusion(Include.NON_NULL);
+        objectMapper.setDefaultPropertyInclusion(Include.NON_NULL);
         objectMapper.disable(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES);
-        objectMapper.setDateFormat(new SimpleDateFormat("yyyy-MM-dd HH:mm"));
 
         DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
         DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
@@ -102,14 +101,17 @@ public final class JsonUtils {
         return json;
     }
 
+
+    /**
+     * Json 转成指定的Class对象
+     */
     public static <T> T parseJsonToCertainClass(String json, Class<T> clz) throws IOException {
         return objectMapper.readValue(json, clz);
     }
 
-    public static <T> T parseJsonToCertainClass123(String json, Class<T> clz) throws IOException {
-        return objectMapper.readValue(json, clz);
-    }
-
+    /**
+     * JsonNode 转成指定的Class对象
+     */
     public static <T> T jsonToObject(JsonNode jsonNode, Class<T> T) throws JsonProcessingException {
         return objectMapper.treeToValue(jsonNode, T);
     }
@@ -125,7 +127,6 @@ public final class JsonUtils {
      * Json 转成List集合
      */
     static List<?> jsonToList(String json, Class<?> T) throws IOException {
-        ObjectMapper objectMapper = new ObjectMapper();
         JavaType javaType = objectMapper.getTypeFactory().constructParametricType(ArrayList.class, T);
         return objectMapper.readValue(json, javaType);
     }
