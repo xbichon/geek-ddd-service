@@ -10,7 +10,6 @@ import vip.geekclub.common.domain.AggregateRoot;
 import vip.geekclub.common.domain.EntitySupport;
 import vip.geekclub.common.utils.ApplicationUtil;
 import vip.geekclub.common.utils.AssertUtil;
-import vip.geekclub.security.auth.common.AuthenticationType;
 
 @Entity
 @Table(name = "security_credential")

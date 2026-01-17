@@ -1,17 +1,18 @@
 package vip.geekclub.config.security;
 
 import org.springframework.security.authentication.AuthenticationProvider;
-import vip.geekclub.security.auth.query.AuthenticationQueryService;
-import vip.geekclub.security.auth.query.dto.CredentialResult;
+import vip.geekclub.common.security.JwtAuthentication;
+import vip.geekclub.common.security.JwtPrincipal;
+import vip.geekclub.security.auth.application.query.AuthenticationQueryService;
+import vip.geekclub.security.auth.application.query.dto.CredentialResult;
 import lombok.AllArgsConstructor;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
-import vip.geekclub.security.auth.common.AuthenticationType;
+import vip.geekclub.security.auth.domain.AuthenticationType;
 
 
 /**
@@ -43,8 +44,8 @@ public class UserNameAuthenticationProvider implements AuthenticationProvider {
             throw new BadCredentialsException("用户名或密码错误");
         }
 
-        JwtToken jwtToken = new JwtToken(credentialResult.userId(), credentialResult.userType());
-        return new UserSession(jwtToken);
+        JwtPrincipal jwtPrincipal = new JwtPrincipal(credentialResult.userId(), credentialResult.userType().toString());
+        return new JwtAuthentication(jwtPrincipal);
     }
 
     @Override

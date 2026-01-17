@@ -8,7 +8,7 @@ import vip.geekclub.common.command.CommandResult;
 import vip.geekclub.common.command.IdResult;
 import vip.geekclub.common.exception.ValidationException;
 import vip.geekclub.manager.command.dto.CreateDepartmentCommand;
-import vip.geekclub.manager.common.SortOrder;
+import vip.geekclub.manager.domain.SortOrder;
 import vip.geekclub.manager.domain.Department;
 import vip.geekclub.manager.domain.DepartmentRepository;
 

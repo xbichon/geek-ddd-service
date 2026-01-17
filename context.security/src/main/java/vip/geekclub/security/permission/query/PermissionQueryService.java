@@ -6,8 +6,8 @@ import org.jooq.generated.Tables;
 import org.jooq.generated.tables.PermissionTable;
 import org.jooq.generated.tables.UserTable;
 import org.springframework.stereotype.Service;
-import vip.geekclub.security.auth.query.dto.UserResult;
-import vip.geekclub.security.auth.common.UserType;
+import vip.geekclub.security.auth.application.query.dto.UserResult;
+import vip.geekclub.security.auth.domain.UserType;
 
 import java.util.Optional;
 import java.util.Set;

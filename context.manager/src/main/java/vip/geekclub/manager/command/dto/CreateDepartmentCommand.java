@@ -4,7 +4,7 @@ import jakarta.validation.constraints.*;
 import org.hibernate.validator.constraints.Range;
 import vip.geekclub.common.command.Command;
 import vip.geekclub.manager.domain.Department;
-import vip.geekclub.manager.common.SortOrder;
+import vip.geekclub.manager.domain.SortOrder;
 
 /**
  * 创建部门命令

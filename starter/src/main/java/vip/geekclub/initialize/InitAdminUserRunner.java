@@ -5,7 +5,7 @@ import org.springframework.boot.CommandLineRunner;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Component;
 import vip.geekclub.common.command.CommandBus;
-import vip.geekclub.security.auth.command.dto.InitAdminCommand;
+import vip.geekclub.security.auth.application.command.dto.InitAdminCommand;
 
 @Component
 @AllArgsConstructor

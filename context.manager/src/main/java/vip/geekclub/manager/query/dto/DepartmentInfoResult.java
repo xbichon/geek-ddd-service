@@ -1,7 +1,7 @@
 package vip.geekclub.manager.query.dto;
 
 
-import vip.geekclub.manager.common.DepartmentStatus;
+import vip.geekclub.manager.domain.DepartmentStatus;
 
 /**
  * 部门查询结果

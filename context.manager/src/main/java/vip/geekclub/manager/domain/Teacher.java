@@ -6,7 +6,6 @@ import org.apache.commons.lang3.StringUtils;
 import vip.geekclub.common.domain.AggregateRoot;
 import vip.geekclub.common.domain.EntitySupport;
 import vip.geekclub.common.utils.AssertUtil;
-import vip.geekclub.manager.common.TeacherStatus;
 
 /**
  * 教师聚合根

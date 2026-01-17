@@ -8,8 +8,6 @@ import vip.geekclub.common.domain.AggregateRoot;
 import vip.geekclub.common.domain.EntitySupport;
 import vip.geekclub.common.exception.ValidationException;
 import vip.geekclub.common.utils.AssertUtil;
-import vip.geekclub.manager.common.DepartmentStatus;
-import vip.geekclub.manager.common.SortOrder;
 
 /**
  * 部门聚合根

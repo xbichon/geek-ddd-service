@@ -8,7 +8,6 @@ import vip.geekclub.common.domain.AggregateRoot;
 import vip.geekclub.common.domain.EntitySupport;
 import vip.geekclub.common.exception.BusinessLogicException;
 import vip.geekclub.common.utils.AssertUtil;
-import vip.geekclub.security.auth.common.UserType;
 
 import java.util.HashSet;
 import java.util.Set;

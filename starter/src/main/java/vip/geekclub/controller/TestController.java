@@ -5,9 +5,9 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import vip.geekclub.common.controller.ApiResponse;
-import vip.geekclub.controller.auth.dto.WechatLoginRequest;
-import vip.geekclub.security.auth.query.dto.UserResult;
-import vip.geekclub.security.auth.common.UserType;
+import vip.geekclub.security.auth.adapter.controller.dto.WechatLoginRequest;
+import vip.geekclub.security.auth.application.query.dto.UserResult;
+import vip.geekclub.security.auth.domain.UserType;
 
 /**
  * 测试控制器

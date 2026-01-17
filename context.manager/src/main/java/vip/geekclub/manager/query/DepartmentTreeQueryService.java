@@ -6,7 +6,7 @@ import org.jooq.Field;
 import org.jooq.RecordMapper;
 import org.jooq.generated.tables.DepartmentTable;
 import org.springframework.stereotype.Service;
-import vip.geekclub.manager.common.DepartmentStatus;
+import vip.geekclub.manager.domain.DepartmentStatus;
 import vip.geekclub.manager.query.dto.DepartmentTreeResult;
 
 import java.util.*;

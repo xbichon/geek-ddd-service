@@ -6,9 +6,12 @@ import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.stereotype.Service;
-import vip.geekclub.security.auth.common.AuthenticationType;
-import vip.geekclub.security.auth.query.AuthenticationQueryService;
-import vip.geekclub.security.auth.query.dto.CredentialResult;
+import vip.geekclub.common.security.JwtAuthentication;
+import vip.geekclub.common.security.JwtPrincipal;
+import vip.geekclub.common.security.WechatAuthenticationToken;
+import vip.geekclub.security.auth.domain.AuthenticationType;
+import vip.geekclub.security.auth.application.query.AuthenticationQueryService;
+import vip.geekclub.security.auth.application.query.dto.CredentialResult;
 
 import java.util.Objects;
 
@@ -39,8 +42,8 @@ public class WechatAuthenticationProvider implements AuthenticationProvider {
                 .orElseThrow(() -> new BadCredentialsException("用户未注册，请先绑定微信账号"));
 
         // 构建并返回 UserSession（内含 JwtToken）
-        JwtToken jwtToken = new JwtToken(credential.userId(), credential.userType());
-        return new UserSession(jwtToken);
+        JwtPrincipal jwtPrincipal = new JwtPrincipal(credential.userId(), credential.userType().toString());
+        return new JwtAuthentication(jwtPrincipal);
     }
 
     @Override
