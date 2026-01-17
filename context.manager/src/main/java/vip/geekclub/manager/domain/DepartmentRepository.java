@@ -2,7 +2,6 @@ package vip.geekclub.manager.domain;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
-import vip.geekclub.manager.domain.Department;
 
 /**
  * 部门仓库接口

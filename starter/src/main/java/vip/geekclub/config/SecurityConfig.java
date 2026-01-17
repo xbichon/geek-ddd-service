@@ -75,7 +75,7 @@ public class SecurityConfig {
     /**
      * 禁用不必要的过滤器，优化性能
      */
-    private void disableUnnecessaryFilters(HttpSecurity http) throws Exception {
+    private void disableUnnecessaryFilters(HttpSecurity http) {
 
         http.sessionManagement(config -> config.sessionCreationPolicy(SessionCreationPolicy.STATELESS));
 
@@ -92,7 +92,7 @@ public class SecurityConfig {
     /**
      * 配置URL拦截规则
      */
-    private void configureUrl(HttpSecurity http) throws Exception {
+    private void configureUrl(HttpSecurity http) {
         http.securityMatcher(SECURITY_PATH);
         http.authorizeHttpRequests(authorize -> authorize.requestMatchers(PERMIT_ALL_PATHS).permitAll()
                 .anyRequest().authenticated());
@@ -101,7 +101,7 @@ public class SecurityConfig {
     /**
      * 配置CORS
      */
-    public void configureCross(HttpSecurity http) throws Exception {
+    public void configureCross(HttpSecurity http) {
         CorsConfiguration corsConfiguration = new CorsConfiguration();
         corsConfiguration.setAllowedOriginPatterns(List.of("*")); // 允许所有域名（生产环境应指定具体域名）
         corsConfiguration.setAllowedMethods(List.of(ALLOWED_METHODS));
@@ -119,7 +119,7 @@ public class SecurityConfig {
         http.addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);
     }
 
-    private void configureExceptionHandling(HttpSecurity http) throws Exception {
+    private void configureExceptionHandling(HttpSecurity http) {
         http.exceptionHandling(config -> config
                 // 请求未授权接口处理
                 .accessDeniedHandler((request, response, exception) -> httpUtil.setResponse(response,

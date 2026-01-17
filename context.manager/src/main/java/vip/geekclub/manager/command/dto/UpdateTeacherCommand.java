@@ -1,7 +1,6 @@
 package vip.geekclub.manager.command.dto;
 
 import jakarta.validation.constraints.*;
-import org.hibernate.validator.constraints.Range;
 import vip.geekclub.common.command.Command;
 import vip.geekclub.manager.domain.Teacher;
 import vip.geekclub.manager.common.TeacherStatus;

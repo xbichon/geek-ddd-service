@@ -12,11 +12,6 @@ import org.springframework.stereotype.Repository;
  */
 @Repository
 public interface TeacherRepository extends JpaRepository<Teacher, Long> {
-    /**
-     * 检查是否存在指定姓名的教师
-     * 用于创建教师时的姓名唯一性验证
-     */
-    boolean existsByName(String name);
 
     /**
      * 检查是否存在指定手机号的教师

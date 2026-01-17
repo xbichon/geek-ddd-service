@@ -2,11 +2,7 @@ package vip.geekclub;
 
 import org.jooq.codegen.GenerationTool;
 import org.jooq.meta.jaxb.*;
-import org.jooq.meta.jaxb.Strategy;
-import org.jooq.meta.jaxb.Matchers;
-import org.jooq.meta.jaxb.MatcherRule;
 import org.jooq.meta.jaxb.MatcherRule.*;
-import org.jooq.meta.jaxb.MatcherTransformType;
 
 
 public class JooqCodeGenerator {

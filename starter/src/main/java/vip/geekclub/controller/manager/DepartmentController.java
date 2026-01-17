@@ -5,7 +5,6 @@ import org.springframework.web.bind.annotation.*;
 import vip.geekclub.common.controller.ApiResponse;
 import vip.geekclub.common.controller.WebCommandAdapter;
 import vip.geekclub.common.exception.NotFoundException;
-import vip.geekclub.config.security.UserSession;
 import vip.geekclub.manager.command.dto.CreateDepartmentCommand;
 import vip.geekclub.manager.command.dto.DeleteDepartmentCommand;
 import vip.geekclub.manager.command.dto.UpdateDepartmentCommand;
@@ -69,7 +68,7 @@ public class DepartmentController {
      * @return 部门信息
      */
     @GetMapping("/{id}")
-    public ApiResponse<DepartmentInfoResult> getDepartmentById(@PathVariable Long id, UserSession principal) {
+    public ApiResponse<DepartmentInfoResult> getDepartmentById(@PathVariable Long id) {
         return departmentInfoQueryService.getDepartmentById(id)
                 .map(ApiResponse::success)
                 .orElseThrow(() -> new NotFoundException("部门不存在"));

@@ -5,7 +5,6 @@ import lombok.*;
 import org.apache.commons.lang3.StringUtils;
 import vip.geekclub.common.domain.AggregateRoot;
 import vip.geekclub.common.domain.EntitySupport;
-import vip.geekclub.common.exception.ValidationException;
 import vip.geekclub.common.utils.AssertUtil;
 import vip.geekclub.manager.common.TeacherStatus;
 
@@ -133,13 +132,6 @@ public class Teacher extends EntitySupport implements AggregateRoot<Long> {
      */
     public boolean isChangeName(String newName) {
         return !this.name.equals(newName.trim());
-    }
-
-    /**
-     * 是否为禁用状态
-     */
-    private boolean isDisabled() {
-        return status == TeacherStatus.DISABLED;
     }
 
     // ================================ 赋值方法 ================================
