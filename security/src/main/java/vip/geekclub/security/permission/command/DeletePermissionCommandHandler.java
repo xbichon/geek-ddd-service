@@ -20,6 +20,6 @@ public class DeletePermissionCommandHandler implements CommandHandler<DeletePerm
         // 删除权限
         permissionRepository.deleteById(command.id());
         
-        return CommandResult.ok("权限删除成功");
+        return CommandResult.ok();
     }
 }

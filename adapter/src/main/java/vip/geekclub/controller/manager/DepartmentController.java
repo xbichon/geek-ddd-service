@@ -36,7 +36,7 @@ public class DepartmentController {
      * @return 创建成功的部门ID
      */
     @PostMapping
-    public ApiResponse<Long> createDepartment(@RequestBody CreateDepartmentCommand command) {
+    public ApiResponse<?> createDepartment(@RequestBody CreateDepartmentCommand command) {
         return commandBus.dispatchToWeb(command);
     }
 
@@ -47,7 +47,7 @@ public class DepartmentController {
      * @return 更新结果
      */
     @PutMapping
-    public ApiResponse<Void> updateDepartment(@RequestBody UpdateDepartmentCommand command) {
+    public ApiResponse<?> updateDepartment(@RequestBody UpdateDepartmentCommand command) {
         return commandBus.dispatchToWeb(command);
     }
 
@@ -58,7 +58,7 @@ public class DepartmentController {
      * @return 删除结果
      */
     @DeleteMapping("/{id}")
-    public ApiResponse<Void> deleteDepartment(@PathVariable Long id) {
+    public ApiResponse<?> deleteDepartment(@PathVariable Long id) {
         return commandBus.dispatchToWeb(new DeleteDepartmentCommand(id));
     }
 

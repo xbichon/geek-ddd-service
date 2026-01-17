@@ -32,6 +32,8 @@ public class DeletePermissionGroupCommandHandler implements CommandHandler<Delet
 
         // 3. 删除权限组
         permissionGroupRepository.delete(permissionGroup);
+
+        // 4. 返回成功结果
         return CommandResult.ok("权限组删除成功");
     }
 }

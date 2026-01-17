@@ -3,7 +3,8 @@ package vip.geekclub.manager.command;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import vip.geekclub.common.command.VoidCommandHandler;
+import vip.geekclub.common.command.CommandHandler;
+import vip.geekclub.common.command.CommandResult;
 import vip.geekclub.common.exception.NotFoundException;
 import vip.geekclub.common.exception.ValidationException;
 import vip.geekclub.manager.command.dto.DeleteDepartmentCommand;
@@ -18,13 +19,14 @@ import vip.geekclub.manager.domain.DepartmentRepository;
  */
 @AllArgsConstructor
 @Service
-public class DeleteDepartmentCommandHandler implements VoidCommandHandler<DeleteDepartmentCommand> {
+public class DeleteDepartmentCommandHandler implements CommandHandler<DeleteDepartmentCommand, Void> {
 
     private final DepartmentRepository departmentRepository;
 
-    @Transactional
     @Override
-    public void process(DeleteDepartmentCommand command) {
+    @Transactional
+    public CommandResult<Void> execute(DeleteDepartmentCommand command) {
+
         // 1. 获取部门
         Department department = departmentRepository.findById(command.id())
                 .orElseThrow(() -> new NotFoundException("部门不存在"));
@@ -40,5 +42,8 @@ public class DeleteDepartmentCommandHandler implements VoidCommandHandler<Delete
 
         // 3. 删除部门
         departmentRepository.delete(department);
+
+        // 4. 返回结果
+        return CommandResult.ok("删除部门成功");
     }
 }

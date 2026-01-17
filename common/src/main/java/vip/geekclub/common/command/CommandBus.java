@@ -9,5 +9,5 @@ public interface CommandBus {
     /**
      * 分发命令到对应的处理器
      */
-    <C extends Command, T> CommandResult<T> dispatch(C command);
+    <C extends Command,R> CommandResult<R> dispatch(C command);
 }

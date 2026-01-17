@@ -6,21 +6,24 @@ import jakarta.validation.Validator;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 import vip.geekclub.common.command.Command;
-import vip.geekclub.common.command.CommandInterceptor;
+import vip.geekclub.common.command.CommandResult;
+import vip.geekclub.common.command.CommandHandlerChain;
 
 import java.util.Set;
 
 @Component
 @RequiredArgsConstructor
-public class CommandValidatorInterceptor implements CommandInterceptor {
+public class CommandValidatorInterceptor extends CommandHandlerChain {
 
     private final Validator validator;
 
     @Override
-    public void beforeHandle(Command command) {
+    protected CommandResult handle(Command command, CommandHandlerChain chain) {
         Set<ConstraintViolation<Command>> violations = validator.validate(command);
-        if (violations.isEmpty()) return;
+        if (!violations.isEmpty()) {
+            throw new ConstraintViolationException(violations);
+        }
 
-        throw new ConstraintViolationException(violations);
+        return chain.handle(command);
     }
 }

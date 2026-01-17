@@ -3,7 +3,9 @@ package vip.geekclub.manager.command;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import vip.geekclub.common.command.LongCommandHandler;
+import vip.geekclub.common.command.CommandHandler;
+import vip.geekclub.common.command.CommandResult;
+import vip.geekclub.common.command.IdResult;
 import vip.geekclub.common.exception.ValidationException;
 import vip.geekclub.manager.command.dto.CreateDepartmentCommand;
 import vip.geekclub.manager.common.SortOrder;
@@ -13,16 +15,16 @@ import vip.geekclub.manager.domain.DepartmentRepository;
 /**
  * 创建部门命令处理器
  */
-@Transactional
 @RequiredArgsConstructor
 @Service
-public class CreateDepartmentCommandHandler implements LongCommandHandler<CreateDepartmentCommand> {
+public class CreateDepartmentCommandHandler implements CommandHandler<CreateDepartmentCommand, IdResult> {
 
     private final DepartmentRepository departmentRepository;
 
-
     @Override
-    public Long process(CreateDepartmentCommand command) {
+    @Transactional
+    public CommandResult<IdResult> execute(CreateDepartmentCommand command) {
+
         // 1. 校验名称在同一父部门下不重复
         validateDepartmentNameUnique(command.name().trim(), command.parentId());
 
@@ -35,7 +37,7 @@ public class CreateDepartmentCommandHandler implements LongCommandHandler<Create
 
         // 4. 保存部门
         departmentRepository.save(department);
-        return department.getId();
+        return CommandResult.ok(department.getId());
     }
 
     /**
@@ -46,4 +48,5 @@ public class CreateDepartmentCommandHandler implements LongCommandHandler<Create
             throw new ValidationException("同一父部门下已存在相同名称的部门");
         }
     }
+
 }

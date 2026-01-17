@@ -11,10 +11,10 @@ import java.util.List;
 public class CommandBusConfig {
 
     @Bean
-    public CommandBus commandBus(List<CommandHandler<?, ?>> commandHandlers, CommandValidatorInterceptor commandValidatorInterceptor) {
-        return SimpleCommandBus.builder()
-                .addHandlers(commandHandlers)
-                .addInterceptor(commandValidatorInterceptor)
-                .build();
+    public CommandBus commandBus(List<CommandHandler<?,?>> commandHandlers) {
+        SimpleCommandBus commandBus = new SimpleCommandBus();
+        commandBus.addHandlers(commandHandlers);
+
+        return commandBus;
     }
 }

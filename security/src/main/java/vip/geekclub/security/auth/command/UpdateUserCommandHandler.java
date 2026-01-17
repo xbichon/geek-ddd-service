@@ -28,6 +28,6 @@ public class UpdateUserCommandHandler implements CommandHandler<UpdateUserComman
 
         // 3. 保存用户
         userPrincipalRepository.save(userPrincipal);
-        return CommandResult.ok("用户更新成功");
+        return CommandResult.ok();
     }
 }

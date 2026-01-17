@@ -3,7 +3,8 @@ package vip.geekclub.manager.command;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import vip.geekclub.common.command.VoidCommandHandler;
+import vip.geekclub.common.command.CommandHandler;
+import vip.geekclub.common.command.CommandResult;
 import vip.geekclub.common.exception.ValidationException;
 import vip.geekclub.manager.command.dto.UpdateTeacherCommand;
 import vip.geekclub.manager.domain.Department;
@@ -17,13 +18,14 @@ import vip.geekclub.manager.domain.TeacherRepository;
 @Transactional
 @RequiredArgsConstructor
 @Service
-public class UpdateTeacherCommandHandler implements VoidCommandHandler<UpdateTeacherCommand> {
+public class UpdateTeacherCommandHandler implements CommandHandler<UpdateTeacherCommand, Void> {
 
     private final TeacherRepository teacherRepository;
     private final DepartmentRepository departmentRepository;
 
+
     @Override
-    public void process(UpdateTeacherCommand command) {
+    public CommandResult<Void> execute(UpdateTeacherCommand command) {
         // 1. 获取教师
         Teacher teacher = teacherRepository.findById(command.id())
                 .orElseThrow(() -> new ValidationException("指定的教师不存在"));
@@ -40,7 +42,7 @@ public class UpdateTeacherCommandHandler implements VoidCommandHandler<UpdateTea
 
         // 4. 如果邮箱变化，校验邮箱不重复
         if (command.email() != null && !command.email().trim().isEmpty() &&
-            !command.email().trim().equals(teacher.getEmail())) {
+                !command.email().trim().equals(teacher.getEmail())) {
             validateTeacherEmailUnique(command.email().trim(), command.id());
         }
 
@@ -65,6 +67,8 @@ public class UpdateTeacherCommandHandler implements VoidCommandHandler<UpdateTea
 
         // 8. 保存教师
         teacherRepository.save(teacher);
+
+        return CommandResult.ok();
     }
 
     /**

@@ -29,6 +29,6 @@ public class DeleteUserCommandHandler implements CommandHandler<DeleteUserComman
 
         // 3. 删除用户
         userPrincipalRepository.delete(userPrincipal);
-        return CommandResult.ok("用户删除成功");
+        return CommandResult.ok();
     }
 }

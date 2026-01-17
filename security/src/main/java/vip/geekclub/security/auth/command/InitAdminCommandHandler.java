@@ -22,7 +22,8 @@ public class InitAdminCommandHandler implements CommandHandler<InitAdminCommand,
     public CommandResult<Void> execute(InitAdminCommand command) {
         // 1. 检查是否已存在用户
         if (userPrincipalRepository.existsBy()) {
-            return CommandResult.ok("管理员已存在，无需初始化");
+            log.info("管理员已存在，无需初始化");
+            return CommandResult.ok();
         }
 
         // 2. 创建超级管理员用户
@@ -38,6 +39,6 @@ public class InitAdminCommandHandler implements CommandHandler<InitAdminCommand,
         credentialRepository.save(adminDefaultCredential);
 
         log.info("管理员不存在，初始化管理员成功");
-        return CommandResult.ok("管理员初始化成功");
+        return CommandResult.ok();
     }
 }

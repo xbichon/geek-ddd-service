@@ -28,11 +28,11 @@ public class ApiResponse<T> {
     }
 
     // 静态方法简化成功/失败响应
-    public static <T> ApiResponse<T> success(CommandResult<T> result) {
-        ApiResponse<T> apiResponse = new ApiResponse<>();
+    public static <R> ApiResponse<R> success(CommandResult<R> result) {
+        ApiResponse<R> apiResponse = new ApiResponse<>();
         apiResponse.setCode(200);
+        apiResponse.setData(result.data());
         apiResponse.setMessage(result.message());
-        apiResponse.setData(result.primaryKey());
         return apiResponse;
     }
 

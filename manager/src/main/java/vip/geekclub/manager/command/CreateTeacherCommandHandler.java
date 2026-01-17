@@ -3,7 +3,9 @@ package vip.geekclub.manager.command;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import vip.geekclub.common.command.LongCommandHandler;
+import vip.geekclub.common.command.CommandHandler;
+import vip.geekclub.common.command.CommandResult;
+import vip.geekclub.common.command.IdResult;
 import vip.geekclub.common.exception.ValidationException;
 import vip.geekclub.manager.command.dto.CreateTeacherCommand;
 import vip.geekclub.manager.domain.Department;
@@ -17,13 +19,13 @@ import vip.geekclub.manager.domain.TeacherRepository;
 @Transactional
 @RequiredArgsConstructor
 @Service
-public class CreateTeacherCommandHandler implements LongCommandHandler<CreateTeacherCommand> {
+public class CreateTeacherCommandHandler implements CommandHandler<CreateTeacherCommand, IdResult> {
 
     private final TeacherRepository teacherRepository;
     private final DepartmentRepository departmentRepository;
 
     @Override
-    public Long process(CreateTeacherCommand command) {
+    public CommandResult<IdResult> execute(CreateTeacherCommand command) {
         // 1. 校验手机号不重复
         validateTeacherPhoneUnique(command.phone().trim());
 
@@ -52,8 +54,10 @@ public class CreateTeacherCommandHandler implements LongCommandHandler<CreateTea
 
         // 6. 保存教师
         teacherRepository.save(teacher);
-        return teacher.getId();
+
+        return CommandResult.ok(teacher.getId());
     }
+
 
     /**
      * 校验教师手机号不重复
@@ -72,4 +76,5 @@ public class CreateTeacherCommandHandler implements LongCommandHandler<CreateTea
             throw new ValidationException("已存在相同邮箱的教师");
         }
     }
+
 }

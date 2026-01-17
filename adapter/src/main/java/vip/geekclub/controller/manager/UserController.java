@@ -25,7 +25,7 @@ public class UserController {
      * @return 创建成功的用户ID
      */
     @PostMapping
-    public ApiResponse<Long> createUser(@RequestBody CreateUserCommand command) {
+    public ApiResponse<?> createUser(@RequestBody CreateUserCommand command) {
         return commandBus.dispatchToWeb(command);
     }
 
@@ -36,7 +36,7 @@ public class UserController {
      * @return 删除结果
      */
     @DeleteMapping("/{id}")
-    public ApiResponse<Void> deleteUser(@PathVariable Long id) {
+    public ApiResponse<?> deleteUser(@PathVariable Long id) {
         return commandBus.dispatchToWeb(new DeleteUserCommand(id));
     }
 }

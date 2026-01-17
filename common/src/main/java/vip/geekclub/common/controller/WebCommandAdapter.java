@@ -19,11 +19,11 @@ public class WebCommandAdapter {
      *
      * @param command 要分发的命令对象
      * @param <C>     命令的具体类型
-     * @param <T>     返回结果中主键的类型
+     * @param <R>     返回结果中主键的类型
      * @return 包装后的API响应对象
      */
-    public <C extends Command, T> ApiResponse<T> dispatchToWeb(C command) {
-        CommandResult<T> result = commandBus.dispatch(command);
+    public <C extends Command,R> ApiResponse<R> dispatchToWeb(C command) {
+        CommandResult<R> result = commandBus.dispatch(command);
         return ApiResponse.success(result);
     }
 }
