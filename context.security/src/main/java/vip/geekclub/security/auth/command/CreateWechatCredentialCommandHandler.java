@@ -5,7 +5,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import vip.geekclub.common.command.CommandHandler;
 import vip.geekclub.common.command.CommandResult;
-import vip.geekclub.common.command.IdResult;
 import vip.geekclub.security.auth.command.dto.CreateWechatCredentialCommand;
 import vip.geekclub.security.auth.common.AuthenticationType;
 import vip.geekclub.security.auth.domain.Credential;

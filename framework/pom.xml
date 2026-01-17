@@ -10,7 +10,7 @@
     </parent>
     <packaging>jar</packaging>
 
-    <artifactId>common</artifactId>
+    <artifactId>framework</artifactId>
 
     <properties>
         <maven.compiler.source>21</maven.compiler.source>
