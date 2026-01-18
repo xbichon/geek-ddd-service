@@ -26,8 +26,4 @@ public interface TeacherRepository extends JpaRepository<@NonNull Teacher, @NonN
      */
     boolean existsByEmail(String email);
 
-    /**
-     * 根据部门ID查询教师数量
-     */
-    long countByDepartmentId(Long departmentId);
 }
