@@ -20,7 +20,7 @@ import java.util.Objects;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor(access = AccessLevel.PRIVATE)
 public class Credential extends EntitySupport implements AggregateRoot<Long> {
-    private final static Lazy<PasswordEncoder> passwordEncoder = Lazy.of(() -> Objects.requireNonNull(ApplicationUtil.getBean(PasswordEncoder.class)));
+    private final static Lazy<@NonNull PasswordEncoder> passwordEncoder = Lazy.of(() -> Objects.requireNonNull(ApplicationUtil.getBean(PasswordEncoder.class)));
 
     /**
      * 主键ID

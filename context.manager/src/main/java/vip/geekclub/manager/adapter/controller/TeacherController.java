@@ -5,7 +5,6 @@ import org.springframework.web.bind.annotation.*;
 import vip.geekclub.framework.command.IdResult;
 import vip.geekclub.framework.controller.ApiResponse;
 import vip.geekclub.framework.controller.WebCommandAdapter;
-import vip.geekclub.framework.security.UserSession;
 import vip.geekclub.manager.application.command.dto.CreateTeacherCommand;
 import vip.geekclub.manager.application.command.dto.DeleteTeacherCommand;
 import vip.geekclub.manager.application.command.dto.UpdateTeacherCommand;
@@ -52,17 +51,5 @@ public class TeacherController {
     @DeleteMapping("/{id}")
     public ApiResponse<Void> deleteTeacher(@PathVariable Long id) {
         return commandBus.dispatchToWeb(new DeleteTeacherCommand(id));
-    }
-
-    /**
-     * 根据部门ID查询教师列表
-     *
-     * @param departmentId 部门ID
-     * @return 教师列表
-     */
-    @GetMapping("/department/{departmentId}")
-    public ApiResponse<Object> getTeachersByDepartment(@PathVariable Long departmentId) {
-        // TODO: 实现根据部门查询教师列表功能 - 需要创建TeacherQueryService
-        throw new UnsupportedOperationException("根据部门查询教师列表功能待实现");
     }
 }

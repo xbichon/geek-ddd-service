@@ -33,6 +33,11 @@ public class UserNameAuthenticationProvider implements AuthenticationProvider {
     @Override
     public Authentication authenticate(@NonNull Authentication authentication) throws AuthenticationException {
         UsernamePasswordAuthenticationToken token = (UsernamePasswordAuthenticationToken) authentication;
+
+        // 检查用户名和密码是否为空
+        if (token.getPrincipal() == null || token.getCredentials() == null) {
+            throw new BadCredentialsException("用户名或密码不能为空");
+        }
         String username = token.getPrincipal().toString();
         String password = token.getCredentials().toString();
 
