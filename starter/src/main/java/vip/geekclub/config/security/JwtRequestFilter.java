@@ -31,8 +31,8 @@ public class JwtRequestFilter extends OncePerRequestFilter {
 
     private final HttpUtil httpUtil;
     private final PermissionQueryService permissionQueryService;
-    private final AntPathMatcher pathMatcher =new AntPathMatcher();
-    private String[] PERMIT_ALL_PATHS={} ;
+    private final AntPathMatcher pathMatcher = new AntPathMatcher();
+    private String[] PERMIT_PATHS = {};
 
     public JwtRequestFilter(HttpUtil httpUtil, PermissionQueryService permissionQueryService) {
         this.httpUtil = httpUtil;
@@ -40,22 +40,20 @@ public class JwtRequestFilter extends OncePerRequestFilter {
     }
 
     @Override
-    protected void doFilterInternal(@NonNull HttpServletRequest request, @NonNull HttpServletResponse response, @NonNull FilterChain filterChain)
-            throws ServletException, IOException {
+    protected boolean shouldNotFilter(@NonNull HttpServletRequest request) {
+        // 对于免认证路径，完全跳过此过滤器的执行
+        return isPermitAllPath(request.getRequestURI());
+    }
 
-        // 使用统一配置检查是否为免认证路径
-        if (!isPermitAllPath(request.getRequestURI())) {
-            try {
-                httpUtil.getJwtFromRequest(request)
-                        .ifPresent(this::setAuthentication);
+    @Override
+    protected void doFilterInternal(@NonNull HttpServletRequest request, @NonNull HttpServletResponse response, @NonNull FilterChain filterChain) throws ServletException, IOException {
+        try {
+            httpUtil.getJwtFromRequest(request).ifPresent(this::setAuthentication);
+            filterChain.doFilter(request, response);
 
-            } catch (JwtParseException e) {
-                httpUtil.setResponse(response, ApiResponse.fail(401, e.getMessage()));
-                return;
-            }
+        } catch (JwtParseException e) {
+            httpUtil.setResponse(response, ApiResponse.fail(401, e.getMessage()));
         }
-
-        filterChain.doFilter(request, response);
     }
 
     private void setAuthentication(String tokenValue) {
@@ -69,10 +67,10 @@ public class JwtRequestFilter extends OncePerRequestFilter {
     /**
      * 设置免认证路径
      *
-     * @param PERMIT_ALL_PATHS 免认证路径数组
+     * @param PERMIT_PATHS 免认证路径数组
      */
-    public void setPermitAllPaths(String[] PERMIT_ALL_PATHS) {
-        this.PERMIT_ALL_PATHS = PERMIT_ALL_PATHS;
+    public void setPermitPaths(String[] PERMIT_PATHS) {
+        this.PERMIT_PATHS = PERMIT_PATHS;
     }
 
     /**
@@ -82,7 +80,7 @@ public class JwtRequestFilter extends OncePerRequestFilter {
      * @return 如果是免认证路径返回true，否则返回false
      */
     public boolean isPermitAllPath(String requestUri) {
-        return Arrays.stream(PERMIT_ALL_PATHS)
+        return Arrays.stream(PERMIT_PATHS)
                 .anyMatch(pattern -> pathMatcher.match(pattern, requestUri));
     }
 }

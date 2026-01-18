@@ -21,30 +21,32 @@ import java.util.List;
 @Configuration(proxyBeanMethods = false)
 public class SecurityConfig {
 
-    public static final String[] PERMIT_ALL_PATHS = {"/auth/**", "/test/**"};
+    /**
+     * 免认证路径
+     */
+    public static final String[] PERMIT_PATHS = {"/auth/**", "/test/**"};
+    private static final String SECURITY_PATH = "/**";
     private static final String[] ALLOWED_METHODS = {"GET", "POST", "PUT", "DELETE", "OPTIONS"};
     private static final String[] ALLOWED_HEADERS = {"*"};
     private static final long CORS_MAX_AGE = 3600L;
-    private static final String SECURITY_PATH = "/**";
 
     private final JwtRequestFilter jwtRequestFilter;
     private final HttpUtil httpUtil;
 
-
     public SecurityConfig(JwtRequestFilter jwtRequestFilter, HttpUtil httpUtil) {
-        jwtRequestFilter.setPermitAllPaths(PERMIT_ALL_PATHS);
+        jwtRequestFilter.setPermitPaths(PERMIT_PATHS);
         this.jwtRequestFilter = jwtRequestFilter;
         this.httpUtil = httpUtil;
     }
-
-    // 常量定义
-
 
     @Bean
     public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
     }
 
+    /**
+     * 配置认证管理器
+     */
     @Bean
     public AuthenticationManager authenticationManager(
             WechatAuthenticationProvider wechatAuthenticationProvider,
@@ -57,16 +59,17 @@ public class SecurityConfig {
                 userNameAuthenticationProvider));
     }
 
+    /**
+     * 配置安全过滤器链
+     */
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http, AuthenticationManager authenticationManager) {
         http.authenticationManager(authenticationManager);
-
         configureUrl(http);
         configureCross(http);
         configureFilter(http);
         configureExceptionHandling(http);
         disableUnnecessaryFilters(http);
-
         return http.build();
     }
 
@@ -74,9 +77,7 @@ public class SecurityConfig {
      * 禁用不必要的过滤器，优化性能
      */
     private void disableUnnecessaryFilters(HttpSecurity http) {
-
         http.sessionManagement(config -> config.sessionCreationPolicy(SessionCreationPolicy.STATELESS));
-
         http.httpBasic(AbstractHttpConfigurer::disable);
         http.csrf(AbstractHttpConfigurer::disable);
         http.formLogin(AbstractHttpConfigurer::disable);
@@ -84,7 +85,6 @@ public class SecurityConfig {
         http.anonymous(AbstractHttpConfigurer::disable); // 禁用匿名认证
         http.logout(AbstractHttpConfigurer::disable); // 禁用注销功能
         http.requestCache(AbstractHttpConfigurer::disable); // 禁用请求缓存
-
     }
 
     /**
@@ -92,7 +92,7 @@ public class SecurityConfig {
      */
     private void configureUrl(HttpSecurity http) {
         http.securityMatcher(SECURITY_PATH);
-        http.authorizeHttpRequests(authorize -> authorize.requestMatchers(PERMIT_ALL_PATHS).permitAll()
+        http.authorizeHttpRequests(authorize -> authorize.requestMatchers(PERMIT_PATHS).permitAll()
                 .anyRequest().authenticated());
     }
 
@@ -113,10 +113,17 @@ public class SecurityConfig {
         http.cors(config -> config.configurationSource(source));
     }
 
+    /**
+     * 配置过滤器
+     */
     private void configureFilter(HttpSecurity http) {
+        // 添加JWT请求过滤器，在用户名密码认证过滤器之前执行
         http.addFilterBefore(jwtRequestFilter, UsernamePasswordAuthenticationFilter.class);
     }
 
+    /**
+     * 配置异常处理
+     */
     private void configureExceptionHandling(HttpSecurity http) {
         http.exceptionHandling(config -> config
                 // 请求未授权接口处理
