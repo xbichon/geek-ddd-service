@@ -17,6 +17,7 @@ public class InitAdminUserRunner implements CommandLineRunner {
     @Override
     @Async
     public void run(@Nullable String... args) {
-        commandBus.dispatch(new InitAdminCommand());
+        var initAdminCommand = new InitAdminCommand("admin", "123456", "TEACHER");
+        commandBus.dispatch(initAdminCommand);
     }
 }

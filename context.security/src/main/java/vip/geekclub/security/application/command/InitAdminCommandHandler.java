@@ -24,20 +24,20 @@ public class InitAdminCommandHandler implements CommandHandler<InitAdminCommand,
     @Transactional
     public CommandResult<Void> execute(InitAdminCommand command) {
         // 1. 检查是否已存在用户
-        if (principalRepository.existsBy()) {
+        if (principalRepository.existsByUserType(command.userType())) {
             log.info("管理员已存在，无需初始化");
             return CommandResult.ok();
         }
 
         // 2. 创建超级管理员用户
-        Principal principal = Principal.newAdmin("TEACHER");
+        Principal principal = Principal.newAdmin(command.userType());
         principalRepository.save(principal);
 
         // 3. 创建管理员默认认证信息
         Credential adminDefaultCredential = Credential.newUsernameAuth(
                 principal.getId(),
-                "admin",
-                "123456"
+                command.username(),
+                command.password()
         );
         credentialRepository.save(adminDefaultCredential);
 
