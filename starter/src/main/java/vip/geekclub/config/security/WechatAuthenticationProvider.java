@@ -10,9 +10,9 @@ import org.springframework.stereotype.Service;
 import vip.geekclub.framework.security.JwtAuthentication;
 import vip.geekclub.framework.security.JwtPrincipal;
 import vip.geekclub.framework.security.WechatAuthenticationToken;
-import vip.geekclub.security.auth.domain.AuthenticationType;
-import vip.geekclub.security.auth.application.query.AuthenticationQueryService;
-import vip.geekclub.security.auth.application.query.dto.CredentialResult;
+import vip.geekclub.security.domain.AuthenticationType;
+import vip.geekclub.security.application.query.AuthenticationQueryService;
+import vip.geekclub.security.application.query.dto.CredentialResult;
 
 import java.util.Objects;
 

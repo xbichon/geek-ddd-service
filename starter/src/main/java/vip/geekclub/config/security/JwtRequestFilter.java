@@ -5,7 +5,7 @@ import org.springframework.util.AntPathMatcher;
 import vip.geekclub.framework.exception.JwtParseException;
 import vip.geekclub.framework.security.JwtAuthentication;
 import vip.geekclub.framework.security.JwtPrincipal;
-import vip.geekclub.security.permission.application.query.PermissionQueryService;
+import vip.geekclub.security.application.query.PermissionQueryService;
 
 import java.util.Arrays;
 import java.util.Set;

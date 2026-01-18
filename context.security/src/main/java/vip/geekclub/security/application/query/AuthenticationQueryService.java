@@ -1,0 +1,45 @@
+package vip.geekclub.security.application.query;
+
+import lombok.RequiredArgsConstructor;
+import org.jooq.DSLContext;
+import org.jooq.generated.Tables;
+import org.jooq.generated.tables.CredentialTable;
+import org.jooq.generated.tables.PrincipalTable;
+import org.springframework.stereotype.Service;
+import vip.geekclub.security.application.query.dto.CredentialResult;
+import vip.geekclub.security.domain.AuthenticationType;
+import vip.geekclub.security.domain.UserType;
+
+import java.util.Optional;
+
+@Service
+@RequiredArgsConstructor
+public class AuthenticationQueryService {
+    private final DSLContext query;
+    private final CredentialTable credentialTable = Tables.Credential;
+    private final PrincipalTable principalTable = Tables.Principal;
+
+    public Optional<CredentialResult> getAuthenticationByIdentifier(String identifier, AuthenticationType type) {
+        return query.select(
+                        credentialTable.ID,
+                        credentialTable.IDENTIFIER,
+                        credentialTable.PASSWORD,
+                        credentialTable.TYPE,
+                        credentialTable.USER_ID,
+                        principalTable.USER_TYPE
+                )
+                .from(credentialTable)
+                .join(principalTable).on(credentialTable.USER_ID.eq(principalTable.ID))
+                .where(credentialTable.IDENTIFIER.eq(identifier))
+                .and(credentialTable.TYPE.eq(type.toString()))
+                .fetchOptional((record) ->
+                        new CredentialResult(
+                                record.get(credentialTable.ID),
+                                record.get(credentialTable.IDENTIFIER),
+                                record.get(credentialTable.PASSWORD),
+                                AuthenticationType.valueOf(record.get(credentialTable.TYPE)),
+                                record.get(credentialTable.USER_ID),
+                                UserType.valueOf(record.get(principalTable.USER_TYPE)))
+                );
+    }
+}

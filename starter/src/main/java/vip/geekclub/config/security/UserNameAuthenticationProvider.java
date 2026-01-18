@@ -4,8 +4,8 @@ import lombok.NonNull;
 import org.springframework.security.authentication.AuthenticationProvider;
 import vip.geekclub.framework.security.JwtAuthentication;
 import vip.geekclub.framework.security.JwtPrincipal;
-import vip.geekclub.security.auth.application.query.AuthenticationQueryService;
-import vip.geekclub.security.auth.application.query.dto.CredentialResult;
+import vip.geekclub.security.application.query.AuthenticationQueryService;
+import vip.geekclub.security.application.query.dto.CredentialResult;
 import lombok.AllArgsConstructor;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -13,7 +13,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
-import vip.geekclub.security.auth.domain.AuthenticationType;
+import vip.geekclub.security.domain.AuthenticationType;
 
 
 /**
