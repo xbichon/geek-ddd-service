@@ -40,34 +40,4 @@ public class Role extends EntitySupport implements AggregateRoot<Long> {
     @AttributeOverride(name = "description", column = @Column(name = "description"))
     private Description description = Description.empty();
 
-    // =============================== 构造函数 ================================
-
-    public Role(RoleName roleName, Description description) {
-        this.roleName = roleName;
-        this.description = description;
-    }
-
-    // =============================== 业务方法 ================================
-
-    /**
-     * 添加权限
-     */
-    public void addPermission(Long permissionId) {
-        this.permissionIds.add(permissionId);
-    }
-
-    /**
-     * 移除权限
-     */
-    public void removePermission(Long permissionId) {
-        this.permissionIds.remove(permissionId);
-    }
-
-    /**
-     * 更新角色信息
-     */
-    public void updateInfo(RoleName roleName, Description description) {
-        this.roleName = roleName;
-        this.description = description;
-    }
 }

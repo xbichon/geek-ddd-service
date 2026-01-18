@@ -1,5 +1,6 @@
 package vip.geekclub.config.security;
 
+import lombok.NonNull;
 import org.springframework.security.authentication.AuthenticationProvider;
 import vip.geekclub.framework.security.JwtAuthentication;
 import vip.geekclub.framework.security.JwtPrincipal;
@@ -30,7 +31,7 @@ public class UserNameAuthenticationProvider implements AuthenticationProvider {
     private final AuthenticationQueryService authenticationQueryService;
 
     @Override
-    public Authentication authenticate(Authentication authentication) throws AuthenticationException {
+    public Authentication authenticate(@NonNull Authentication authentication) throws AuthenticationException {
         UsernamePasswordAuthenticationToken token = (UsernamePasswordAuthenticationToken) authentication;
         String username = token.getPrincipal().toString();
         String password = token.getCredentials().toString();

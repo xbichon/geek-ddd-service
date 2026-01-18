@@ -20,13 +20,6 @@ public class ApiResponse<T> {
         return apiResponse;
     }
 
-    public static ApiResponse<Void> success() {
-        ApiResponse<Void> apiResponse = new ApiResponse<>();
-        apiResponse.setCode(200);
-        apiResponse.setMessage("success");
-        return apiResponse;
-    }
-
     // 静态方法简化成功/失败响应
     public static <R> ApiResponse<R> success(CommandResult<R> result) {
         ApiResponse<R> apiResponse = new ApiResponse<>();

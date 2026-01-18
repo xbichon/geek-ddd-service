@@ -3,7 +3,7 @@ package vip.geekclub.security.auth.application.command.dto;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
-import vip.geekclub.common.command.Command;
+import vip.geekclub.framework.command.Command;
 import vip.geekclub.security.auth.domain.UserType;
 
 public record CreateUserCommand(

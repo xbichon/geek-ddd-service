@@ -1,6 +1,7 @@
 package vip.geekclub.config;
 
 import jakarta.persistence.RollbackException;
+import lombok.NonNull;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.transaction.TransactionException;
@@ -41,7 +42,7 @@ public class ExceptionAdvice {
      * 处理业务异常
      */
     @ExceptionHandler(BusinessException.class)
-    public ResponseEntity<ApiResponse<?>> handleBusinessException(BusinessException businessException) {
+    public ResponseEntity<@NonNull ApiResponse<?>> handleBusinessException(BusinessException businessException) {
         log.warn("业务异常: code={}, message={}", businessException.getCode(), businessException.getMessage());
         return ResponseEntity.ok(ApiResponse.fail(businessException.getCode(), businessException.getMessage()));
     }
@@ -50,7 +51,7 @@ public class ExceptionAdvice {
      * 处理参数校验异常
      */
     @ExceptionHandler(ValidationException.class)
-    public ResponseEntity<ApiResponse<?>> handleValidationException(ValidationException validationException) {
+    public ResponseEntity<@NonNull ApiResponse<?>> handleValidationException(ValidationException validationException) {
         String message;
         if (validationException instanceof ConstraintViolationException constraintViolationException) {
             message = constraintViolationException.getConstraintViolations().stream()
@@ -68,14 +69,14 @@ public class ExceptionAdvice {
      * 处理缺少请求参数异常
      */
     @ExceptionHandler(MissingServletRequestParameterException.class)
-    public ResponseEntity<ApiResponse<?>> handleMissingParameter(MissingServletRequestParameterException e) {
+    public ResponseEntity<@NonNull ApiResponse<?>> handleMissingParameter(MissingServletRequestParameterException e) {
         String message = PARAMETER_ERROR_PREFIX + e.getMessage();
         log.warn("缺少请求参数: {}", message);
         return ResponseEntity.ok(ApiResponse.fail(400, message));
     }
 
     @ExceptionHandler(BadCredentialsException.class)
-    public ResponseEntity<ApiResponse<?>> handleBadCertificateException(BadCredentialsException e) {
+    public ResponseEntity<@NonNull ApiResponse<?>> handleBadCertificateException(BadCredentialsException e) {
         return ResponseEntity.ok(ApiResponse.fail(400, e.getMessage()));
     }
 
@@ -83,7 +84,7 @@ public class ExceptionAdvice {
      * 处理方法参数校验失败异常
      */
     @ExceptionHandler(MethodArgumentNotValidException.class)
-    public ResponseEntity<ApiResponse<?>> handleMethodArgumentNotValid(MethodArgumentNotValidException e) {
+    public ResponseEntity<@NonNull ApiResponse<?>> handleMethodArgumentNotValid(MethodArgumentNotValidException e) {
         String errorMsg = e.getBindingResult().getFieldErrors().stream()
                 .map(fieldError -> fieldError.getField() + ": " + fieldError.getDefaultMessage())
                 .collect(Collectors.joining("; "));
@@ -97,7 +98,7 @@ public class ExceptionAdvice {
      * 处理资源未找到异常
      */
     @ExceptionHandler(NoResourceFoundException.class)
-    public ResponseEntity<ApiResponse<?>> handleResourceNotFound(NoResourceFoundException e) {
+    public ResponseEntity<@NonNull ApiResponse<?>> handleResourceNotFound(NoResourceFoundException e) {
         String message = RESOURCE_NOT_FOUND_PREFIX + e.getResourcePath();
         log.warn("资源未找到: {}", message);
         return ResponseEntity.ok(ApiResponse.fail(404, message));
@@ -107,7 +108,7 @@ public class ExceptionAdvice {
      * 处理HTTP方法不支持异常
      */
     @ExceptionHandler(HttpRequestMethodNotSupportedException.class)
-    public ResponseEntity<ApiResponse<?>> handleMethodNotSupported(HttpRequestMethodNotSupportedException e) {
+    public ResponseEntity<@NonNull ApiResponse<?>> handleMethodNotSupported(HttpRequestMethodNotSupportedException e) {
         String message = METHOD_NOT_SUPPORTED_PREFIX + e.getMethod() + METHOD_NOT_SUPPORTED_SUFFIX + e.getSupportedHttpMethods();
         log.warn("HTTP方法不支持: {}", message);
         return ResponseEntity.ok(ApiResponse.fail(405, message));
@@ -117,19 +118,19 @@ public class ExceptionAdvice {
      * 处理媒体类型不支持异常
      */
     @ExceptionHandler(HttpMediaTypeNotSupportedException.class)
-    public ResponseEntity<ApiResponse<?>> handleMediaTypeNotSupported(HttpMediaTypeNotSupportedException e) {
+    public ResponseEntity<@NonNull ApiResponse<?>> handleMediaTypeNotSupported(HttpMediaTypeNotSupportedException e) {
         String message = MEDIA_TYPE_PREFIX + e.getContentType();
         log.warn("媒体类型不支持: {}", message);
         return ResponseEntity.ok(ApiResponse.fail(415, message));
     }
 
     @ExceptionHandler({JwtParseException.class})
-    public ResponseEntity<ApiResponse<?>> handleJwtException(Exception e) {
+    public ResponseEntity<@NonNull ApiResponse<?>> handleJwtException(Exception e) {
         return ResponseEntity.ok(ApiResponse.fail(401, e.getMessage()));
     }
 
     @ExceptionHandler(TransactionException.class)
-    public ResponseEntity<ApiResponse<?>> handleTransactionException(TransactionException e) {
+    public ResponseEntity<@NonNull ApiResponse<?>> handleTransactionException(TransactionException e) {
         log.error("事务异常", e);
         if (e.getCause() == null || !(e.getCause() instanceof RollbackException)) {
             return handleGlobalException(e);
@@ -146,7 +147,7 @@ public class ExceptionAdvice {
      * 全局异常兜底处理
      */
     @ExceptionHandler(Exception.class)
-    public ResponseEntity<ApiResponse<?>> handleGlobalException(Exception e) {
+    public ResponseEntity<@NonNull ApiResponse<?>> handleGlobalException(Exception e) {
         log.error("系统异常", e);
         return ResponseEntity.ok(ApiResponse.fail(500, SYSTEM_ERROR_PREFIX + e.getMessage()));
     }

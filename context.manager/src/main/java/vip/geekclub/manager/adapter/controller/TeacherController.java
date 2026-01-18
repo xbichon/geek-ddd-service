@@ -55,18 +55,6 @@ public class TeacherController {
     }
 
     /**
-     * 根据ID查询教师
-     *
-     * @param id 教师ID
-     * @return 教师信息
-     */
-    @GetMapping("/{id}")
-    public ApiResponse<Object> getTeacherById(@PathVariable Long id, UserSession principal) {
-        // TODO: 实现查询单个教师功能 - 需要创建TeacherInfoQueryService
-        throw new UnsupportedOperationException("查询单个教师功能待实现");
-    }
-
-    /**
      * 根据部门ID查询教师列表
      *
      * @param departmentId 部门ID

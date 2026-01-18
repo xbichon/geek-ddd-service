@@ -6,10 +6,10 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 
 import jakarta.persistence.*;
 import lombok.*;
-import vip.geekclub.common.domain.AggregateRoot;
-import vip.geekclub.common.domain.EntitySupport;
-import vip.geekclub.common.utils.ApplicationUtil;
-import vip.geekclub.common.utils.AssertUtil;
+import vip.geekclub.framework.domain.AggregateRoot;
+import vip.geekclub.framework.domain.EntitySupport;
+import vip.geekclub.framework.utils.ApplicationUtil;
+import vip.geekclub.framework.utils.AssertUtil;
 import java.util.Objects;
 
 @Entity

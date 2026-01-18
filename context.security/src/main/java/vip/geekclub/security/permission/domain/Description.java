@@ -3,7 +3,7 @@ package vip.geekclub.security.permission.domain;
 import jakarta.persistence.Column;
 import jakarta.persistence.Embeddable;
 import org.apache.commons.lang3.StringUtils;
-import vip.geekclub.common.utils.AssertUtil;
+import vip.geekclub.framework.utils.AssertUtil;
 
 /**
  * 描述值对象

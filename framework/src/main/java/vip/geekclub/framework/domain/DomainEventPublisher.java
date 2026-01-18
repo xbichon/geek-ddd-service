@@ -25,7 +25,7 @@ public class DomainEventPublisher implements ApplicationEventPublisher {
      * 获取实例
      */
     @Getter
-    private static final Lazy<DomainEventPublisher> instance =
+    private static final Lazy<@NonNull DomainEventPublisher> instance =
             Lazy.of(() -> ApplicationUtil.getBean(DomainEventPublisher.class));
 
     public void publishEvent(@NonNull Object event) {

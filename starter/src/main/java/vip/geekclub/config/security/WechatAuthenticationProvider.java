@@ -1,5 +1,6 @@
 package vip.geekclub.config.security;
 
+import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.authentication.BadCredentialsException;
@@ -28,7 +29,7 @@ public class WechatAuthenticationProvider implements AuthenticationProvider {
     private final AuthenticationQueryService authenticationQueryService;
 
     @Override
-    public Authentication authenticate(Authentication authentication) throws AuthenticationException {
+    public Authentication authenticate(@NonNull Authentication authentication) throws AuthenticationException {
         WechatAuthenticationToken token = (WechatAuthenticationToken) authentication;
         String unionId = Objects.toString(token.getCredentials(), "");
 
@@ -42,12 +43,12 @@ public class WechatAuthenticationProvider implements AuthenticationProvider {
                 .orElseThrow(() -> new BadCredentialsException("用户未注册，请先绑定微信账号"));
 
         // 构建并返回 UserSession（内含 JwtToken）
-        JwtPrincipal jwtPrincipal = new JwtPrincipal(credential.userId(), credential.identifier().toString());
+        JwtPrincipal jwtPrincipal = new JwtPrincipal(credential.userId(), credential.identifier());
         return new JwtAuthentication(jwtPrincipal);
     }
 
     @Override
-    public boolean supports(Class<?> authentication) {
+    public boolean supports(@NonNull Class<?> authentication) {
         return WechatAuthenticationToken.class.equals(authentication);
     }
 }

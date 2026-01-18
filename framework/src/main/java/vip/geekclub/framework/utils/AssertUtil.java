@@ -25,10 +25,6 @@ public class AssertUtil {
         verify(actual == null, () -> new ValidationException(message.get()));
     }
 
-    public static void isNull(Object actual, String message) {
-        verify(actual == null, () -> new ValidationException(message));
-    }
-
     public static void notNull(Object actual, Supplier<String> message) {
         verify(actual != null, () -> new ValidationException(message.get()));
     }

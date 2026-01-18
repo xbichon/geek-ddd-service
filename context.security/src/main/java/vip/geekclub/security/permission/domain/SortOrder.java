@@ -2,7 +2,7 @@ package vip.geekclub.security.permission.domain;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Embeddable;
-import vip.geekclub.common.utils.AssertUtil;
+import vip.geekclub.framework.utils.AssertUtil;
 
 /**
  * 排序值对象
