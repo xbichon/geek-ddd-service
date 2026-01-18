@@ -4,7 +4,7 @@ import lombok.AllArgsConstructor;
 import org.jooq.DSLContext;
 import org.jooq.generated.Tables;
 import org.jooq.generated.tables.PermissionTable;
-import org.jooq.generated.tables.UserTable;
+import org.jooq.generated.tables.PrincipalTable;
 import org.springframework.stereotype.Service;
 import vip.geekclub.security.auth.application.query.dto.UserResult;
 import vip.geekclub.security.auth.domain.UserType;
@@ -18,7 +18,7 @@ public class PermissionQueryService {
 
     private final DSLContext dslContext;
     private final PermissionTable permissionTable = Tables.Permission;
-    private final UserTable userTable = Tables.User;
+    private final PrincipalTable principalTable = Tables.Principal;
 
     public Set<String> getPermissionByUserId(Long userId) {
         UserResult userResult = getUserById(userId)
@@ -33,13 +33,13 @@ public class PermissionQueryService {
     
     private Optional<UserResult> getUserById(Long id) {
         var userResult = dslContext
-                .select(userTable.fields())
-                .from(userTable)
-                .where(userTable.ID.eq(id))
+                .select(principalTable.fields())
+                .from(principalTable)
+                .where(principalTable.ID.eq(id))
                 .fetchOptional();
 
         return userResult.map(record ->
-                new UserResult(record.get(userTable.ID), UserType.valueOf(record.get(userTable.USER_TYPE)), record.get(userTable.IS_SUPER_ADMIN) == 1)
+                new UserResult(record.get(principalTable.ID), UserType.valueOf(record.get(principalTable.USER_TYPE)), record.get(principalTable.IS_SUPER_ADMIN) == 1)
         );
     }
     

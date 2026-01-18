@@ -14,25 +14,25 @@ import vip.geekclub.security.auth.domain.*;
 @Service
 public class InitAdminCommandHandler implements CommandHandler<InitAdminCommand, Void> {
 
-    private final UserPrincipalRepository userPrincipalRepository;
+    private final PrincipalRepository principalRepository;
     private final CredentialRepository credentialRepository;
 
     @Override
     @Transactional
     public CommandResult<Void> execute(InitAdminCommand command) {
         // 1. 检查是否已存在用户
-        if (userPrincipalRepository.existsBy()) {
+        if (principalRepository.existsBy()) {
             log.info("管理员已存在，无需初始化");
             return CommandResult.ok();
         }
 
         // 2. 创建超级管理员用户
-        UserPrincipal userPrincipal = UserPrincipal.newTeacherAdmin();
-        userPrincipalRepository.save(userPrincipal);
+        Principal principal = Principal.newTeacherAdmin();
+        principalRepository.save(principal);
 
         // 3. 创建管理员默认认证信息
         Credential adminDefaultCredential = Credential.newUsernameAuth(
-                userPrincipal.getId(),
+                principal.getId(),
                 "admin",
                 "123456"
         );

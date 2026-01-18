@@ -13,10 +13,10 @@ import java.util.HashSet;
 import java.util.Set;
 
 @Entity
-@Table(name = "security_user")
+@Table(name = "security_principal")
 @Getter @Setter(AccessLevel.PRIVATE)
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class UserPrincipal extends EntitySupport implements AggregateRoot<Long> {
+public class Principal extends EntitySupport implements AggregateRoot<Long> {
 
     /**
      * 主键ID
@@ -39,7 +39,7 @@ public class UserPrincipal extends EntitySupport implements AggregateRoot<Long> 
      */
     private Boolean isSuperAdmin = false;
 
-    public UserPrincipal(UserType userType) {
+    public Principal(UserType userType) {
         this.userType = userType;
         AssertUtil.notNull(userType, () -> "用户类型不能为空");
     }
@@ -58,10 +58,10 @@ public class UserPrincipal extends EntitySupport implements AggregateRoot<Long> 
     /**
      * 新建超级管理员(Teacher)
      */
-    public static UserPrincipal newTeacherAdmin() {
-        UserPrincipal userPrincipal = new UserPrincipal(UserType.TEACHER);
-        userPrincipal.isSuperAdmin = true;
-        return userPrincipal;
+    public static Principal newTeacherAdmin() {
+        Principal principal = new Principal(UserType.TEACHER);
+        principal.isSuperAdmin = true;
+        return principal;
     }
 
     /**

@@ -4,7 +4,7 @@ import lombok.RequiredArgsConstructor;
 import org.jooq.DSLContext;
 import org.jooq.generated.Tables;
 import org.jooq.generated.tables.CredentialTable;
-import org.jooq.generated.tables.UserTable;
+import org.jooq.generated.tables.PrincipalTable;
 import org.springframework.stereotype.Service;
 import vip.geekclub.security.auth.application.query.dto.CredentialResult;
 import vip.geekclub.security.auth.domain.AuthenticationType;
@@ -17,7 +17,7 @@ import java.util.Optional;
 public class AuthenticationQueryService {
     private final DSLContext query;
     private final CredentialTable credentialTable = Tables.Credential;
-    private final UserTable userTable = Tables.User;
+    private final PrincipalTable principalTable = Tables.Principal;
 
     public Optional<CredentialResult> getAuthenticationByIdentifier(String identifier, AuthenticationType type) {
         return query.select(
@@ -26,10 +26,10 @@ public class AuthenticationQueryService {
                         credentialTable.PASSWORD,
                         credentialTable.TYPE,
                         credentialTable.USER_ID,
-                        userTable.USER_TYPE
+                        principalTable.USER_TYPE
                 )
                 .from(credentialTable)
-                .join(userTable).on(credentialTable.USER_ID.eq(userTable.ID))
+                .join(principalTable).on(credentialTable.USER_ID.eq(principalTable.ID))
                 .where(credentialTable.IDENTIFIER.eq(identifier))
                 .and(credentialTable.TYPE.eq(type.toString()))
                 .fetchOptional((record) ->
@@ -39,7 +39,7 @@ public class AuthenticationQueryService {
                                 record.get(credentialTable.PASSWORD),
                                 AuthenticationType.valueOf(record.get(credentialTable.TYPE)),
                                 record.get(credentialTable.USER_ID),
-                                UserType.valueOf(record.get(userTable.USER_TYPE)))
+                                UserType.valueOf(record.get(principalTable.USER_TYPE)))
                 );
     }
 }

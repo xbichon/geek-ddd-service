@@ -14,7 +14,7 @@ import vip.geekclub.security.permission.exception.AuthenticationAlreadyExistsExc
 @Service
 public class CreateUserCommandHandler implements CommandHandler<CreateUserCommand, IdResult> {
 
-    private final UserPrincipalRepository userPrincipalRepository;
+    private final PrincipalRepository principalRepository;
     private final CredentialRepository credentialRepository;
 
     @Override
@@ -24,18 +24,18 @@ public class CreateUserCommandHandler implements CommandHandler<CreateUserComman
         validateUsernameNotExists(command.name());
 
         // 2. 创建用户领域对象
-        UserPrincipal userPrincipal = new UserPrincipal(command.userType());
-        userPrincipalRepository.save(userPrincipal);
+        Principal principal = new Principal(command.userType());
+        principalRepository.save(principal);
 
         // 3. 创建认证信息
         Credential credential = Credential.newUsernameAuth(
-                userPrincipal.getId(),
+                principal.getId(),
                 command.name(),
                 command.password()
         );
         credentialRepository.save(credential);
 
-        return CommandResult.ok(userPrincipal.getId());
+        return CommandResult.ok(principal.getId());
     }
 
     /**

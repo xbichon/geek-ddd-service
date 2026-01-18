@@ -7,7 +7,7 @@
 
     <!--  创建用户、凭证 表结构   -->
     <changeSet id="1748008821470-1" author="bichon">
-        <createTable tableName="security_user">
+        <createTable tableName="security_principal">
             <column name="id" type="BIGINT" autoIncrement="true" remarks="主键">
                 <constraints primaryKey="true" nullable="false"/>
             </column>
