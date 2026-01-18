@@ -93,7 +93,7 @@
                         <!--suppress UnresolvedMavenProperty -->
                         <url>${db.url}</url>
                         <!--suppress UnresolvedMavenProperty -->
-                        <username>${db.principal}</username>
+                        <username>${db.user}</username>
                         <!--suppress UnresolvedMavenProperty -->
                         <password>${db.password}</password>
                         <changeLogFile>/src/main/resources/database/plugin/liquibase-config.xml</changeLogFile>
