@@ -25,7 +25,6 @@ public class Principal extends EntitySupport implements AggregateRoot<Long> {
     private Long id;
 
     @NotNull(message = "用户类型不能为空")
-    @Enumerated(EnumType.STRING)
     private String userType;
 
     @ElementCollection(fetch = FetchType.EAGER)

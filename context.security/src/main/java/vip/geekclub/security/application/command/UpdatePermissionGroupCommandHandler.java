@@ -9,7 +9,7 @@ import vip.geekclub.framework.exception.NotFoundException;
 import vip.geekclub.framework.exception.ValidationException;
 import vip.geekclub.security.application.command.dto.UpdatePermissionGroupCommand;
 import vip.geekclub.security.domain.model.PermissionGroup;
-import vip.geekclub.security.domain.valueobject.PermissionGroupRepository;
+import vip.geekclub.security.domain.repository.PermissionGroupRepository;
 import vip.geekclub.security.domain.valueobject.SortOrder;
 
 @AllArgsConstructor

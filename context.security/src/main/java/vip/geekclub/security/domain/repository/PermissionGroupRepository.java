@@ -1,4 +1,4 @@
-package vip.geekclub.security.domain.valueobject;
+package vip.geekclub.security.domain.repository;
 
 import lombok.NonNull;
 import org.springframework.data.jpa.repository.JpaRepository;
