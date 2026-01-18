@@ -7,8 +7,8 @@ import vip.geekclub.framework.command.CommandHandler;
 import vip.geekclub.framework.command.CommandResult;
 import vip.geekclub.framework.exception.NotFoundException;
 import vip.geekclub.security.application.command.dto.UpdatePrincipalRoleCommand;
-import vip.geekclub.security.domain.Principal;
-import vip.geekclub.security.domain.PrincipalRepository;
+import vip.geekclub.security.domain.model.Principal;
+import vip.geekclub.security.domain.repository.PrincipalRepository;
 
 @AllArgsConstructor
 @Service

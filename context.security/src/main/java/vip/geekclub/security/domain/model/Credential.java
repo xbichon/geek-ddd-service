@@ -1,4 +1,4 @@
-package vip.geekclub.security.domain;
+package vip.geekclub.security.domain.model;
 
 import jakarta.validation.constraints.Size;
 import org.springframework.data.util.Lazy;
@@ -10,6 +10,8 @@ import vip.geekclub.framework.domain.AggregateRoot;
 import vip.geekclub.framework.domain.EntitySupport;
 import vip.geekclub.framework.utils.ApplicationUtil;
 import vip.geekclub.framework.utils.AssertUtil;
+import vip.geekclub.security.domain.valueobject.AuthenticationType;
+
 import java.util.Objects;
 
 @Entity

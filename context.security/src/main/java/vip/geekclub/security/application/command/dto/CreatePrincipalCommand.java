@@ -4,7 +4,6 @@ import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 import vip.geekclub.framework.command.Command;
-import vip.geekclub.security.domain.UserType;
 
 public record CreatePrincipalCommand(
     @NotBlank(message = "用户名不能为空")

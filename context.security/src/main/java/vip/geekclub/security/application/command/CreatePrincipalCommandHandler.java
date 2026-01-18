@@ -7,7 +7,11 @@ import vip.geekclub.framework.command.CommandHandler;
 import vip.geekclub.framework.command.CommandResult;
 import vip.geekclub.framework.command.IdResult;
 import vip.geekclub.security.application.command.dto.CreatePrincipalCommand;
-import vip.geekclub.security.domain.*;
+import vip.geekclub.security.domain.model.Credential;
+import vip.geekclub.security.domain.model.Principal;
+import vip.geekclub.security.domain.repository.CredentialRepository;
+import vip.geekclub.security.domain.repository.PrincipalRepository;
+import vip.geekclub.security.domain.valueobject.AuthenticationType;
 import vip.geekclub.security.exception.AuthenticationAlreadyExistsException;
 
 @AllArgsConstructor

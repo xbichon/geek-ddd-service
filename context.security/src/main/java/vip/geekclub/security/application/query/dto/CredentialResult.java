@@ -1,8 +1,8 @@
 package vip.geekclub.security.application.query.dto;
 
 import lombok.Builder;
-import vip.geekclub.security.domain.AuthenticationType;
-import vip.geekclub.security.domain.UserType;
+import vip.geekclub.security.domain.valueobject.AuthenticationType;
+import vip.geekclub.security.domain.valueobject.UserType;
 
 @Builder
 public record CredentialResult(

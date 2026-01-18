@@ -1,4 +1,4 @@
-package vip.geekclub.security.domain;
+package vip.geekclub.security.domain.model;
 
 import vip.geekclub.framework.domain.AggregateRoot;
 import vip.geekclub.framework.domain.EntitySupport;
@@ -9,6 +9,7 @@ import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
 import lombok.*;
+import vip.geekclub.security.domain.valueobject.SortOrder;
 
 @Entity
 @Table(name = "security_permission_group")

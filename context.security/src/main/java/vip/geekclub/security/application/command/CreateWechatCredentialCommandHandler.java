@@ -6,9 +6,9 @@ import org.springframework.transaction.annotation.Transactional;
 import vip.geekclub.framework.command.CommandHandler;
 import vip.geekclub.framework.command.CommandResult;
 import vip.geekclub.security.application.command.dto.CreateWechatCredentialCommand;
-import vip.geekclub.security.domain.AuthenticationType;
-import vip.geekclub.security.domain.Credential;
-import vip.geekclub.security.domain.CredentialRepository;
+import vip.geekclub.security.domain.valueobject.AuthenticationType;
+import vip.geekclub.security.domain.model.Credential;
+import vip.geekclub.security.domain.repository.CredentialRepository;
 import vip.geekclub.security.exception.AuthenticationAlreadyExistsException;
 
 @Service

@@ -1,4 +1,4 @@
-package vip.geekclub.security.domain;
+package vip.geekclub.security.domain.valueobject;
 
 /**
  * 用户类型枚举

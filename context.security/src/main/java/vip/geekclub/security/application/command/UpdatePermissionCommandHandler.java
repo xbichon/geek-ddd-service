@@ -8,9 +8,9 @@ import vip.geekclub.framework.command.CommandResult;
 import vip.geekclub.framework.exception.NotFoundException;
 import vip.geekclub.framework.exception.ValidationException;
 import vip.geekclub.security.application.command.dto.UpdatePermissionCommand;
-import vip.geekclub.security.domain.Permission;
-import vip.geekclub.security.domain.PermissionRepository;
-import vip.geekclub.security.domain.PermissionCode;
+import vip.geekclub.security.domain.model.Permission;
+import vip.geekclub.security.domain.repository.PermissionRepository;
+import vip.geekclub.security.domain.valueobject.PermissionCode;
 
 @AllArgsConstructor
 @Service

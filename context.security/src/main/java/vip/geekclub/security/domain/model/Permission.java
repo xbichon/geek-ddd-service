@@ -1,4 +1,4 @@
-package vip.geekclub.security.domain;
+package vip.geekclub.security.domain.model;
 
 import org.apache.commons.lang3.StringUtils;
 import vip.geekclub.framework.domain.AggregateRoot;
@@ -8,6 +8,7 @@ import vip.geekclub.framework.utils.AssertUtil;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import lombok.*;
+import vip.geekclub.security.domain.valueobject.PermissionCode;
 
 @Entity
 @Table(name = "security_permission")

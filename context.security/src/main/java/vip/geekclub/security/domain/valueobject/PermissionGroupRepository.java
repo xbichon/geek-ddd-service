@@ -1,10 +1,11 @@
-package vip.geekclub.security.domain;
+package vip.geekclub.security.domain.valueobject;
 
 import lombok.NonNull;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
+import vip.geekclub.security.domain.model.PermissionGroup;
 
 @Repository
 public interface PermissionGroupRepository extends JpaRepository<@NonNull PermissionGroup, @NonNull Long> {

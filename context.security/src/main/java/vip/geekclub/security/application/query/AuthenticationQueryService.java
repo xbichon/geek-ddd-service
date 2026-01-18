@@ -7,8 +7,8 @@ import org.jooq.generated.tables.CredentialTable;
 import org.jooq.generated.tables.PrincipalTable;
 import org.springframework.stereotype.Service;
 import vip.geekclub.security.application.query.dto.CredentialResult;
-import vip.geekclub.security.domain.AuthenticationType;
-import vip.geekclub.security.domain.UserType;
+import vip.geekclub.security.domain.valueobject.AuthenticationType;
+import vip.geekclub.security.domain.valueobject.UserType;
 
 import java.util.Optional;
 

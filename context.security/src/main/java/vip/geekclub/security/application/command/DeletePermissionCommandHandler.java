@@ -6,7 +6,7 @@ import org.springframework.transaction.annotation.Transactional;
 import vip.geekclub.framework.command.CommandHandler;
 import vip.geekclub.framework.command.CommandResult;
 import vip.geekclub.security.application.command.dto.DeletePermissionCommand;
-import vip.geekclub.security.domain.PermissionRepository;
+import vip.geekclub.security.domain.repository.PermissionRepository;
 
 @AllArgsConstructor
 @Service
