@@ -40,10 +40,6 @@ spring:
         jdbc:
           batch_size: 20
     open-in-view: false
-#  liquibase:
-#    change-log: classpath:/database/migrations/master.xml
-#    clear-checksums: true
-#    enabled: false
   data:
     redis:
       host: localhost

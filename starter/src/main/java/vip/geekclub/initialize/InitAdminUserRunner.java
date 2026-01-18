@@ -1,5 +1,6 @@
 package vip.geekclub.initialize;
 
+import jakarta.annotation.Nullable;
 import lombok.AllArgsConstructor;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.scheduling.annotation.Async;
@@ -15,7 +16,7 @@ public class InitAdminUserRunner implements CommandLineRunner {
 
     @Override
     @Async
-    public void run(String... args) {
+    public void run(@Nullable String... args) {
         commandBus.dispatch(new InitAdminCommand());
     }
 }

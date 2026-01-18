@@ -7,7 +7,7 @@ import org.springframework.web.bind.annotation.RestController;
 import vip.geekclub.common.controller.ApiResponse;
 import vip.geekclub.security.auth.adapter.controller.dto.WechatLoginRequest;
 import vip.geekclub.security.auth.application.query.dto.UserResult;
-import vip.geekclub.security.auth.domain.UserType;
+import vip.geekclub.security.auth.domain.AccountType;
 
 /**
  * 测试控制器
@@ -23,7 +23,7 @@ public class TestController {
      */
     @GetMapping("/home")
     public ApiResponse<UserResult> getTestUser() {
-        return ApiResponse.success(new UserResult(1L, UserType.TEACHER, true));
+        return ApiResponse.success(new UserResult(1L, AccountType.TEACHER, true));
     }
 
     @PostMapping("/home")

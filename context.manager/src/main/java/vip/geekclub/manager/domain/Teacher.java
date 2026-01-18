@@ -125,6 +125,14 @@ public class Teacher extends EntitySupport implements AggregateRoot<Long> {
         return !this.name.equals(newName.trim());
     }
 
+
+    /**
+     * 验证教师是否可删除
+     */
+    public void validateDeletable() {
+        AssertUtil.isTrue(status == TeacherStatus.ENABLED, () -> "只有启用状态的教师才能被删除");
+    }
+
     // ================================ 赋值方法 ================================
 
     /**
