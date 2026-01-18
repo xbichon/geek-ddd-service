@@ -14,7 +14,7 @@ import vip.geekclub.common.security.JwtAuthentication;
 import vip.geekclub.common.security.WechatAuthenticationToken;
 import vip.geekclub.security.auth.adapter.controller.dto.WechatBindRequest;
 import vip.geekclub.security.auth.adapter.controller.dto.WechatLoginRequest;
-import vip.geekclub.security.auth.adapter.wechat.WechatService;
+import vip.geekclub.security.auth.adapter.gateway.WechatService;
 import vip.geekclub.security.auth.application.command.dto.CreateWechatCredentialCommand;
 
 /**
