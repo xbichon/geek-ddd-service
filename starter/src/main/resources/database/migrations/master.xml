@@ -6,6 +6,4 @@
         https://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-latest.xsd">
 
     <includeAll path="database/migrations" minDepth="2" />
-
-
 </databaseChangeLog>
