@@ -1,11 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <configuration>
-    <jdbc>
-        <driver>com.mysql.cj.jdbc.Driver</driver>
-        <url>jdbc:mysql://localhost:3306/your_database</url>
-        <principal>your_username</principal>
-        <password>your_password</password>
-    </jdbc>
     <generator>
         <database>
             <name>org.jooq.meta.mysql.MySQLDatabase</name>
