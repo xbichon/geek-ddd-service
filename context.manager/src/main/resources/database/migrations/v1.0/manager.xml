@@ -5,7 +5,7 @@
         xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
          https://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.9.xsd">
     <!--  创建部门表结构  -->
-    <changeSet id="1750312342960-1" author="bichon">
+    <changeSet id="1750312342989-1" author="bichon">
         <createTable tableName="manager_department">
             <column name="id" type="BIGINT" autoIncrement="true" remarks="主键">
                 <constraints primaryKey="true" nullable="false"/>
@@ -32,7 +32,6 @@
         <createIndex tableName="manager_department" indexName="idx_department_status">
             <column name="status"/>
         </createIndex>
-
         <sql>
             INSERT INTO test.manager_department (id, name, sort_order, manager, parent_id, phone, status, level,
                                                  description, create_time, update_time, version)

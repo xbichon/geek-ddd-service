@@ -7,4 +7,5 @@
 
     <!-- 使用当前目录的相对路径 -->
     <includeAll path="database/migrations" minDepth="2" />
+
 </databaseChangeLog>

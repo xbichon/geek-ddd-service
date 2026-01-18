@@ -96,7 +96,7 @@
                         <username>${db.user}</username>
                         <!--suppress UnresolvedMavenProperty -->
                         <password>${db.password}</password>
-                        <changeLogFile>/src/main/resources/database/plugin/liquibase-config.xml</changeLogFile>
+                        <changeLogFile>src/main/resources/database/plugin/liquibase-config.xml</changeLogFile>
                     </configuration>
                 </plugin>
                 <!--JOOQ代码生成插件-->
@@ -112,13 +112,14 @@
                         </execution>
                     </executions>
                     <configuration>
+                        <configurationFile>src/main/resources/database/plugin/jooq-config.xml</configurationFile>
                         <jdbc>
                             <!--suppress UnresolvedMavenProperty -->
                             <driver>${db.driver}</driver>
                             <!--suppress UnresolvedMavenProperty -->
                             <url>${db.url}</url>
                             <!--suppress UnresolvedMavenProperty -->
-                            <principal>${db.principal}</principal>
+                            <user>${db.user}</user>
                             <!--suppress UnresolvedMavenProperty -->
                             <password>${db.password}</password>
                         </jdbc>

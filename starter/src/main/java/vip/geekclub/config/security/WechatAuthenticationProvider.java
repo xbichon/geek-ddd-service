@@ -42,7 +42,7 @@ public class WechatAuthenticationProvider implements AuthenticationProvider {
                 .orElseThrow(() -> new BadCredentialsException("用户未注册，请先绑定微信账号"));
 
         // 构建并返回 UserSession（内含 JwtToken）
-        JwtPrincipal jwtPrincipal = new JwtPrincipal(credential.userId(), credential.accountType().toString());
+        JwtPrincipal jwtPrincipal = new JwtPrincipal(credential.userId(), credential.identifier().toString());
         return new JwtAuthentication(jwtPrincipal);
     }
 

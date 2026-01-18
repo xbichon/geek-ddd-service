@@ -44,7 +44,7 @@ public class UserNameAuthenticationProvider implements AuthenticationProvider {
             throw new BadCredentialsException("用户名或密码错误");
         }
 
-        JwtPrincipal jwtPrincipal = new JwtPrincipal(credentialResult.userId(), credentialResult.accountType().toString());
+        JwtPrincipal jwtPrincipal = new JwtPrincipal(credentialResult.userId(), credentialResult.userType().toString());
         return new JwtAuthentication(jwtPrincipal);
     }
 
