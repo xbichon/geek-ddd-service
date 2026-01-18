@@ -50,7 +50,6 @@ public class JwtRequestFilter extends OncePerRequestFilter {
         try {
             httpUtil.getJwtFromRequest(request).ifPresent(this::setAuthentication);
             filterChain.doFilter(request, response);
-
         } catch (JwtParseException e) {
             httpUtil.setResponse(response, ApiResponse.fail(401, e.getMessage()));
         }
@@ -67,10 +66,10 @@ public class JwtRequestFilter extends OncePerRequestFilter {
     /**
      * 设置免认证路径
      *
-     * @param PERMIT_PATHS 免认证路径数组
+     * @param PERMIT_ALL_PATHS 免认证路径数组
      */
-    public void setPermitPaths(String[] PERMIT_PATHS) {
-        this.PERMIT_PATHS = PERMIT_PATHS;
+    public void setPermitPaths(String[] PERMIT_ALL_PATHS) {
+        this.PERMIT_PATHS = PERMIT_ALL_PATHS;
     }
 
     /**

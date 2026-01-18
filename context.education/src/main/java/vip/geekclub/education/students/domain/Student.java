@@ -10,9 +10,6 @@ import vip.geekclub.common.domain.AggregateRoot;
 import vip.geekclub.common.utils.AssertUtil;
 import vip.geekclub.education.students.common.Sex;
 
-// O  ->映射  -> sql
-// Mapper -》 XML
-//  注解
 @Entity()
 @Table(name = "student_student")
 @Getter
