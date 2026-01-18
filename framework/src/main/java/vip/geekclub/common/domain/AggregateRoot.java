@@ -18,4 +18,5 @@ package vip.geekclub.common.domain;
  * @since 1.0
  */
 public interface AggregateRoot<T> extends Aggregate<T> {
+
 }

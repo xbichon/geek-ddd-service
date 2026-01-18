@@ -68,7 +68,7 @@
                             <configuration>
                                 <files>
                                     <!-- 读取子模块的配置文件 -->
-                                    <file>${project.basedir}/../starter/src/main/resources/jooq-config.properties</file>
+                                    <file>${project.basedir}/../starter/src/main/resources/db-connection.properties</file>
                                 </files>
                             </configuration>
                         </execution>
