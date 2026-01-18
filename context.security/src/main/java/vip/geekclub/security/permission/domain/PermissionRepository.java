@@ -1,12 +1,13 @@
 package vip.geekclub.security.permission.domain;
 
+import lombok.NonNull;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public interface PermissionRepository extends JpaRepository<Permission, Long> {
+public interface PermissionRepository extends JpaRepository<@NonNull Permission, @NonNull Long> {
 
     /**
      * 根据权限码查询权限是否存在

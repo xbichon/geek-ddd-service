@@ -1,5 +1,6 @@
 package vip.geekclub.manager.domain;
 
+import lombok.NonNull;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
@@ -11,7 +12,7 @@ import org.springframework.stereotype.Repository;
  * @since 1.0
  */
 @Repository
-public interface DepartmentRepository extends JpaRepository<Department, Long> {
+public interface DepartmentRepository extends JpaRepository<@NonNull Department, @NonNull Long> {
     /**
      * 检查是否存在指定名称和父部门ID的部门
      * 用于创建部门时的名称唯一性验证

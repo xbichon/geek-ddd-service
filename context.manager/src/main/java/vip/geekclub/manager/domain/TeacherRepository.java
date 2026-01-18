@@ -1,5 +1,6 @@
 package vip.geekclub.manager.domain;
 
+import lombok.NonNull;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
@@ -11,7 +12,7 @@ import org.springframework.stereotype.Repository;
  * @since 1.0
  */
 @Repository
-public interface TeacherRepository extends JpaRepository<Teacher, Long> {
+public interface TeacherRepository extends JpaRepository<@NonNull Teacher, @NonNull Long> {
 
     /**
      * 检查是否存在指定手机号的教师
