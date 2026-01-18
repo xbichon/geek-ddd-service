@@ -8,7 +8,6 @@ import vip.geekclub.common.command.CommandResult;
 import vip.geekclub.common.command.IdResult;
 import vip.geekclub.security.auth.application.command.dto.CreateUserCommand;
 import vip.geekclub.security.auth.domain.*;
-import vip.geekclub.security.auth.domain.AuthenticationType;
 import vip.geekclub.security.permission.exception.AuthenticationAlreadyExistsException;
 
 @AllArgsConstructor

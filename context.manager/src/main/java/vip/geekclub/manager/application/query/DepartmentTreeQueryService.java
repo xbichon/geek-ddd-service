@@ -36,7 +36,7 @@ public class DepartmentTreeQueryService {
     private static final RecordMapper<org.jooq.Record, DepartmentTreeResult> RESULT_MAPPER = (record) -> record.into(DepartmentTreeResult.class);
 
     /**
-     * 查询所有部门树结构（包含所有状态的部门）
+     * 查询所有部门 树结构（包含所有状态的部门）
      */
     public List<DepartmentTreeResult> getAllDepartmentTree() {
         List<DepartmentTreeResult> departmentTreeResultList = dslContext

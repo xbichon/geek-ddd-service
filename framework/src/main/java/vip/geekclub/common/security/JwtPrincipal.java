@@ -37,7 +37,7 @@ public record JwtPrincipal(Long userId, String userType) implements Principal {
     public Map<String, Object> getMap() {
         Map<String, Object> jwtMap = new HashMap<>();
         jwtMap.put(SUBJECT_CLAIM, userId.toString());
-        jwtMap.put(USER_TYPE_CLAIM, userType.toString());
+        jwtMap.put(USER_TYPE_CLAIM, userType);
         return jwtMap;
     }
 

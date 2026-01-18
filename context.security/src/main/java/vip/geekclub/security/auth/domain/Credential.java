@@ -10,6 +10,7 @@ import vip.geekclub.common.domain.AggregateRoot;
 import vip.geekclub.common.domain.EntitySupport;
 import vip.geekclub.common.utils.ApplicationUtil;
 import vip.geekclub.common.utils.AssertUtil;
+import java.util.Objects;
 
 @Entity
 @Table(name = "security_credential")
@@ -19,7 +20,7 @@ import vip.geekclub.common.utils.AssertUtil;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor(access = AccessLevel.PRIVATE)
 public class Credential extends EntitySupport implements AggregateRoot<Long> {
-    private final static Lazy<PasswordEncoder> passwordEncoder = Lazy.of(() -> ApplicationUtil.getBean(PasswordEncoder.class));
+    private final static Lazy<PasswordEncoder> passwordEncoder = Lazy.of(() -> Objects.requireNonNull(ApplicationUtil.getBean(PasswordEncoder.class)));
 
     /**
      * 主键ID

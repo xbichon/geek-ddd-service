@@ -119,14 +119,6 @@ public class Teacher extends EntitySupport implements AggregateRoot<Long> {
     }
 
     /**
-     * 验证是否可以删除
-     */
-    public void validateDeletable() {
-        // 可以添加删除前的业务验证逻辑
-        // 例如：检查教师是否有正在进行的课程等
-    }
-
-    /**
      * 验证名称是否变化
      */
     public boolean isChangeName(String newName) {

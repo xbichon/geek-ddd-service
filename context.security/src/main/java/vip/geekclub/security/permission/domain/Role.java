@@ -29,7 +29,7 @@ public class Role extends EntitySupport implements AggregateRoot<Long> {
     private RoleName roleName = RoleName.empty();
 
     @ElementCollection(fetch = FetchType.EAGER)
-    @CollectionTable(name = "manager_role_permission", joinColumns = @JoinColumn(name = "role_id"))
+    @CollectionTable(name = "security_role_permission", joinColumns = @JoinColumn(name = "role_id"))
     @Column(name = "permission_id")
     private final Set<Long> permissionIds = new HashSet<>();
 

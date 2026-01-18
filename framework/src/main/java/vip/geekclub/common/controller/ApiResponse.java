@@ -36,14 +36,6 @@ public class ApiResponse<T> {
         return apiResponse;
     }
 
-    // 静态方法简化成功/失败响应
-    public static ApiResponse<Void> message(String message) {
-        ApiResponse<Void> apiResponse = new ApiResponse<>();
-        apiResponse.setCode(200);
-        apiResponse.setMessage(message);
-        return apiResponse;
-    }
-
     public static ApiResponse<?> fail(int code, String message) {
         ApiResponse<?> apiResponse = new ApiResponse<>();
         apiResponse.setCode(code);

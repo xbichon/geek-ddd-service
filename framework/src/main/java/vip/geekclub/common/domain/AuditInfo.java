@@ -20,7 +20,6 @@ import java.time.LocalDateTime;
 @AllArgsConstructor(access = AccessLevel.PRIVATE)
 public class AuditInfo {
 
-
     /**
      * 创建时间
      */
