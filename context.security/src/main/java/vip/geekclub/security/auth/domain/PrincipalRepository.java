@@ -1,9 +1,10 @@
 package vip.geekclub.security.auth.domain;
 
+import lombok.NonNull;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public interface PrincipalRepository extends JpaRepository<Principal, Long> {
+public interface PrincipalRepository extends JpaRepository<@NonNull Principal,@NonNull Long> {
      boolean existsBy();
 }
