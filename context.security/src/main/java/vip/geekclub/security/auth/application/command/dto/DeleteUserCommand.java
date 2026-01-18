@@ -1,7 +1,7 @@
 package vip.geekclub.security.auth.application.command.dto;
 
 import jakarta.validation.constraints.NotNull;
-import vip.geekclub.common.command.Command;
+import vip.geekclub.framework.command.Command;
 
 public record DeleteUserCommand(
     @NotNull(message = "用户ID不能为空")

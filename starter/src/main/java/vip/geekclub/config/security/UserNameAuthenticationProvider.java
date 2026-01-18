@@ -1,8 +1,8 @@
 package vip.geekclub.config.security;
 
 import org.springframework.security.authentication.AuthenticationProvider;
-import vip.geekclub.common.security.JwtAuthentication;
-import vip.geekclub.common.security.JwtPrincipal;
+import vip.geekclub.framework.security.JwtAuthentication;
+import vip.geekclub.framework.security.JwtPrincipal;
 import vip.geekclub.security.auth.application.query.AuthenticationQueryService;
 import vip.geekclub.security.auth.application.query.dto.CredentialResult;
 import lombok.AllArgsConstructor;

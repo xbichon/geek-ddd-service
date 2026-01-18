@@ -2,8 +2,8 @@ package vip.geekclub.education.students.command;
 
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
-import vip.geekclub.common.command.CommandHandler;
-import vip.geekclub.common.command.CommandResult;
+import vip.geekclub.framework.command.CommandHandler;
+import vip.geekclub.framework.command.CommandResult;
 import vip.geekclub.education.students.command.dto.RemoveStudntCommand;
 import vip.geekclub.education.students.domain.StudentRepository;
 

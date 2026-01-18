@@ -2,8 +2,8 @@ package vip.geekclub.security.auth.adapter.controller;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
-import vip.geekclub.common.controller.ApiResponse;
-import vip.geekclub.common.controller.WebCommandAdapter;
+import vip.geekclub.framework.controller.ApiResponse;
+import vip.geekclub.framework.controller.WebCommandAdapter;
 import vip.geekclub.security.auth.application.command.dto.CreateUserCommand;
 import vip.geekclub.security.auth.application.command.dto.DeleteUserCommand;
 

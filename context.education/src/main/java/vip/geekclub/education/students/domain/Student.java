@@ -6,8 +6,8 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.apache.commons.lang3.StringUtils;
-import vip.geekclub.common.domain.AggregateRoot;
-import vip.geekclub.common.utils.AssertUtil;
+import vip.geekclub.framework.domain.AggregateRoot;
+import vip.geekclub.framework.utils.AssertUtil;
 import vip.geekclub.education.students.common.Sex;
 
 @Entity()

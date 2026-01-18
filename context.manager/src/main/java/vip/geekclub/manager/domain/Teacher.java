@@ -3,9 +3,9 @@ package vip.geekclub.manager.domain;
 import jakarta.persistence.*;
 import lombok.*;
 import org.apache.commons.lang3.StringUtils;
-import vip.geekclub.common.domain.AggregateRoot;
-import vip.geekclub.common.domain.EntitySupport;
-import vip.geekclub.common.utils.AssertUtil;
+import vip.geekclub.framework.domain.AggregateRoot;
+import vip.geekclub.framework.domain.EntitySupport;
+import vip.geekclub.framework.utils.AssertUtil;
 
 /**
  * 教师聚合根

@@ -2,8 +2,8 @@ package vip.geekclub.security.permission.application.command.dto;
 
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
-import vip.geekclub.common.command.Command;
-import vip.geekclub.common.utils.StringUtil;
+import vip.geekclub.framework.command.Command;
+import vip.geekclub.framework.utils.StringUtil;
 
 public record CreatePermissionCommand(
 

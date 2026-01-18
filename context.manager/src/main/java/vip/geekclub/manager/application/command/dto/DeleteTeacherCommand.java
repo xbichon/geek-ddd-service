@@ -1,7 +1,7 @@
 package vip.geekclub.manager.application.command.dto;
 
 import jakarta.validation.constraints.NotNull;
-import vip.geekclub.common.command.Command;
+import vip.geekclub.framework.command.Command;
 
 /**
  * 删除教师命令

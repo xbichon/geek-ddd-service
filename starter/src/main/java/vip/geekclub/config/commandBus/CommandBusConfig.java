@@ -2,7 +2,7 @@ package vip.geekclub.config.commandBus;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import vip.geekclub.common.command.*;
+import vip.geekclub.framework.command.*;
 
 import java.util.List;
 

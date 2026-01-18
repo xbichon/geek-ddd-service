@@ -5,9 +5,9 @@ import jakarta.validation.ConstraintViolationException;
 import jakarta.validation.Validator;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
-import vip.geekclub.common.command.Command;
-import vip.geekclub.common.command.CommandResult;
-import vip.geekclub.common.command.CommandHandlerChain;
+import vip.geekclub.framework.command.Command;
+import vip.geekclub.framework.command.CommandResult;
+import vip.geekclub.framework.command.CommandHandlerChain;
 
 import java.util.Set;
 

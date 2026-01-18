@@ -7,7 +7,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-import vip.geekclub.common.controller.ApiResponse;
+import vip.geekclub.framework.controller.ApiResponse;
 import vip.geekclub.security.auth.adapter.controller.dto.CaptchaResponse;
 
 import java.io.ByteArrayOutputStream;

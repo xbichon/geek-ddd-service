@@ -2,20 +2,20 @@ package vip.geekclub.config.security;
 
 import lombok.NonNull;
 import org.springframework.util.AntPathMatcher;
-import vip.geekclub.common.exception.JwtParseException;
-import vip.geekclub.common.security.JwtAuthentication;
-import vip.geekclub.common.security.JwtPrincipal;
+import vip.geekclub.framework.exception.JwtParseException;
+import vip.geekclub.framework.security.JwtAuthentication;
+import vip.geekclub.framework.security.JwtPrincipal;
 import vip.geekclub.security.permission.application.query.PermissionQueryService;
 
 import java.util.Arrays;
 import java.util.Set;
 
-import vip.geekclub.common.utils.HttpUtil;
+import vip.geekclub.framework.utils.HttpUtil;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import vip.geekclub.common.controller.ApiResponse;
+import vip.geekclub.framework.controller.ApiResponse;
 import org.springframework.stereotype.Component;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.filter.OncePerRequestFilter;

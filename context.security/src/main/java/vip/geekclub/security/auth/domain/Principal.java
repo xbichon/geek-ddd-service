@@ -4,10 +4,10 @@ import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 
 import lombok.*;
-import vip.geekclub.common.domain.AggregateRoot;
-import vip.geekclub.common.domain.EntitySupport;
-import vip.geekclub.common.exception.BusinessLogicException;
-import vip.geekclub.common.utils.AssertUtil;
+import vip.geekclub.framework.domain.AggregateRoot;
+import vip.geekclub.framework.domain.EntitySupport;
+import vip.geekclub.framework.exception.BusinessLogicException;
+import vip.geekclub.framework.utils.AssertUtil;
 
 import java.util.HashSet;
 import java.util.Set;

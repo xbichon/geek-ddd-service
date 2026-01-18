@@ -2,7 +2,7 @@ package vip.geekclub.education.students.command.dto;
 
 import jakarta.validation.constraints.Max;
 import jakarta.validation.constraints.NotBlank;
-import vip.geekclub.common.command.Command;
+import vip.geekclub.framework.command.Command;
 import vip.geekclub.education.students.common.Sex;
 import vip.geekclub.education.students.domain.Student;
 

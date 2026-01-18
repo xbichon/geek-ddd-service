@@ -2,9 +2,9 @@ package vip.geekclub.manager.adapter.controller;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
-import vip.geekclub.common.controller.ApiResponse;
-import vip.geekclub.common.controller.WebCommandAdapter;
-import vip.geekclub.common.exception.NotFoundException;
+import vip.geekclub.framework.controller.ApiResponse;
+import vip.geekclub.framework.controller.WebCommandAdapter;
+import vip.geekclub.framework.exception.NotFoundException;
 import vip.geekclub.manager.application.command.dto.CreateDepartmentCommand;
 import vip.geekclub.manager.application.command.dto.DeleteDepartmentCommand;
 import vip.geekclub.manager.application.command.dto.UpdateDepartmentCommand;

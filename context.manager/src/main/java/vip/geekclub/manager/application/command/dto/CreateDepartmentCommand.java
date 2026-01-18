@@ -2,7 +2,7 @@ package vip.geekclub.manager.application.command.dto;
 
 import jakarta.validation.constraints.*;
 import org.hibernate.validator.constraints.Range;
-import vip.geekclub.common.command.Command;
+import vip.geekclub.framework.command.Command;
 import vip.geekclub.manager.domain.Department;
 import vip.geekclub.manager.domain.SortOrder;
 

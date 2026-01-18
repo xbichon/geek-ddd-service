@@ -10,14 +10,14 @@ import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.MissingServletRequestParameterException;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.servlet.resource.NoResourceFoundException;
-import vip.geekclub.common.controller.ApiResponse;
-import vip.geekclub.common.exception.BusinessException;
+import vip.geekclub.framework.controller.ApiResponse;
+import vip.geekclub.framework.exception.BusinessException;
 import jakarta.validation.ConstraintViolation;
 import jakarta.validation.ConstraintViolationException;
 import jakarta.validation.ValidationException;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ExceptionHandler;
-import vip.geekclub.common.exception.JwtParseException;
+import vip.geekclub.framework.exception.JwtParseException;
 
 import java.util.stream.Collectors;
 

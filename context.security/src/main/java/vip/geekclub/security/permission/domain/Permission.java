@@ -1,9 +1,9 @@
 package vip.geekclub.security.permission.domain;
 
 import org.apache.commons.lang3.StringUtils;
-import vip.geekclub.common.domain.AggregateRoot;
-import vip.geekclub.common.domain.EntitySupport;
-import vip.geekclub.common.utils.AssertUtil;
+import vip.geekclub.framework.domain.AggregateRoot;
+import vip.geekclub.framework.domain.EntitySupport;
+import vip.geekclub.framework.utils.AssertUtil;
 
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;

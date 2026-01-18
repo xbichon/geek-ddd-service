@@ -4,8 +4,8 @@ import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import vip.geekclub.common.command.CommandHandler;
-import vip.geekclub.common.command.CommandResult;
+import vip.geekclub.framework.command.CommandHandler;
+import vip.geekclub.framework.command.CommandResult;
 import vip.geekclub.security.auth.application.command.dto.InitAdminCommand;
 import vip.geekclub.security.auth.domain.*;
 

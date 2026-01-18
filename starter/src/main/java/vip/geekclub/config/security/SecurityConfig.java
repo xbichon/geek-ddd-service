@@ -1,7 +1,7 @@
 package vip.geekclub.config.security;
 
-import vip.geekclub.common.controller.ApiResponse;
-import vip.geekclub.common.utils.HttpUtil;
+import vip.geekclub.framework.controller.ApiResponse;
+import vip.geekclub.framework.utils.HttpUtil;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;

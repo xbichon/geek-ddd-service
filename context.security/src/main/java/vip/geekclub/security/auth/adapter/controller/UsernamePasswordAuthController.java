@@ -8,8 +8,8 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-import vip.geekclub.common.controller.ApiResponse;
-import vip.geekclub.common.security.JwtAuthentication;
+import vip.geekclub.framework.controller.ApiResponse;
+import vip.geekclub.framework.security.JwtAuthentication;
 import vip.geekclub.security.auth.adapter.controller.dto.UserNameLoginRequest;
 
 /**

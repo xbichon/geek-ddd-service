@@ -2,10 +2,10 @@ package vip.geekclub.manager.adapter.controller;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
-import vip.geekclub.common.command.IdResult;
-import vip.geekclub.common.controller.ApiResponse;
-import vip.geekclub.common.controller.WebCommandAdapter;
-import vip.geekclub.common.security.UserSession;
+import vip.geekclub.framework.command.IdResult;
+import vip.geekclub.framework.controller.ApiResponse;
+import vip.geekclub.framework.controller.WebCommandAdapter;
+import vip.geekclub.framework.security.UserSession;
 import vip.geekclub.manager.application.command.dto.CreateTeacherCommand;
 import vip.geekclub.manager.application.command.dto.DeleteTeacherCommand;
 import vip.geekclub.manager.application.command.dto.UpdateTeacherCommand;

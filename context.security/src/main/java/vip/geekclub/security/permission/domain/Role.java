@@ -3,8 +3,8 @@ package vip.geekclub.security.permission.domain;
 import jakarta.persistence.*;
 
 import lombok.*;
-import vip.geekclub.common.domain.AggregateRoot;
-import vip.geekclub.common.domain.EntitySupport;
+import vip.geekclub.framework.domain.AggregateRoot;
+import vip.geekclub.framework.domain.EntitySupport;
 
 import java.util.HashSet;
 import java.util.Set;
