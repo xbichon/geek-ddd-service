@@ -6,7 +6,7 @@ import org.springframework.transaction.annotation.Transactional;
 import vip.geekclub.framework.command.CommandHandler;
 import vip.geekclub.framework.command.CommandResult;
 import vip.geekclub.framework.command.IdResult;
-import vip.geekclub.framework.domain.DomainEventPublisher;
+import vip.geekclub.framework.domain.event.DomainEventPublisher;
 import vip.geekclub.manager.application.command.dto.CreateTeacherCommand;
 import vip.geekclub.manager.domain.event.UserCreatedEvent;
 import vip.geekclub.manager.domain.model.Teacher;

@@ -6,8 +6,8 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 
 import jakarta.persistence.*;
 import lombok.*;
-import vip.geekclub.framework.domain.AggregateRoot;
-import vip.geekclub.framework.domain.EntitySupport;
+import vip.geekclub.framework.domain.model.AggregateRoot;
+import vip.geekclub.framework.domain.model.EntitySupport;
 import vip.geekclub.framework.utils.ApplicationUtil;
 import vip.geekclub.framework.utils.AssertUtil;
 import vip.geekclub.security.domain.value.AuthenticationType;

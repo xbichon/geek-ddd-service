@@ -1,4 +1,4 @@
-package vip.geekclub.framework.domain;
+package vip.geekclub.framework.domain.model;
 
 /**
  * 聚合根接口

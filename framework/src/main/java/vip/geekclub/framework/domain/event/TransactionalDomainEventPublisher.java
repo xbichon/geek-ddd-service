@@ -1,4 +1,4 @@
-package vip.geekclub.framework.domain;
+package vip.geekclub.framework.domain.event;
 
 import lombok.NonNull;
 import lombok.extern.slf4j.Slf4j;

@@ -1,7 +1,7 @@
 package vip.geekclub.security.domain.model;
 
-import vip.geekclub.framework.domain.AggregateRoot;
-import vip.geekclub.framework.domain.EntitySupport;
+import vip.geekclub.framework.domain.model.AggregateRoot;
+import vip.geekclub.framework.domain.model.EntitySupport;
 import vip.geekclub.framework.utils.StringUtil;
 import vip.geekclub.framework.utils.AssertUtil;
 

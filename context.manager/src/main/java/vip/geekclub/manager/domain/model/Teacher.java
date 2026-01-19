@@ -6,8 +6,8 @@ import lombok.*;
 import java.util.Objects;
 import java.util.UUID;
 
-import vip.geekclub.framework.domain.AggregateRoot;
-import vip.geekclub.framework.domain.EntitySupport;
+import vip.geekclub.framework.domain.model.AggregateRoot;
+import vip.geekclub.framework.domain.model.EntitySupport;
 import vip.geekclub.framework.utils.AssertUtil;
 
 /**
