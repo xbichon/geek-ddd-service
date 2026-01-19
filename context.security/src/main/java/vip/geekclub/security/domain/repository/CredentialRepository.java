@@ -1,5 +1,6 @@
 package vip.geekclub.security.domain.repository;
 
+import lombok.NonNull;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
@@ -8,7 +9,7 @@ import vip.geekclub.security.domain.value.AuthenticationType;
 import vip.geekclub.security.domain.model.Credential;
 
 @Repository
-public interface CredentialRepository extends JpaRepository<Credential, Long> {
+public interface CredentialRepository extends JpaRepository<@NonNull Credential,@NonNull Long> {
 
     /**
      * 根据认证类型和标识符检查认证信息是否存在

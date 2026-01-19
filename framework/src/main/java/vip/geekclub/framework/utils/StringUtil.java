@@ -45,33 +45,5 @@ public final class StringUtil {
         return !StringUtils.hasText(str);
     }
     
-    /**
-     * 检查字符串是否不为空
-     * 
-     * @param str 输入字符串
-     * @return 是否不为空
-     */
-    public static boolean isNotEmpty(String str) {
-        return StringUtils.hasText(str);
-    }
-    
-    /**
-     * 检查字符串是否为空白（null、空字符串或只包含空白字符）
-     * 
-     * @param str 输入字符串
-     * @return 是否为空白
-     */
-    public static boolean isBlank(String str) {
-        return str == null || str.isBlank();
-    }
-    
-    /**
-     * 检查字符串是否不为空白
-     * 
-     * @param str 输入字符串
-     * @return 是否不为空白
-     */
-    public static boolean isNotBlank(String str) {
-        return str != null && !str.isBlank();
-    }
+
 }

@@ -2,7 +2,6 @@ package vip.geekclub.manager.domain.model;
 
 import jakarta.persistence.*;
 import lombok.*;
-import org.springframework.util.StringUtils;
 
 import java.util.Objects;
 
@@ -119,13 +118,6 @@ public class Teacher extends EntitySupport implements AggregateRoot<Long> {
         setDepartmentId(departmentId);
         setStatus(status);
         setRemark(remark);
-    }
-
-    /**
-     * 验证名称是否变化
-     */
-    public boolean isChangeName(String newName) {
-        return !Objects.equals(this.name, newName);
     }
 
     /**
