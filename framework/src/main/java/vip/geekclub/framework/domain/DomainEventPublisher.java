@@ -13,7 +13,6 @@ import org.springframework.transaction.support.TransactionSynchronizationManager
 import vip.geekclub.framework.exception.BusinessLogicException;
 import vip.geekclub.framework.utils.ApplicationUtil;
 
-
 @Slf4j
 @Component
 @AllArgsConstructor
@@ -41,14 +40,13 @@ public class DomainEventPublisher implements ApplicationEventPublisher {
      * 如果在事务中，注册事务同步器延迟发布；否则直接发布
      */
     public void publishEvent(DomainEvent event) {
-        if (TransactionSynchronizationManager.isActualTransactionActive()) {
-            // 在事务中，为每个事件注册独立的同步器
-            TransactionSynchronizationManager.registerSynchronization(
-                    new DomainEventTransactionSynchronization(event));
-        } else {
-            // 不在事务中，直接发布
-            applicationEventPublisher.publishEvent(event);
-        }
+        // 检查是否在事务中, 否则抛出异常
+        if (!TransactionSynchronizationManager.isActualTransactionActive())
+            throw new BusinessLogicException("当前不在事务中，无法发布领域事件");
+
+        // 在事务中，为每个事件注册独立的同步器
+        TransactionSynchronizationManager.registerSynchronization(
+                new DomainEventTransactionSynchronization(event));
     }
 
     /**

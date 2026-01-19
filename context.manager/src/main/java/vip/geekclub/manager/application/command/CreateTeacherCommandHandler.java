@@ -8,6 +8,7 @@ import vip.geekclub.framework.command.CommandResult;
 import vip.geekclub.framework.command.IdResult;
 import vip.geekclub.framework.domain.DomainEventPublisher;
 import vip.geekclub.manager.application.command.dto.CreateTeacherCommand;
+import vip.geekclub.manager.domain.event.UserCreatedEvent;
 import vip.geekclub.manager.domain.model.Teacher;
 import vip.geekclub.manager.domain.repository.TeacherRepository;
 import vip.geekclub.manager.domain.service.TeacherCreationUpdateValidator;
@@ -38,10 +39,14 @@ public class CreateTeacherCommandHandler implements CommandHandler<CreateTeacher
                 command.remark()
         );
         teacherRepository.save(teacher);
-//        domainEventPublisher.publishEvent(null);
-
+        DomainEventPublisher.getInstance().get().publishEvent(new UserCreatedEvent(
+                teacher.getId(),
+                teacher.getEmail(),
+                teacher.getPhone(),
+                teacher.getExternalUuid()
+        ));
 
         // 3. 返回结果
         return CommandResult.ok(teacher.getId());
     }
- }
+}
