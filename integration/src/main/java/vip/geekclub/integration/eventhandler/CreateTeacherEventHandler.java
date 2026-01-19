@@ -1,4 +1,4 @@
-package vip.geekclub.adapter;
+package vip.geekclub.integration.eventhandler;
 
 import org.springframework.context.event.EventListener;
 import org.springframework.stereotype.Service;
