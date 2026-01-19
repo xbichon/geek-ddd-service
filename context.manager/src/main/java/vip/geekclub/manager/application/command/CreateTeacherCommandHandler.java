@@ -23,6 +23,7 @@ public class CreateTeacherCommandHandler implements CommandHandler<CreateTeacher
 
     private final TeacherRepository teacherRepository;
     private final TeacherCreationUpdateValidator teacherCreationUpdateValidator;
+    private final DomainEventPublisher domainEventPublisher;
 
     @Override
     public CommandResult<IdResult> execute(CreateTeacherCommand command) {
@@ -38,12 +39,13 @@ public class CreateTeacherCommandHandler implements CommandHandler<CreateTeacher
                 command.remark()
         );
         teacherRepository.save(teacher);
-//        DomainEventPublisher.getInstance().get().publishEvent(new UserCreatedEvent(
-//                teacher.getId(),
-//                teacher.getEmail(),
-//                teacher.getPhone(),
-//                teacher.getExternalUuid()
-//        ));
+
+        domainEventPublisher.publishEvent(new UserCreatedEvent(
+                teacher.getId(),
+                teacher.getEmail(),
+                teacher.getPhone(),
+                teacher.getExternalUuid()
+        ));
 
         // 3. 返回结果
         return CommandResult.ok(teacher.getId());
