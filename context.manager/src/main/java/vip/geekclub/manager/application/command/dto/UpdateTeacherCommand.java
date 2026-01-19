@@ -2,8 +2,9 @@ package vip.geekclub.manager.application.command.dto;
 
 import jakarta.validation.constraints.*;
 import vip.geekclub.framework.command.Command;
-import vip.geekclub.manager.domain.Teacher;
-import vip.geekclub.manager.domain.TeacherStatus;
+import vip.geekclub.framework.utils.StringUtil;
+import vip.geekclub.manager.domain.model.Teacher;
+import vip.geekclub.manager.domain.model.TeacherStatus;
 
 /**
  * 更新教师命令
@@ -38,4 +39,14 @@ public record UpdateTeacherCommand(
         String remark
 
 ) implements Command {
+
+    /**
+     * 紧凑构造函数，自动去除字符串字段两端的空格，并将空字符串转为null
+     */
+    public UpdateTeacherCommand {
+        name = StringUtil.trimToNull(name);
+        phone = StringUtil.trimToNull(phone);
+        email = StringUtil.trimToNull(email);
+        remark = StringUtil.trimToNull(remark);
+    }
 }

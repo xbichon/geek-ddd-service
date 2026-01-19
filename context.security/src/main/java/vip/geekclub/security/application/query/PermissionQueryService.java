@@ -7,7 +7,7 @@ import org.jooq.generated.tables.PermissionTable;
 import org.jooq.generated.tables.PrincipalTable;
 import org.springframework.stereotype.Service;
 import vip.geekclub.security.application.query.dto.UserResult;
-import vip.geekclub.security.domain.valueobject.UserType;
+import vip.geekclub.security.domain.value.UserType;
 
 import java.util.Optional;
 import java.util.Set;

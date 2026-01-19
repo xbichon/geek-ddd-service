@@ -5,8 +5,8 @@ import jakarta.persistence.*;
 import lombok.*;
 import vip.geekclub.framework.domain.AggregateRoot;
 import vip.geekclub.framework.domain.EntitySupport;
-import vip.geekclub.security.domain.valueobject.Description;
-import vip.geekclub.security.domain.valueobject.RoleName;
+import vip.geekclub.security.domain.value.Description;
+import vip.geekclub.security.domain.value.RoleName;
 
 import java.util.HashSet;
 import java.util.Set;

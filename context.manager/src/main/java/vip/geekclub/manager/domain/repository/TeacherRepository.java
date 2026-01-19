@@ -1,8 +1,9 @@
-package vip.geekclub.manager.domain;
+package vip.geekclub.manager.domain.repository;
 
 import lombok.NonNull;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
+import vip.geekclub.manager.domain.model.Teacher;
 
 /**
  * 教师仓库接口
@@ -25,5 +26,4 @@ public interface TeacherRepository extends JpaRepository<@NonNull Teacher, @NonN
      * 用于创建教师时的邮箱唯一性验证
      */
     boolean existsByEmail(String email);
-
 }

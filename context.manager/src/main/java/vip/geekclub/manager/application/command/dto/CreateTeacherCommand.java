@@ -2,7 +2,8 @@ package vip.geekclub.manager.application.command.dto;
 
 import jakarta.validation.constraints.*;
 import vip.geekclub.framework.command.Command;
-import vip.geekclub.manager.domain.Teacher;
+import vip.geekclub.framework.utils.StringUtil;
+import vip.geekclub.manager.domain.model.Teacher;
 
 /**
  * 创建教师命令
@@ -31,4 +32,14 @@ public record CreateTeacherCommand(
         String remark
 
 ) implements Command {
+
+    /**
+     * 紧凑构造函数，自动去除字符串字段两端的空格，并将空字符串转为null
+     */
+    public CreateTeacherCommand {
+        name = StringUtil.trimToNull(name);
+        phone = StringUtil.trimToNull(phone);
+        email = StringUtil.trimToNull(email);
+        remark = StringUtil.trimToNull(remark);
+    }
 }

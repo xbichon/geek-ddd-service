@@ -1,4 +1,4 @@
-package vip.geekclub.manager.domain;
+package vip.geekclub.manager.domain.model;
 
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Size;

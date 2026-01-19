@@ -10,7 +10,7 @@ import vip.geekclub.framework.exception.ValidationException;
 import vip.geekclub.security.application.command.dto.CreatePermissionGroupCommand;
 import vip.geekclub.security.domain.model.PermissionGroup;
 import vip.geekclub.security.domain.repository.PermissionGroupRepository;
-import vip.geekclub.security.domain.valueobject.SortOrder;
+import vip.geekclub.security.domain.value.SortOrder;
 
 @AllArgsConstructor
 @Service

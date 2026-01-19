@@ -1,4 +1,4 @@
-package vip.geekclub.manager.domain;
+package vip.geekclub.manager.domain.model;
 
 import com.fasterxml.jackson.annotation.JsonValue;
 import jakarta.persistence.Column;

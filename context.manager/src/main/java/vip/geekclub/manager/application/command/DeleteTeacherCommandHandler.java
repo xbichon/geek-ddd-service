@@ -7,8 +7,8 @@ import vip.geekclub.framework.command.CommandHandler;
 import vip.geekclub.framework.command.CommandResult;
 import vip.geekclub.framework.exception.ValidationException;
 import vip.geekclub.manager.application.command.dto.DeleteTeacherCommand;
-import vip.geekclub.manager.domain.Teacher;
-import vip.geekclub.manager.domain.TeacherRepository;
+import vip.geekclub.manager.domain.model.Teacher;
+import vip.geekclub.manager.domain.repository.TeacherRepository;
 
 /**
  * 删除教师命令处理器

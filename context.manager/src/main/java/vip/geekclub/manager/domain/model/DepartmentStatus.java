@@ -1,4 +1,4 @@
-package vip.geekclub.manager.domain;
+package vip.geekclub.manager.domain.model;
 
 /**
  * 部门 状态枚举

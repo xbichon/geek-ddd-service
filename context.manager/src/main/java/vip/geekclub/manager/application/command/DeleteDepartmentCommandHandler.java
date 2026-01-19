@@ -8,8 +8,8 @@ import vip.geekclub.framework.command.CommandResult;
 import vip.geekclub.framework.exception.NotFoundException;
 import vip.geekclub.framework.exception.ValidationException;
 import vip.geekclub.manager.application.command.dto.DeleteDepartmentCommand;
-import vip.geekclub.manager.domain.Department;
-import vip.geekclub.manager.domain.DepartmentRepository;
+import vip.geekclub.manager.domain.model.Department;
+import vip.geekclub.manager.domain.repository.DepartmentRepository;
 
 /**
  * 删除部门命令处理器

@@ -1,4 +1,4 @@
-package vip.geekclub.security.domain.valueobject;
+package vip.geekclub.security.domain.value;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Embeddable;

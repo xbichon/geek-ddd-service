@@ -10,7 +10,7 @@ import vip.geekclub.framework.exception.ValidationException;
 import vip.geekclub.security.application.command.dto.UpdatePermissionCommand;
 import vip.geekclub.security.domain.model.Permission;
 import vip.geekclub.security.domain.repository.PermissionRepository;
-import vip.geekclub.security.domain.valueobject.PermissionCode;
+import vip.geekclub.security.domain.value.PermissionCode;
 
 @AllArgsConstructor
 @Service

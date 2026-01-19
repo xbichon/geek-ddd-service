@@ -8,9 +8,9 @@ import vip.geekclub.framework.command.CommandResult;
 import vip.geekclub.framework.command.IdResult;
 import vip.geekclub.framework.exception.ValidationException;
 import vip.geekclub.manager.application.command.dto.CreateDepartmentCommand;
-import vip.geekclub.manager.domain.SortOrder;
-import vip.geekclub.manager.domain.Department;
-import vip.geekclub.manager.domain.DepartmentRepository;
+import vip.geekclub.manager.domain.model.SortOrder;
+import vip.geekclub.manager.domain.model.Department;
+import vip.geekclub.manager.domain.repository.DepartmentRepository;
 
 /**
  * 创建部门命令处理器

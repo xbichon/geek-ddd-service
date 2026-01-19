@@ -1,4 +1,4 @@
-package vip.geekclub.manager.domain;
+package vip.geekclub.manager.domain.model;
 
 /**
  * 教师状态枚举

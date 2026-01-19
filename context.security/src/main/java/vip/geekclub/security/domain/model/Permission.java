@@ -8,7 +8,7 @@ import vip.geekclub.framework.utils.AssertUtil;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import lombok.*;
-import vip.geekclub.security.domain.valueobject.PermissionCode;
+import vip.geekclub.security.domain.value.PermissionCode;
 
 @Entity
 @Table(name = "security_permission")

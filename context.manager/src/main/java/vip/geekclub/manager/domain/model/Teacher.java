@@ -1,8 +1,11 @@
-package vip.geekclub.manager.domain;
+package vip.geekclub.manager.domain.model;
 
 import jakarta.persistence.*;
 import lombok.*;
-import org.apache.commons.lang3.StringUtils;
+import org.springframework.util.StringUtils;
+
+import java.util.Objects;
+
 import vip.geekclub.framework.domain.AggregateRoot;
 import vip.geekclub.framework.domain.EntitySupport;
 import vip.geekclub.framework.utils.AssertUtil;
@@ -89,11 +92,11 @@ public class Teacher extends EntitySupport implements AggregateRoot<Long> {
     /**
      * 创建教师的静态工厂方法
      *
-     * @param name 教师姓名
-     * @param phone 手机号
-     * @param email 邮箱
+     * @param name         教师姓名
+     * @param phone        手机号
+     * @param email        邮箱
      * @param departmentId 所属部门ID
-     * @param remark 备注信息
+     * @param remark       备注信息
      * @return 新创建的教师实例
      */
     public static Teacher createTeacher(String name, String phone, String email, Long departmentId, String remark) {
@@ -122,9 +125,22 @@ public class Teacher extends EntitySupport implements AggregateRoot<Long> {
      * 验证名称是否变化
      */
     public boolean isChangeName(String newName) {
-        return !this.name.equals(newName.trim());
+        return !Objects.equals(this.name, newName);
     }
 
+    /**
+     * 验证手机号是否变化
+     */
+    public boolean isChangePhone(String newPhone) {
+        return !Objects.equals(this.phone, newPhone);
+    }
+
+    /**
+     * 验证邮箱是否变化
+     */
+    public boolean isChangeEmail(String newEmail) {
+        return !Objects.equals(this.email, newEmail);
+    }
 
     /**
      * 验证教师是否可删除
@@ -139,7 +155,7 @@ public class Teacher extends EntitySupport implements AggregateRoot<Long> {
      * 设置教师姓名（带验证）
      */
     private void setName(String name) {
-        name = StringUtils.trimToEmpty(name);
+        name = name != null ? name.strip() : "";
         AssertUtil.notEmpty(name, () -> "教师姓名不能为空");
         AssertUtil.requireLengthLessThan(name, maxNameLength, () -> "教师姓名不能超过" + maxNameLength + "个字符");
         this.name = name;
@@ -149,7 +165,7 @@ public class Teacher extends EntitySupport implements AggregateRoot<Long> {
      * 设置手机号（带验证）
      */
     private void setPhone(String phone) {
-        phone = StringUtils.trimToEmpty(phone);
+        phone = phone != null ? phone.strip() : "";
         AssertUtil.requireLengthLessThan(phone, maxPhoneLength, () -> "手机号不能超过" + maxPhoneLength + "个字符");
         this.phone = phone;
     }
@@ -158,7 +174,7 @@ public class Teacher extends EntitySupport implements AggregateRoot<Long> {
      * 设置邮箱（带验证）
      */
     private void setEmail(String email) {
-        email = StringUtils.trimToEmpty(email);
+        email = email != null ? email.strip() : "";
         AssertUtil.requireLengthLessThan(email, maxEmailLength, () -> "邮箱不能超过" + maxEmailLength + "个字符");
         this.email = email;
     }
@@ -183,7 +199,7 @@ public class Teacher extends EntitySupport implements AggregateRoot<Long> {
      * 设置备注
      */
     private void setRemark(String remark) {
-        remark = StringUtils.trimToEmpty(remark);
+        remark = remark != null ? remark.strip() : "";
         AssertUtil.requireLengthLessThan(remark, maxRemarkLength + 1,
                 () -> "备注长度不能超过" + maxRemarkLength + "个字符");
         this.remark = remark;
