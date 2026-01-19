@@ -1,6 +1,6 @@
 package vip.geekclub.security.domain.value;
 
-public enum AuthenticationType {
+public enum CredentialType {
     USERNAME,
     EMAIL,
     PHONE,

@@ -5,7 +5,7 @@
         xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
          https://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.9.xsd">
 
-    <!--  创建用户、凭证 表结构   -->
+    <!--  创建用户表结构   -->
     <changeSet id="1748008821470-1" author="bichon">
         <createTable tableName="security_principal">
             <column name="id" type="BIGINT" autoIncrement="true" remarks="主键">
@@ -13,12 +13,22 @@
             </column>
             <column name="user_type" type="VARCHAR(20)"/>
             <column name="is_super_admin" type="boolean" defaultValue="false"/>
+            <column name="external_uuid" type="binary(16)">
+                <constraints unique="true" nullable="false"/>
+            </column>
             <column name="create_time" defaultValueComputed="CURRENT_TIMESTAMP" type="DATETIME" remarks="创建时间"/>
             <column name="update_time" type="DATETIME" remarks="更新时间"
                     defaultValueComputed="CURRENT_TIMESTAMP on update CURRENT_TIMESTAMP"/>
             <column name="version" type="BIGINT" defaultValue="0" remarks="版本"/>
         </createTable>
 
+        <createIndex tableName="security_principal" indexName="idx_external_uuid">
+            <column name="external_uuid" />
+        </createIndex>
+    </changeSet>
+
+    <!--  创建凭证表结构  -->
+    <changeSet id="1748008821470-2" author="bichon">
         <createTable tableName="security_credential">
             <column name="id" type="BIGINT" autoIncrement="true">
                 <constraints primaryKey="true" nullable="false"/>

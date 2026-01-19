@@ -10,7 +10,7 @@ import org.springframework.stereotype.Service;
 import vip.geekclub.framework.security.JwtAuthentication;
 import vip.geekclub.framework.security.JwtPrincipal;
 import vip.geekclub.framework.security.WechatAuthenticationToken;
-import vip.geekclub.security.domain.value.AuthenticationType;
+import vip.geekclub.security.domain.value.CredentialType;
 import vip.geekclub.security.application.query.AuthenticationQueryService;
 import vip.geekclub.security.application.query.dto.CredentialResult;
 
@@ -39,7 +39,7 @@ public class WechatAuthenticationProvider implements AuthenticationProvider {
 
         // 查询 WECHAT 凭证（使用 unionId）
         CredentialResult credential = authenticationQueryService
-                .getAuthenticationByIdentifier(unionId, AuthenticationType.WECHAT)
+                .getAuthenticationByIdentifier(unionId, CredentialType.WECHAT)
                 .orElseThrow(() -> new BadCredentialsException("用户未注册，请先绑定微信账号"));
 
         // 构建并返回 UserSession（内含 JwtToken）

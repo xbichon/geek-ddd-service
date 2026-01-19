@@ -5,7 +5,18 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 import vip.geekclub.security.domain.model.Principal;
 
+import java.util.Optional;
+import java.util.UUID;
+
 @Repository
-public interface PrincipalRepository extends JpaRepository<@NonNull Principal,@NonNull Long> {
-     boolean existsByUserType(String userType);
+public interface PrincipalRepository extends JpaRepository<@NonNull Principal, @NonNull Long> {
+    boolean existsByUserType(String userType);
+
+    /**
+     * 根据外部用户ID查询用户
+     *
+     * @param externalUuid 外部用户ID
+     * @return 用户
+     */
+    Optional<Principal> findByExternalUuid(UUID externalUuid);
 }

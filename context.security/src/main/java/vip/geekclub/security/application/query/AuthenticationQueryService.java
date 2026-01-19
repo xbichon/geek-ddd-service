@@ -7,7 +7,7 @@ import org.jooq.generated.tables.CredentialTable;
 import org.jooq.generated.tables.PrincipalTable;
 import org.springframework.stereotype.Service;
 import vip.geekclub.security.application.query.dto.CredentialResult;
-import vip.geekclub.security.domain.value.AuthenticationType;
+import vip.geekclub.security.domain.value.CredentialType;
 import vip.geekclub.security.domain.value.UserType;
 
 import java.util.Optional;
@@ -19,7 +19,7 @@ public class AuthenticationQueryService {
     private final CredentialTable credentialTable = Tables.Credential;
     private final PrincipalTable principalTable = Tables.Principal;
 
-    public Optional<CredentialResult> getAuthenticationByIdentifier(String identifier, AuthenticationType type) {
+    public Optional<CredentialResult> getAuthenticationByIdentifier(String identifier, CredentialType type) {
         return query.select(
                         credentialTable.ID,
                         credentialTable.IDENTIFIER,
@@ -37,7 +37,7 @@ public class AuthenticationQueryService {
                                 record.get(credentialTable.ID),
                                 record.get(credentialTable.IDENTIFIER),
                                 record.get(credentialTable.PASSWORD),
-                                AuthenticationType.valueOf(record.get(credentialTable.TYPE)),
+                                CredentialType.valueOf(record.get(credentialTable.TYPE)),
                                 record.get(credentialTable.USER_ID),
                                 UserType.valueOf(record.get(principalTable.USER_TYPE)))
                 );

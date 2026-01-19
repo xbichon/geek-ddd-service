@@ -15,6 +15,7 @@ import vip.geekclub.framework.security.WechatAuthenticationToken;
 import vip.geekclub.security.adapter.controller.dto.WechatBindRequest;
 import vip.geekclub.security.adapter.controller.dto.WechatLoginRequest;
 import vip.geekclub.security.adapter.gateway.WechatService;
+import vip.geekclub.security.application.command.dto.CreateCredentialCommand;
 import vip.geekclub.security.application.command.dto.CreateWechatCredentialCommand;
 
 /**
@@ -62,7 +63,7 @@ public class WechatAuthController {
         String unionId = wechatService.getUnionId(request.code());
 
         // 派发绑定命令
-        commandBus.dispatch(new CreateWechatCredentialCommand(userSession.getUserId(), unionId));
+//        commandBus.dispatch(new CreateCredentialCommand());
         return ApiResponse.success(userSession.getToken(DEFAULT_EXPIRATION_SECONDS));
     }
 }

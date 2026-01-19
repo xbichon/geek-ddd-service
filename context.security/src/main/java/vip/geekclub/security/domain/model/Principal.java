@@ -11,6 +11,7 @@ import vip.geekclub.framework.utils.AssertUtil;
 
 import java.util.HashSet;
 import java.util.Set;
+import java.util.UUID;
 
 @Entity
 @Table(name = "security_principal")
@@ -27,6 +28,9 @@ public class Principal extends EntitySupport implements AggregateRoot<Long> {
     @NotNull(message = "用户类型不能为空")
     private String userType;
 
+    @Column(name = "external_uuid")
+    private UUID externalUuid;
+
     @ElementCollection(fetch = FetchType.EAGER)
     @CollectionTable(name = "security_user_role", joinColumns = @JoinColumn(name = "user_id"))
     @Column(name = "role_id")
@@ -38,7 +42,12 @@ public class Principal extends EntitySupport implements AggregateRoot<Long> {
     private Boolean isSuperAdmin = false;
 
     public Principal(String userType) {
+        this(userType, null);
+    }
+
+    public Principal(String userType, UUID externalUuid) {
         this.userType = userType;
+        this.externalUuid = externalUuid;
         AssertUtil.notNull(userType, () -> "用户类型不能为空");
     }
 

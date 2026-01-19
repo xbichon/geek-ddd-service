@@ -11,6 +11,7 @@ import vip.geekclub.security.domain.model.Credential;
 import vip.geekclub.security.domain.repository.CredentialRepository;
 import vip.geekclub.security.domain.model.Principal;
 import vip.geekclub.security.domain.repository.PrincipalRepository;
+import vip.geekclub.security.domain.value.CredentialType;
 
 @Slf4j
 @AllArgsConstructor
@@ -34,8 +35,9 @@ public class InitAdminCommandHandler implements CommandHandler<InitAdminCommand,
         principalRepository.save(principal);
 
         // 3. 创建管理员默认认证信息
-        Credential adminDefaultCredential = Credential.newUsernameAuth(
+        Credential adminDefaultCredential = new Credential(
                 principal.getId(),
+                CredentialType.USERNAME,
                 command.username(),
                 command.password()
         );

@@ -6,7 +6,8 @@ import org.springframework.transaction.annotation.Transactional;
 import vip.geekclub.framework.command.CommandHandler;
 import vip.geekclub.framework.command.CommandResult;
 import vip.geekclub.framework.command.IdResult;
-import vip.geekclub.security.application.command.dto.CreatePrincipalCommand;
+import vip.geekclub.framework.exception.NotFoundException;
+import vip.geekclub.security.application.command.dto.CreateCredentialCommand;
 import vip.geekclub.security.domain.model.Credential;
 import vip.geekclub.security.domain.model.Principal;
 import vip.geekclub.security.domain.repository.CredentialRepository;
@@ -14,32 +15,33 @@ import vip.geekclub.security.domain.repository.PrincipalRepository;
 import vip.geekclub.security.domain.value.CredentialType;
 import vip.geekclub.security.exception.AuthenticationAlreadyExistsException;
 
+import java.util.Optional;
+
 @AllArgsConstructor
 @Service
-public class CreatePrincipalCommandHandler implements CommandHandler<CreatePrincipalCommand, Void> {
+public class CreateCredentialCommandHandler implements CommandHandler<CreateCredentialCommand, Void> {
 
-    private final PrincipalRepository principalRepository;
     private final CredentialRepository credentialRepository;
+    private final PrincipalRepository principalRepository;
 
     @Override
     @Transactional
-    public CommandResult<Void> execute(CreatePrincipalCommand command) {
+    public CommandResult<Void> execute(CreateCredentialCommand command) {
         // 1. 认证信息查重
-        if (credentialRepository.existsByTypeAndIdentifier(command.credentialType(), command.identifier())) {
-            throw new AuthenticationAlreadyExistsException("该用户的凭证已经存在,不需要重复创建");
+        Principal principal = principalRepository.findByExternalUuid(command.externalUuid()).orElseThrow(() -> new NotFoundException("用户不存在"));
+
+        // 2. 认证信息查重
+        if (credentialRepository.existsByTypeAndPrincipalId(command.credentialType(), principal.getId())) {
+            throw new AuthenticationAlreadyExistsException("认证重复");
         }
 
-        // 2. 创建用户领域对象
-        Principal principal = new Principal(command.userType(), command.externalUuid());
-        principalRepository.save(principal);
+        // 3. 认证标识查重
+        if (credentialRepository.existsByTypeAndIdentifier(command.credentialType(), command.identifier())) {
+            throw new AuthenticationAlreadyExistsException("标识已存在");
+        }
 
-        // 3. 创建认证信息
-        Credential credential = new Credential(
-                principal.getId(),
-                command.credentialType(),
-                command.identifier(),
-                command.password()
-        );
+        // 4. 创建认证信息
+        Credential credential = new Credential(principal.getId(), command.credentialType(), command.identifier(), command.password());
         credentialRepository.save(credential);
 
         return CommandResult.ok();
