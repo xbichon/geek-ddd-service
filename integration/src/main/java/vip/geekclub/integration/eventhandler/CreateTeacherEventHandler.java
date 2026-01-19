@@ -17,9 +17,9 @@ public class CreateTeacherEventHandler {
     @EventListener
     public void handle(UserCreatedEvent event) {
 
-        CreatePrincipalCommand command = new CreatePrincipalCommand(
-
-        );
+//        CreatePrincipalCommand command = new CreatePrincipalCommand(
+//
+//        );
 
     }
 }
