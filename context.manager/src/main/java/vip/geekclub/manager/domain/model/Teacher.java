@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 import lombok.*;
 
 import java.util.Objects;
+import java.util.UUID;
 
 import vip.geekclub.framework.domain.AggregateRoot;
 import vip.geekclub.framework.domain.EntitySupport;
@@ -59,7 +60,6 @@ public class Teacher extends EntitySupport implements AggregateRoot<Long> {
      */
     private Long departmentId;
 
-
     /**
      * 教师状态
      */
@@ -71,6 +71,9 @@ public class Teacher extends EntitySupport implements AggregateRoot<Long> {
      */
     @Column(length = 200)
     private String remark;
+
+    @Column(name = "external_uuid", unique = true, nullable = false)
+    private UUID externalUuid;
 
     // ================================ 构造函数 ================================
 
@@ -84,6 +87,8 @@ public class Teacher extends EntitySupport implements AggregateRoot<Long> {
         setDepartmentId(departmentId);
         setStatus(TeacherStatus.ENABLED);
         setRemark(remark);
+
+        this.externalUuid = UUID.randomUUID();
     }
 
     // ================================ 业务方法 ================================

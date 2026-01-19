@@ -30,7 +30,7 @@ public class DomainEventPublisher implements ApplicationEventPublisher {
 
     public void publishEvent(@NonNull Object event) {
         if (event instanceof DomainEvent) {
-            addEvent((DomainEvent) event);
+            publishEvent((DomainEvent) event);
         } else {
             throw new BusinessLogicException("领域事件必须实现 DomainEvent 接口");
         }
@@ -40,7 +40,7 @@ public class DomainEventPublisher implements ApplicationEventPublisher {
      * 添加领域事件
      * 如果在事务中，注册事务同步器延迟发布；否则直接发布
      */
-    private void addEvent(DomainEvent event) {
+    public void publishEvent(DomainEvent event) {
         if (TransactionSynchronizationManager.isActualTransactionActive()) {
             // 在事务中，为每个事件注册独立的同步器
             TransactionSynchronizationManager.registerSynchronization(

@@ -6,6 +6,7 @@ import org.springframework.transaction.annotation.Transactional;
 import vip.geekclub.framework.command.CommandHandler;
 import vip.geekclub.framework.command.CommandResult;
 import vip.geekclub.framework.command.IdResult;
+import vip.geekclub.framework.domain.DomainEventPublisher;
 import vip.geekclub.manager.application.command.dto.CreateTeacherCommand;
 import vip.geekclub.manager.domain.model.Teacher;
 import vip.geekclub.manager.domain.repository.TeacherRepository;
@@ -21,6 +22,7 @@ public class CreateTeacherCommandHandler implements CommandHandler<CreateTeacher
 
     private final TeacherRepository teacherRepository;
     private final TeacherCreationUpdateValidator teacherCreationUpdateValidator;
+    private final DomainEventPublisher domainEventPublisher;
 
     @Override
     public CommandResult<IdResult> execute(CreateTeacherCommand command) {
@@ -36,6 +38,8 @@ public class CreateTeacherCommandHandler implements CommandHandler<CreateTeacher
                 command.remark()
         );
         teacherRepository.save(teacher);
+//        domainEventPublisher.publishEvent(null);
+
 
         // 3. 返回结果
         return CommandResult.ok(teacher.getId());
