@@ -7,7 +7,7 @@ import vip.geekclub.framework.command.*;
 import java.util.List;
 
 @Configuration
-public class CommandBusConfig {
+public class  CommandBusConfig {
 
     @Bean
     public CommandBus commandBus(List<CommandHandler<?,?>> commandHandlers,CommandValidatorHandleChain commandValidatorHandleChain) {

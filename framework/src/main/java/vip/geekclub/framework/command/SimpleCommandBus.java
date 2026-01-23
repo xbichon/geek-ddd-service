@@ -84,6 +84,9 @@ public class SimpleCommandBus implements CommandBus {
      */
     @Override
     public <C extends Command, R> CommandResult<R> dispatch(C command) {
+
+
+
         // 1. 命令非空验证
         AssertUtil.notNull(command, () -> "命令不能为空(" + command.getClass().getName() + ")");
 
