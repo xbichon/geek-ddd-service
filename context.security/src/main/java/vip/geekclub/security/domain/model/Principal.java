@@ -26,10 +26,10 @@ public class Principal extends EntitySupport implements AggregateRoot<Long> {
     private Long id;
 
     @NotNull(message = "用户类型不能为空")
-    private String userType;
+    private String appType;
 
-    @Column(name = "external_uuid")
-    private UUID externalUuid;
+    @Column(name = "auth_id")
+    private UUID authId;
 
     @ElementCollection(fetch = FetchType.EAGER)
     @CollectionTable(name = "security_user_role", joinColumns = @JoinColumn(name = "user_id"))
@@ -41,14 +41,14 @@ public class Principal extends EntitySupport implements AggregateRoot<Long> {
      */
     private Boolean isSuperAdmin = false;
 
-    public Principal(String userType) {
-        this(userType, null);
+    public Principal(String appType) {
+        this(appType, null);
     }
 
-    public Principal(String userType, UUID externalUuid) {
-        this.userType = userType;
-        this.externalUuid = externalUuid;
-        AssertUtil.notNull(userType, () -> "用户类型不能为空");
+    public Principal(String appType, UUID authId) {
+        this.appType = appType;
+        this.authId = authId;
+        AssertUtil.notNull(appType, () -> "应用类型不能为空");
     }
 
     public void updateRole(Set<Long> roleIds) {

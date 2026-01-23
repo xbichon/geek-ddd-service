@@ -5,17 +5,13 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import vip.geekclub.framework.command.CommandHandler;
 import vip.geekclub.framework.command.CommandResult;
-import vip.geekclub.framework.command.IdResult;
 import vip.geekclub.framework.exception.NotFoundException;
 import vip.geekclub.security.application.command.dto.CreateCredentialCommand;
 import vip.geekclub.security.domain.model.Credential;
 import vip.geekclub.security.domain.model.Principal;
 import vip.geekclub.security.domain.repository.CredentialRepository;
 import vip.geekclub.security.domain.repository.PrincipalRepository;
-import vip.geekclub.security.domain.value.CredentialType;
 import vip.geekclub.security.exception.AuthenticationAlreadyExistsException;
-
-import java.util.Optional;
 
 @AllArgsConstructor
 @Service
@@ -28,7 +24,7 @@ public class CreateCredentialCommandHandler implements CommandHandler<CreateCred
     @Transactional
     public CommandResult<Void> execute(CreateCredentialCommand command) {
         // 1. 认证信息查重
-        Principal principal = principalRepository.findByExternalUuid(command.externalUuid()).orElseThrow(() -> new NotFoundException("用户不存在"));
+        Principal principal = principalRepository.findByAuthId(command.externalUuid()).orElseThrow(() -> new NotFoundException("用户不存在"));
 
         // 2. 认证信息查重
         if (credentialRepository.existsByTypeAndPrincipalId(command.credentialType(), principal.getId())) {

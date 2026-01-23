@@ -39,7 +39,7 @@ public class PermissionQueryService {
                 .fetchOptional();
 
         return userResult.map(record ->
-                new UserResult(record.get(principalTable.ID), UserType.valueOf(record.get(principalTable.USER_TYPE)), record.get(principalTable.IS_SUPER_ADMIN) == 1)
+                new UserResult(record.get(principalTable.ID), UserType.valueOf(record.get(principalTable.APP_TYPE)), record.get(principalTable.IS_SUPER_ADMIN) == 1)
         );
     }
     

@@ -4,14 +4,14 @@ import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 import vip.geekclub.framework.command.Command;
+import vip.geekclub.framework.command.CommandHandlerMapping;
+import vip.geekclub.security.application.command.CreatePrincipalCommandHandler;
 import vip.geekclub.security.domain.value.CredentialType;
 
 import java.util.UUID;
 
+@CommandHandlerMapping(CreatePrincipalCommandHandler.class)
 public record CreatePrincipalCommand(
-        @NotNull(message = "用户类型不能为空")
-        String userType,
-
         @NotBlank(message = "标识符不能为空")
         String identifier,
 
@@ -20,7 +20,10 @@ public record CreatePrincipalCommand(
         String password,
 
         @NotNull(message = "外部用户ID不能为空")
-        UUID externalUuid,
+        UUID authId,
+
+        @NotNull(message = "应用类型不能为空")
+        String appType,
 
         @NotNull(message = "认证类型不能为空")
         CredentialType credentialType

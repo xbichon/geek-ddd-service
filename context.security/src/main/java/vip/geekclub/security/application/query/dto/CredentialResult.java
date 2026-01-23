@@ -11,6 +11,6 @@ public record CredentialResult(
         String password,
         CredentialType type,
         Long userId,
-        UserType userType
+        String userType
 ) {
 }

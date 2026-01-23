@@ -5,13 +5,11 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import vip.geekclub.framework.command.CommandHandler;
 import vip.geekclub.framework.command.CommandResult;
-import vip.geekclub.framework.command.IdResult;
 import vip.geekclub.security.application.command.dto.CreatePrincipalCommand;
 import vip.geekclub.security.domain.model.Credential;
 import vip.geekclub.security.domain.model.Principal;
 import vip.geekclub.security.domain.repository.CredentialRepository;
 import vip.geekclub.security.domain.repository.PrincipalRepository;
-import vip.geekclub.security.domain.value.CredentialType;
 import vip.geekclub.security.exception.AuthenticationAlreadyExistsException;
 
 @AllArgsConstructor
@@ -30,7 +28,7 @@ public class CreatePrincipalCommandHandler implements CommandHandler<CreatePrinc
         }
 
         // 2. 创建用户领域对象
-        Principal principal = new Principal(command.userType(), command.externalUuid());
+        Principal principal = new Principal(command.appType(), command.authId());
         principalRepository.save(principal);
 
         // 3. 创建认证信息

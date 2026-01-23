@@ -60,7 +60,7 @@
             <column name="department_id" type="BIGINT" remarks="所属部门ID"/>
             <column name="status" type="VARCHAR(20)" defaultValue="ENABLED" remarks="教师状态"/>
             <column name="remark" type="VARCHAR(200)" remarks="备注"/>
-            <column name="external_uuid" type="binary(16)">
+            <column name="auth_id" type="binary(16)">
                 <constraints unique="true" nullable="false"/>
             </column>
             <column name="create_time" defaultValueComputed="CURRENT_TIMESTAMP" type="DATETIME" remarks="创建时间"/>
@@ -78,7 +78,7 @@
             <column name="status"/>
         </createIndex>
         <createIndex tableName="manager_teacher" indexName="idx_external_uuid">
-            <column name="external_uuid" />
+            <column name="auth_id" />
         </createIndex>
     </changeSet>
 </databaseChangeLog>

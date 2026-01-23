@@ -8,15 +8,12 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-import vip.geekclub.framework.command.CommandBus;
 import vip.geekclub.framework.controller.ApiResponse;
 import vip.geekclub.framework.security.JwtAuthentication;
 import vip.geekclub.framework.security.WechatAuthenticationToken;
 import vip.geekclub.security.adapter.controller.dto.WechatBindRequest;
 import vip.geekclub.security.adapter.controller.dto.WechatLoginRequest;
 import vip.geekclub.security.adapter.gateway.WechatService;
-import vip.geekclub.security.application.command.dto.CreateCredentialCommand;
-import vip.geekclub.security.application.command.dto.CreateWechatCredentialCommand;
 
 /**
  * 微信认证控制器
@@ -28,7 +25,6 @@ import vip.geekclub.security.application.command.dto.CreateWechatCredentialComma
 public class WechatAuthController {
 
     private final AuthenticationManager authenticationManager;
-    private final CommandBus commandBus;
     private final WechatService wechatService;
     private final static  long DEFAULT_EXPIRATION_SECONDS =  60 * 60 * 24 * 30;
 

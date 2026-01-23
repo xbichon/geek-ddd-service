@@ -10,7 +10,6 @@ import java.util.UUID;
 
 @Repository
 public interface PrincipalRepository extends JpaRepository<@NonNull Principal, @NonNull Long> {
-    boolean existsByUserType(String userType);
 
     /**
      * 根据外部用户ID查询用户
@@ -18,5 +17,5 @@ public interface PrincipalRepository extends JpaRepository<@NonNull Principal, @
      * @param externalUuid 外部用户ID
      * @return 用户
      */
-    Optional<Principal> findByExternalUuid(UUID externalUuid);
+    Optional<Principal> findByAuthId(UUID externalUuid);
 }
