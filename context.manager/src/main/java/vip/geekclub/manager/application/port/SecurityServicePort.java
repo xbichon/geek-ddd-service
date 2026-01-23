@@ -6,9 +6,6 @@ public interface SecurityServicePort {
 
     /**
      * 创建用户凭证
-     *
-     * @param username 用户名
-     * @param password 密码
      */
     void createCredential(TeacherCredential teacherCredential);
 }
