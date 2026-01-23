@@ -3,13 +3,12 @@ package vip.geekclub.framework.controller;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 import vip.geekclub.framework.command.Command;
-import vip.geekclub.framework.command.CommandBus;
+import vip.geekclub.framework.command.CommandDispatcher;
 import vip.geekclub.framework.command.CommandResult;
 
 @Component
 @RequiredArgsConstructor
 public class WebCommandAdapter {
-    private final CommandBus commandBus;
 
     /**
      * 分发命令并返回Web API响应格式
@@ -22,8 +21,8 @@ public class WebCommandAdapter {
      * @param <R>     返回结果中主键的类型
      * @return 包装后的API响应对象
      */
-    public <C extends Command,R> ApiResponse<R> dispatchToWeb(C command) {
-        CommandResult<R> result = commandBus.dispatch(command);
+    public <C extends Command, R> ApiResponse<R> dispatchToWeb(C command) {
+        CommandResult<R> result = CommandDispatcher.dispatch(command);
         return ApiResponse.success(result);
     }
 }

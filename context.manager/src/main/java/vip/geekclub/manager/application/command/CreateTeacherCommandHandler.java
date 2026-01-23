@@ -6,10 +6,13 @@ import vip.geekclub.framework.command.CommandHandler;
 import vip.geekclub.framework.command.CommandResult;
 import vip.geekclub.framework.command.IdResult;
 import vip.geekclub.manager.application.command.dto.CreateTeacherCommand;
+import vip.geekclub.manager.application.port.SecurityServicePort;
+import vip.geekclub.manager.application.port.dto.TeacherCredential;
 import vip.geekclub.manager.domain.model.Teacher;
 import vip.geekclub.manager.domain.repository.TeacherRepository;
 import lombok.RequiredArgsConstructor;
 import vip.geekclub.manager.domain.service.TeacherCreationUpdateValidator;
+
 /**
  * 创建教师命令处理器
  */
@@ -20,6 +23,7 @@ public class CreateTeacherCommandHandler implements CommandHandler<CreateTeacher
 
     private final TeacherRepository teacherRepository;
     private final TeacherCreationUpdateValidator teacherCreationUpdateValidator;
+    private final SecurityServicePort securityServicePort;
 
     @Override
     public CommandResult<IdResult> execute(CreateTeacherCommand command) {
@@ -37,10 +41,7 @@ public class CreateTeacherCommandHandler implements CommandHandler<CreateTeacher
         teacherRepository.save(teacher);
 
         // 3. 创建用户的凭证
-//        commandBus.dispatch(new CreatePrincipalCommand(
-//                teacher.getEmail(), "12345678", teacher.getAuthId(), "teacher",
-//                CredentialType.EMAIL
-//        ));
+        securityServicePort.createCredential(new TeacherCredential(teacher.getAuthId(), teacher.getEmail(), "12345678"));
 
         // 4. 返回结果
         return CommandResult.ok(teacher.getId());
