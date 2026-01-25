@@ -8,7 +8,6 @@ import org.jooq.generated.tables.PrincipalTable;
 import org.springframework.stereotype.Service;
 import vip.geekclub.security.application.query.dto.CredentialResult;
 import vip.geekclub.security.domain.value.CredentialType;
-import vip.geekclub.security.domain.value.UserType;
 
 import java.util.Optional;
 

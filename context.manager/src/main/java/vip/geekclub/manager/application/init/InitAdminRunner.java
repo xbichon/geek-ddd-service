@@ -1,6 +1,7 @@
 package vip.geekclub.manager.application.init;
 
 import lombok.AllArgsConstructor;
+import lombok.NonNull;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.scheduling.annotation.Async;
@@ -20,7 +21,7 @@ public class InitAdminRunner implements CommandLineRunner {
 
     @Async
     @Override
-    public void run(String... args) {
+    public void run(String[] args) {
 
         if (teacherRepository.existsByEmail("admin@example.com")) {
             return;
