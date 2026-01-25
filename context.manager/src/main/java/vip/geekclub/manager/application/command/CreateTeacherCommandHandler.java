@@ -14,6 +14,8 @@ import lombok.RequiredArgsConstructor;
 import vip.geekclub.manager.domain.service.TeacherCreationUpdateValidator;
 import vip.geekclub.security.domain.value.CredentialType;
 
+import java.util.Set;
+
 /**
  * 创建教师命令处理器
  */
@@ -46,6 +48,7 @@ public class CreateTeacherCommandHandler implements CommandHandler<CreateTeacher
                 , teacher.getEmail()
                 , "12345678"
                 , CredentialType.EMAIL
+                , Set.of()
         ));
 
         // 4. 返回结果

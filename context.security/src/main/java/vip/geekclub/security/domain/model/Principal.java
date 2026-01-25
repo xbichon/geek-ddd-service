@@ -51,11 +51,25 @@ public class Principal extends EntitySupport implements AggregateRoot<Long> {
         AssertUtil.notNull(appType, () -> "应用类型不能为空");
     }
 
+    public Principal(String appType, UUID authId, Set<Long> roleIds) {
+        AssertUtil.notNull(appType, () -> "应用类型不能为空");
+        this.appType = appType;
+        this.authId = authId;
+
+        if (roleIds != null && !roleIds.isEmpty()) {
+            if (roleIds.contains(-1L)) {
+                this.roleIds.add(-1L);
+            } else {
+                this.roleIds.addAll(roleIds);
+            }
+        }
+    }
+
     /**
      * 更新角色
      */
     public void updateRole(Set<Long> roleIds) {
-        if(this.roleIds.contains(-1L)){
+        if (this.roleIds.contains(-1L)) {
             throw new BusinessLogicException("超级管理员不能修改角色");
         }
 

@@ -8,6 +8,7 @@ import vip.geekclub.framework.command.CommandHandlerMapping;
 import vip.geekclub.security.application.command.CreatePrincipalCommandHandler;
 import vip.geekclub.security.domain.value.CredentialType;
 
+import java.util.Set;
 import java.util.UUID;
 
 @CommandHandlerMapping(CreatePrincipalCommandHandler.class)
@@ -26,6 +27,9 @@ public record CreatePrincipalCommand(
         String appType,
 
         @NotNull(message = "认证类型不能为空")
-        CredentialType credentialType
+        CredentialType credentialType,
+
+        // 角色ID集合（可选）
+        Set<Long> roleIds
 ) implements Command {
 }

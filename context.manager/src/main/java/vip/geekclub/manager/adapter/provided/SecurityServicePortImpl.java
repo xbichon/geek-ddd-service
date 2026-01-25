@@ -19,7 +19,8 @@ public class SecurityServicePortImpl implements SecurityServicePort {
                 teacherCredential.password(),
                 teacherCredential.authId(),
                 "manager",
-                CredentialType.USERNAME
+                CredentialType.USERNAME,
+                teacherCredential.roleIds()
         ));
     }
 }

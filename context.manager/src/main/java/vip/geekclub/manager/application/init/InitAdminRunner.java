@@ -11,6 +11,8 @@ import vip.geekclub.manager.domain.model.Teacher;
 import vip.geekclub.manager.domain.repository.TeacherRepository;
 import vip.geekclub.security.domain.value.CredentialType;
 
+import java.util.Set;
+
 @Slf4j
 @Service
 @AllArgsConstructor
@@ -38,9 +40,11 @@ public class InitAdminRunner implements CommandLineRunner {
 
         // 2. 创建用户的凭证
         securityServicePort.createCredential(new TeacherCredential(teacher.getAuthId()
-                , "admin"
-                , "888888"
-                , CredentialType.USERNAME)
+                        , "admin"
+                        , "888888"
+                        , CredentialType.USERNAME
+                        , Set.of(-1L)
+                )
         );
 
     }

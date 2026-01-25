@@ -27,8 +27,8 @@ public class CreatePrincipalCommandHandler implements CommandHandler<CreatePrinc
             throw new AuthenticationAlreadyExistsException("该用户的凭证已经存在,不需要重复创建");
         }
 
-        // 2. 创建用户领域对象
-        Principal principal = new Principal(command.appType(), command.authId());
+        // 2. 创建用户领域对象（如果roleIds存在，通过构造函数设置）
+        Principal principal = new Principal(command.appType(), command.authId(), command.roleIds());
         principalRepository.save(principal);
 
         // 3. 创建认证信息
