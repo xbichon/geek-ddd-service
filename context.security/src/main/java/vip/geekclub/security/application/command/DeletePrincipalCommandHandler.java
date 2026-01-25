@@ -23,11 +23,7 @@ public class DeletePrincipalCommandHandler implements CommandHandler<DeletePrinc
         Principal principal = principalRepository.findById(command.id())
                 .orElseThrow(() -> new NotFoundException("用户不存在"));
 
-        // 2. 清除角色并验证是否可删除
-        principal.clearRole();
-        principal.validateDeletable();
-
-        // 3. 删除用户
+        // 2. 删除用户
         principalRepository.delete(principal);
         return CommandResult.ok();
     }

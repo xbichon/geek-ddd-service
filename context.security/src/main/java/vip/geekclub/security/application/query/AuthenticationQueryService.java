@@ -25,11 +25,11 @@ public class AuthenticationQueryService {
                         credentialTable.IDENTIFIER,
                         credentialTable.PASSWORD,
                         credentialTable.TYPE,
-                        credentialTable.USER_ID,
+                        credentialTable.PRINCIPAL_ID,
                         principalTable.APP_TYPE
                 )
                 .from(credentialTable)
-                .join(principalTable).on(credentialTable.USER_ID.eq(principalTable.ID))
+                .join(principalTable).on(credentialTable.PRINCIPAL_ID.eq(principalTable.ID))
                 .where(credentialTable.IDENTIFIER.eq(identifier))
                 .and(credentialTable.TYPE.eq(type.toString()))
                 .fetchOptional((record) ->
@@ -38,7 +38,7 @@ public class AuthenticationQueryService {
                                 record.get(credentialTable.IDENTIFIER),
                                 record.get(credentialTable.PASSWORD),
                                 CredentialType.valueOf(record.get(credentialTable.TYPE)),
-                                record.get(credentialTable.USER_ID),
+                                record.get(credentialTable.PRINCIPAL_ID),
                                 record.get(principalTable.APP_TYPE))
                 );
     }

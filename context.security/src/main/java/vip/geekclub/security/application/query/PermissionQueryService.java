@@ -4,12 +4,9 @@ import lombok.AllArgsConstructor;
 import org.jooq.DSLContext;
 import org.jooq.generated.Tables;
 import org.jooq.generated.tables.PermissionTable;
-import org.jooq.generated.tables.PrincipalTable;
+import org.jooq.generated.tables.PrincipalRoleTable;
 import org.springframework.stereotype.Service;
-import vip.geekclub.security.application.query.dto.UserResult;
-import vip.geekclub.security.domain.value.UserType;
 
-import java.util.Optional;
 import java.util.Set;
 
 @Service
@@ -18,38 +15,35 @@ public class PermissionQueryService {
 
     private final DSLContext dslContext;
     private final PermissionTable permissionTable = Tables.Permission;
-    private final PrincipalTable principalTable = Tables.Principal;
+    private final PrincipalRoleTable principalRoleTable = Tables.PrincipalRole;
 
     public Set<String> getPermissionByUserId(Long userId) {
-        UserResult userResult = getUserById(userId)
-                .orElseThrow(() -> new RuntimeException("用户不存在"));
+        var roleIds = getRoleByPrincipalId(userId);
 
-        if (userResult.isAdmin()) {
+        if (roleIds.contains(-1L)) {
             return getPermissions();
-        } else {
-            return getPermissionsByUserId(userId);
         }
-    }
-    
-    private Optional<UserResult> getUserById(Long id) {
-        var userResult = dslContext
-                .select(principalTable.fields())
-                .from(principalTable)
-                .where(principalTable.ID.eq(id))
-                .fetchOptional();
 
-        return userResult.map(record ->
-                new UserResult(record.get(principalTable.ID), UserType.valueOf(record.get(principalTable.APP_TYPE)), record.get(principalTable.IS_SUPER_ADMIN) == 1)
-        );
+        return getPermissionsByRoleIds(roleIds);
     }
-    
-    private Set<String> getPermissionsByUserId(Long userId) {
+
+    private Set<Long> getRoleByPrincipalId(Long id) {
+        return dslContext
+                .select(principalRoleTable.ROLE_ID)
+                .from(principalRoleTable)
+                .where(principalRoleTable.PRINCIPAL_ID.eq(id))
+                .fetchSet(record -> record.get(principalRoleTable.ROLE_ID));
+    }
+
+    private Set<String> getPermissionsByRoleIds(Set<Long> roleIds) {
+        if (roleIds.isEmpty()) {
+            return Set.of();
+        }
+
         return dslContext
                 .selectDistinct(permissionTable.CODE)
                 .from(permissionTable)
-                .join(Tables.RolePermission).on(permissionTable.ID.eq(Tables.RolePermission.PERMISSION_ID))
-                .join(Tables.UserRole).on(Tables.RolePermission.ROLE_ID.eq(Tables.UserRole.ROLE_ID))
-                .where(Tables.UserRole.USER_ID.eq(userId))
+                .where(Tables.PrincipalRole.PRINCIPAL_ID.in(roleIds))
                 .fetchSet(record -> record.get(permissionTable.CODE));
     }
 

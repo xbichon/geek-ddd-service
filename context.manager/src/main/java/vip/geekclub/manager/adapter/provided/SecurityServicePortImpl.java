@@ -15,7 +15,7 @@ public class SecurityServicePortImpl implements SecurityServicePort {
     @Override
     public void createCredential(TeacherCredential teacherCredential) {
         CommandDispatcher.dispatch(new CreatePrincipalCommand(
-                teacherCredential.username(),
+                teacherCredential.identifier(),
                 teacherCredential.password(),
                 teacherCredential.authId(),
                 "manager",

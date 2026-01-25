@@ -12,7 +12,6 @@
                 <constraints primaryKey="true" nullable="false"/>
             </column>
             <column name="app_type" type="VARCHAR(20)"/>
-            <column name="is_super_admin" type="boolean" defaultValue="false"/>
             <column name="auth_id" type="binary(16)">
                 <constraints unique="true" nullable="false"/>
             </column>
@@ -36,7 +35,7 @@
             <column name="identifier" type="VARCHAR(200)"/>
             <column name="password" type="VARCHAR(200)"/>
             <column name="type" type="VARCHAR(40)"/>
-            <column name="user_id" type="BIGINT"/>
+            <column name="principal_id" type="BIGINT"/>
             <column name="create_time" defaultValueComputed="CURRENT_TIMESTAMP" type="DATETIME" remarks="创建时间"/>
             <column name="update_time" type="DATETIME" remarks="更新时间"
                     defaultValueComputed="CURRENT_TIMESTAMP on update CURRENT_TIMESTAMP"/>
@@ -94,11 +93,11 @@
                     type="TIMESTAMP"/>
         </createTable>
 
-        <createTable tableName="security_user_role">
+        <createTable tableName="security_principal_role">
             <column name="id" type="BIGINT" autoIncrement="true">
                 <constraints primaryKey="true" nullable="false"/>
             </column>
-            <column name="user_id" type="BIGINT" remarks="用户id"/>
+            <column name="principal_id" type="BIGINT" remarks="用户id"/>
             <column name="role_id" type="BIGINT" remarks="角色id"/>
             <column name="create_time" defaultValueComputed="CURRENT_TIMESTAMP" type="DATETIME"/>
         </createTable>

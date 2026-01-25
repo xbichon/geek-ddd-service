@@ -12,6 +12,7 @@ import vip.geekclub.manager.domain.model.Teacher;
 import vip.geekclub.manager.domain.repository.TeacherRepository;
 import lombok.RequiredArgsConstructor;
 import vip.geekclub.manager.domain.service.TeacherCreationUpdateValidator;
+import vip.geekclub.security.domain.value.CredentialType;
 
 /**
  * 创建教师命令处理器
@@ -41,7 +42,11 @@ public class CreateTeacherCommandHandler implements CommandHandler<CreateTeacher
         teacherRepository.save(teacher);
 
         // 3. 创建用户的凭证
-        securityServicePort.createCredential(new TeacherCredential(teacher.getAuthId(), teacher.getEmail(), "12345678"));
+        securityServicePort.createCredential(new TeacherCredential(teacher.getAuthId()
+                , teacher.getEmail()
+                , "12345678"
+                , CredentialType.EMAIL
+        ));
 
         // 4. 返回结果
         return CommandResult.ok(teacher.getId());

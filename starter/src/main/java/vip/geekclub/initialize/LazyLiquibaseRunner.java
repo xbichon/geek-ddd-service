@@ -21,20 +21,17 @@ import javax.sql.DataSource;
 @Component
 @ConditionalOnProperty(name = "spring.liquibase.enabled", havingValue = "false", matchIfMissing = true)
 @AllArgsConstructor
-@Async
 public class LazyLiquibaseRunner implements ApplicationRunner {
 
     private DataSource dataSource;
 
+    @Async
     @Override
     public void run(@NonNull ApplicationArguments args) {
         runLiquibaseMigration();
     }
 
     private void runLiquibaseMigration() {
-        log.info("开始异步执行Liquibase数据库迁移...");
-        log.info("变更日志路径: database/migrations/master.xml");
-
         // 手动执行Liquibase迁移
         try {
             Liquibase liquibase = new Liquibase(
