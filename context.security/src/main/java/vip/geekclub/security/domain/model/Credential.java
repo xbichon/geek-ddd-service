@@ -54,6 +54,9 @@ public class Credential extends EntitySupport implements AggregateRoot<Long> {
     @Size(max = 200, message = "凭证长度必须在1-200个字符之间")
     private String password;
 
+    /**
+     * 构造函数
+     */
     public Credential(Long principalId, CredentialType type, String identifier, String password) {
         setPrincipalId(principalId);
         setIdentifier(identifier);
@@ -69,32 +72,6 @@ public class Credential extends EntitySupport implements AggregateRoot<Long> {
                 break;
         }
     }
-
-//    public static Credential newUsernameAuth(Long userId, String username, String password) {
-//        // 校验：用户名 <= 20 且非空，密码非空
-//        AssertUtil.isTrue(username != null && !username.isEmpty(), () -> "用户名不能为空");
-//        AssertUtil.requireLengthLessThan(username, 21, () -> "用户名不能超过20个字符");
-//
-//        Credential authCredential = new Credential(userId, CredentialType.USERNAME, username);
-//        authCredential.setPassword(password);
-//        return authCredential;
-//    }
-
-//    public static Credential newWechatAuth(Long userId, String openId) {
-//        AssertUtil.notBlank(openId, () -> "openId 不能为空");
-//        return new Credential(userId, CredentialType.WECHAT, openId);
-//    }
-//
-//    public static Credential newEmailAuth(Long userId, String email, String password) {
-//        // 校验：email 合法、密码非空
-//        AssertUtil.notBlank(email, () -> "邮箱不能为空");
-//        AssertUtil.isTrue(email.matches("^[A-Za-z0-9+_.-]+@[A-Za-z0-9.-]+$"), () -> "邮箱格式不正确");
-//
-//        Credential authCredential = new Credential(userId, CredentialType.EMAIL, email);
-//        authCredential.setPassword(password);
-//        return authCredential;
-//    }
-
 
     /**
      * 设置密码

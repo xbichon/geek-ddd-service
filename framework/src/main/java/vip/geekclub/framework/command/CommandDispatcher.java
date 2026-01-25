@@ -24,6 +24,7 @@ public class CommandDispatcher implements ApplicationContextAware {
 
     @Override
     public void setApplicationContext(ApplicationContext applicationContext) throws BeansException {
+        log.info("初始化命令分发器...");
         commandBus = applicationContext.getBean(CommandBus.class);
     }
 }
