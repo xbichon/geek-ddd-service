@@ -1,4 +1,4 @@
-package vip.geekclub.security.application.command.permissiongroup;
+package vip.geekclub.security.application.command.permission.group;
 
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;

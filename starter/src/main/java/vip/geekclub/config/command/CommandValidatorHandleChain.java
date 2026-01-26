@@ -1,4 +1,4 @@
-package vip.geekclub.config.commandBus;
+package vip.geekclub.config.command;
 
 import jakarta.validation.ConstraintViolation;
 import jakarta.validation.ConstraintViolationException;

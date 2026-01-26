@@ -1,4 +1,4 @@
-package vip.geekclub.config.commandBus;
+package vip.geekclub.config.command;
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.annotation.Bean;
