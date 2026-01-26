@@ -1,11 +1,10 @@
-package vip.geekclub.security.application.command;
+package vip.geekclub.security.application.command.principal;
 
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import vip.geekclub.framework.command.CommandHandler;
 import vip.geekclub.framework.command.CommandResult;
-import vip.geekclub.security.application.command.dto.CreatePrincipalCommand;
 import vip.geekclub.security.domain.model.Credential;
 import vip.geekclub.security.domain.model.Principal;
 import vip.geekclub.security.domain.repository.CredentialRepository;

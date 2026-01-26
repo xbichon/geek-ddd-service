@@ -1,11 +1,10 @@
-package vip.geekclub.security.application.command.dto;
+package vip.geekclub.security.application.command.principal;
 
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 import vip.geekclub.framework.command.Command;
 import vip.geekclub.framework.command.CommandHandlerMapping;
-import vip.geekclub.security.application.command.CreatePrincipalCommandHandler;
 import vip.geekclub.security.domain.value.CredentialType;
 
 import java.util.Set;

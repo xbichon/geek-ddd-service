@@ -1,4 +1,4 @@
-package vip.geekclub.security.application.command;
+package vip.geekclub.security.application.command.permission;
 
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -7,7 +7,6 @@ import vip.geekclub.framework.command.CommandHandler;
 import vip.geekclub.framework.command.CommandResult;
 import vip.geekclub.framework.exception.NotFoundException;
 import vip.geekclub.framework.exception.ValidationException;
-import vip.geekclub.security.application.command.dto.UpdatePermissionCommand;
 import vip.geekclub.security.domain.model.Permission;
 import vip.geekclub.security.domain.repository.PermissionRepository;
 import vip.geekclub.security.domain.value.PermissionCode;

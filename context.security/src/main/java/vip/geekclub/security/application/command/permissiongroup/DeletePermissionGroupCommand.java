@@ -1,4 +1,4 @@
-package vip.geekclub.security.application.command.dto;
+package vip.geekclub.security.application.command.permissiongroup;
 
 import vip.geekclub.framework.command.Command;
 

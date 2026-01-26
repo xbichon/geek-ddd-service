@@ -1,4 +1,4 @@
-package vip.geekclub.security.application.command.dto;
+package vip.geekclub.security.application.command.permission;
 
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;

@@ -5,7 +5,7 @@ import org.springframework.stereotype.Service;
 import vip.geekclub.framework.command.CommandDispatcher;
 import vip.geekclub.manager.application.port.SecurityServicePort;
 import vip.geekclub.manager.application.port.dto.TeacherCredential;
-import vip.geekclub.security.application.command.dto.CreatePrincipalCommand;
+import vip.geekclub.security.application.command.principal.CreatePrincipalCommand;
 import vip.geekclub.security.domain.value.CredentialType;
 
 @Service
