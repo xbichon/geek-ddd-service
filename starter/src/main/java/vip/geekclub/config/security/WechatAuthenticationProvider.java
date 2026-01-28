@@ -30,21 +30,23 @@ public class WechatAuthenticationProvider implements AuthenticationProvider {
 
     @Override
     public Authentication authenticate(@NonNull Authentication authentication) throws AuthenticationException {
-        WechatAuthenticationToken token = (WechatAuthenticationToken) authentication;
-        String unionId = Objects.toString(token.getCredentials(), "");
 
-        if (unionId.isBlank()) {
-            throw new BadCredentialsException("微信UnionID不能为空");
-        }
-
-        // 查询 WECHAT 凭证（使用 unionId）
-        CredentialResult credential = authenticationQueryService
-                .getAuthenticationByIdentifier(unionId, CredentialType.WECHAT)
-                .orElseThrow(() -> new BadCredentialsException("用户未注册，请先绑定微信账号"));
-
-        // 构建并返回 UserSession（内含 JwtToken）
-        JwtPrincipal jwtPrincipal = new JwtPrincipal(credential.userId(), credential.identifier());
-        return new JwtAuthentication(jwtPrincipal);
+        return null;
+//        WechatAuthenticationToken token = (WechatAuthenticationToken) authentication;
+//        String unionId = Objects.toString(token.getCredentials(), "");
+//
+//        if (unionId.isBlank()) {
+//            throw new BadCredentialsException("微信UnionID不能为空");
+//        }
+//
+//        // 查询 WECHAT 凭证（使用 unionId）
+//        CredentialResult credential = authenticationQueryService
+//                .getAuthenticationByIdentifier(unionId, CredentialType.WECHAT)
+//                .orElseThrow(() -> new BadCredentialsException("用户未注册，请先绑定微信账号"));
+//
+//        // 构建并返回 UserSession（内含 JwtToken）
+//        JwtPrincipal jwtPrincipal = new JwtPrincipal(credential.userId(), credential.identifier());
+//        return new JwtAuthentication(jwtPrincipal);
     }
 
     @Override

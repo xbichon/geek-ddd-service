@@ -14,6 +14,7 @@ import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import vip.geekclub.security.domain.value.CredentialType;
+import vip.geekclub.security.domain.value.IdentifierType;
 
 
 /**
@@ -43,7 +44,7 @@ public class UserNameAuthenticationProvider implements AuthenticationProvider {
 
         // 使用更明确的异常消息
         CredentialResult credentialResult = authenticationQueryService
-                .getAuthenticationByIdentifier(username, CredentialType.USERNAME)
+                .getAuthenticationByIdentifier(username, IdentifierType.USERNAME)
                 .orElseThrow(() -> new BadCredentialsException("用户不存在"));
 
         if (!passwordEncoder.matches(password, credentialResult.password())) {

@@ -6,19 +6,22 @@ import org.springframework.transaction.annotation.Transactional;
 import vip.geekclub.framework.command.CommandHandler;
 import vip.geekclub.framework.command.CommandResult;
 import vip.geekclub.framework.exception.BusinessException;
-import vip.geekclub.security.domain.model.Credential;
+import vip.geekclub.security.domain.model.Identifier;
+import vip.geekclub.security.domain.model.PasswordCredential;
 import vip.geekclub.security.domain.model.Principal;
-import vip.geekclub.security.domain.repository.CredentialRepository;
+import vip.geekclub.security.domain.repository.PasswordCredentialRepository;
 import vip.geekclub.security.domain.repository.PrincipalRepository;
-import vip.geekclub.security.domain.value.CredentialType;
+import vip.geekclub.security.domain.value.IdentifierType;
 import vip.geekclub.security.exception.AuthenticationAlreadyExistsException;
+
+import java.util.List;
 
 @AllArgsConstructor
 @Service
 public class CreateAdminCommandHandler implements CommandHandler<CreateAdminCommand, Void> {
 
     private final PrincipalRepository principalRepository;
-    private final CredentialRepository credentialRepository;
+    private final PasswordCredentialRepository passwordCredentialRepository;
 
     @Override
     @Transactional
@@ -28,8 +31,9 @@ public class CreateAdminCommandHandler implements CommandHandler<CreateAdminComm
             throw new BusinessException(500, "超级管理员已存在，无需重复创建");
         }
 
-        // 2. 认证信息查重（检查凭证是否已存在）
-        if (credentialRepository.existsByTypeAndIdentifier(CredentialType.USERNAME, command.username())) {
+        // 2. 认证信息查重（检查用户名是否已存在）
+        if (passwordCredentialRepository.existsByIdentifierTypeAndValue(
+                IdentifierType.USERNAME, command.username())) {
             throw new AuthenticationAlreadyExistsException("该用户名已被使用");
         }
 
@@ -37,14 +41,16 @@ public class CreateAdminCommandHandler implements CommandHandler<CreateAdminComm
         Principal admin = Principal.newAdmin(command.userType(), command.authId());
         principalRepository.save(admin);
 
-        // 4. 创建认证信息
-        Credential credential = new Credential(
+        // 4. 创建用户名密码认证信息
+        PasswordCredential credential = PasswordCredential.create(
                 admin.getId(),
-                CredentialType.USERNAME,
-                command.username(),
-                command.password()
+                command.password(),
+                List.of(Identifier.builder()
+                        .type(IdentifierType.USERNAME)
+                        .value(command.username())
+                        .build())
         );
-        credentialRepository.save(credential);
+        passwordCredentialRepository.save(credential);
 
         return CommandResult.ok();
     }

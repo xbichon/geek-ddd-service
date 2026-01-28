@@ -3,11 +3,13 @@ package vip.geekclub.security.application.query;
 import lombok.RequiredArgsConstructor;
 import org.jooq.DSLContext;
 import org.jooq.generated.Tables;
-import org.jooq.generated.tables.CredentialTable;
+import org.jooq.generated.tables.IdentifierTable;
+import org.jooq.generated.tables.PasswordCredentialTable;
 import org.jooq.generated.tables.PrincipalTable;
 import org.springframework.stereotype.Service;
 import vip.geekclub.security.application.query.dto.CredentialResult;
 import vip.geekclub.security.domain.value.CredentialType;
+import vip.geekclub.security.domain.value.IdentifierType;
 
 import java.util.Optional;
 
@@ -15,29 +17,31 @@ import java.util.Optional;
 @RequiredArgsConstructor
 public class AuthenticationQueryService {
     private final DSLContext query;
-    private final CredentialTable credentialTable = Tables.Credential;
+    private final PasswordCredentialTable passwordCredentialTable = Tables.PasswordCredential;
+    private final IdentifierTable identifierTable = Tables.Identifier;
     private final PrincipalTable principalTable = Tables.Principal;
 
-    public Optional<CredentialResult> getAuthenticationByIdentifier(String identifier, CredentialType type) {
+    public Optional<CredentialResult> getAuthenticationByIdentifier(String identifier, IdentifierType type) {
         return query.select(
-                        credentialTable.ID,
-                        credentialTable.IDENTIFIER,
-                        credentialTable.PASSWORD,
-                        credentialTable.TYPE,
-                        credentialTable.PRINCIPAL_ID,
+                        passwordCredentialTable.ID,
+                        identifierTable.VALUE,
+                        passwordCredentialTable.PASSWORD,
+                        identifierTable.TYPE,
+                        passwordCredentialTable.PRINCIPAL_ID,
                         principalTable.USER_TYPE
                 )
-                .from(credentialTable)
-                .join(principalTable).on(credentialTable.PRINCIPAL_ID.eq(principalTable.ID))
-                .where(credentialTable.IDENTIFIER.eq(identifier))
-                .and(credentialTable.TYPE.eq(type.toString()))
+                .from(passwordCredentialTable)
+                .join(identifierTable).on(identifierTable.PASSWORD_CREDENTIAL_ID.eq(passwordCredentialTable.ID))
+                .join(principalTable).on(passwordCredentialTable.PRINCIPAL_ID.eq(principalTable.ID))
+                .where(identifierTable.VALUE.eq(identifier))
+                .and(identifierTable.TYPE.eq(type.toString()))
                 .fetchOptional((record) ->
                         new CredentialResult(
-                                record.get(credentialTable.ID),
-                                record.get(credentialTable.IDENTIFIER),
-                                record.get(credentialTable.PASSWORD),
-                                CredentialType.valueOf(record.get(credentialTable.TYPE)),
-                                record.get(credentialTable.PRINCIPAL_ID),
+                                record.get(passwordCredentialTable.ID),
+                                record.get(identifierTable.VALUE),
+                                record.get(passwordCredentialTable.PASSWORD),
+                                CredentialType.valueOf(record.get(identifierTable.TYPE)),
+                                record.get(passwordCredentialTable.PRINCIPAL_ID),
                                 record.get(principalTable.USER_TYPE))
                 );
     }

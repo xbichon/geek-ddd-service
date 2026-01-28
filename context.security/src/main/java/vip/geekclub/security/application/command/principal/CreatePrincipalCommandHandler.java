@@ -5,9 +5,10 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import vip.geekclub.framework.command.CommandHandler;
 import vip.geekclub.framework.command.CommandResult;
-import vip.geekclub.security.domain.model.Credential;
+import vip.geekclub.security.domain.model.Identifier;
+import vip.geekclub.security.domain.model.PasswordCredential;
 import vip.geekclub.security.domain.model.Principal;
-import vip.geekclub.security.domain.repository.CredentialRepository;
+import vip.geekclub.security.domain.repository.PasswordCredentialRepository;
 import vip.geekclub.security.domain.repository.PrincipalRepository;
 import vip.geekclub.security.exception.AuthenticationAlreadyExistsException;
 
@@ -16,38 +17,40 @@ import vip.geekclub.security.exception.AuthenticationAlreadyExistsException;
 public class CreatePrincipalCommandHandler implements CommandHandler<CreatePrincipalCommand, Void> {
 
     private final PrincipalRepository principalRepository;
-    private final CredentialRepository credentialRepository;
+    private final PasswordCredentialRepository passwordCredentialRepository;
 
     @Override
     @Transactional
     public CommandResult<Void> execute(CreatePrincipalCommand command) {
-        // 从credentials集合中获取第一个凭证（假设至少有一个）
-        var credentials = command.credentials();
-        if (credentials == null || credentials.isEmpty()) {
-            throw new IllegalArgumentException("至少需要一个凭证");
-        }
+        var credential = command.credential();
 
-        // 1. 认证信息查重
-        for (var credential : credentials) {
-            if (credentialRepository.existsByTypeAndIdentifier(credential.credentialType(), credential.identifier())) {
-                throw new AuthenticationAlreadyExistsException("该用户的凭证已经存在,不能重复创建");
+        // 1. 检查所有标识符是否已存在
+        for (var identifier : credential.identifiers()) {
+            if (passwordCredentialRepository.existsByIdentifierTypeAndValue(
+                    identifier.type(), identifier.value())) {
+                throw new AuthenticationAlreadyExistsException("该标识符已被使用: " + identifier.value());
             }
         }
 
-        // 2. 创建用户领域对象（如果roleIds存在，通过构造函数设置）
+        // 2. 创建用户领域对象
         Principal principal = new Principal(command.userType(), command.authId(), command.roleIds());
         principalRepository.save(principal);
 
-        // 3. 创建认证信息
-        for (var credential : credentials) {
-            credentialRepository.save(new Credential(
-                    principal.getId(),
-                    credential.credentialType(),
-                    credential.identifier(),
-                    credential.password()
-            ));
-        }
+        // 3. 将 DTO 转换为领域对象
+        var identifiers = credential.identifiers().stream()
+                .map(dto -> Identifier.builder()
+                        .type(dto.type())
+                        .value(dto.value())
+                        .build())
+                .toList();
 
+        // 4. 创建密码凭证
+        PasswordCredential passwordCredential = PasswordCredential.create(
+                principal.getId(),
+                credential.password(),
+                identifiers
+        );
+        passwordCredentialRepository.save(passwordCredential);
 
         return CommandResult.ok();
     }
