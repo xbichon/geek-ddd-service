@@ -14,14 +14,6 @@ import java.util.Optional;
 public interface PasswordCredentialRepository extends JpaRepository<@NonNull PasswordCredential, @NonNull Long> {
 
     /**
-     * 根据用户 ID 查询密码凭证
-     *
-     * @param principalId 用户 ID
-     * @return 密码凭证
-     */
-    PasswordCredential findByPrincipalId(Long principalId);
-
-    /**
      * 根据凭证类型和标识符值检查认证信息是否存在
      *
      * @param type 凭证类型

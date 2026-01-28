@@ -44,7 +44,7 @@ public class UserNameAuthenticationProvider implements AuthenticationProvider {
             CommandResult<AuthResult> commandResult = CommandDispatcher.dispatch(command);
             AuthResult authResult = commandResult.data();
 
-            JwtPrincipal jwtPrincipal = new JwtPrincipal(authResult.authId(), authResult.userType().toString());
+            JwtPrincipal jwtPrincipal = new JwtPrincipal(authResult.authId(), authResult.userType());
             return new JwtAuthentication(jwtPrincipal);
         } catch (Exception e) {
             throw new BadCredentialsException(e.getMessage());

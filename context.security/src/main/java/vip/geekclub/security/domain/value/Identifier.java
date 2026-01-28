@@ -5,7 +5,6 @@ import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
-import vip.geekclub.framework.exception.BusinessException;
 import vip.geekclub.framework.exception.InvalidFormatException;
 
 /**

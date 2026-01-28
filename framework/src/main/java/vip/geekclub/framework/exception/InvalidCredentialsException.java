@@ -8,8 +8,4 @@ public class InvalidCredentialsException extends BusinessException {
     public InvalidCredentialsException(String message) {
         super(401, message);
     }
-
-    public InvalidCredentialsException(String message, Throwable cause) {
-        super(401, message, cause);
-    }
 }

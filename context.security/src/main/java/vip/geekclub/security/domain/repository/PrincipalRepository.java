@@ -14,10 +14,9 @@ public interface PrincipalRepository extends JpaRepository<@NonNull Principal, @
     /**
      * 根据外部用户ID查询用户
      *
-     * @param externalUuid 外部用户ID
      * @return 用户
      */
-    Optional<Principal> findByAuthId(UUID externalUuid);
+    Optional<Principal> findByAuthId(String authId);
 
     /**
      * 检查是否存在超级管理员

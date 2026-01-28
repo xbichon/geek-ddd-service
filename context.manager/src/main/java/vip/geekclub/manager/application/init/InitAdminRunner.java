@@ -43,7 +43,7 @@ public class InitAdminRunner implements CommandLineRunner {
         CreateAdminCommand command = new CreateAdminCommand(
                 "admin",
                 "888888",
-                teacher.getAuthId().toString(),
+                teacher.getAuthId(),
                 "teacher"
         );
         CommandDispatcher.dispatch(command);

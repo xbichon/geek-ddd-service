@@ -6,7 +6,6 @@ import jakarta.validation.constraints.Size;
 import lombok.*;
 import org.springframework.data.util.Lazy;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import vip.geekclub.framework.exception.BusinessException;
 import vip.geekclub.framework.exception.InvalidCredentialsException;
 import vip.geekclub.framework.utils.ApplicationUtil;
 import vip.geekclub.framework.utils.AssertUtil;
@@ -57,16 +56,6 @@ public class PasswordCredential extends Credential {
      */
     public static PasswordCredential create(Long principalId, List<Identifier> identifiers, String password) {
         return new PasswordCredential(principalId, password, identifiers);
-    }
-
-    /**
-     * 根据类型获取标识符
-     */
-    public Identifier getIdentifier(IdentifierType type) {
-        return identifiers.stream()
-            .filter(i -> i.type() == type)
-            .findFirst()
-            .orElse(null);
     }
 
     /**
