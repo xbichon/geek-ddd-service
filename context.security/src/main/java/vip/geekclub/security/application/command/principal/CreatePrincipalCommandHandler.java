@@ -36,19 +36,11 @@ public class CreatePrincipalCommandHandler implements CommandHandler<CreatePrinc
         Principal principal = new Principal(command.userType(), command.authId(), command.roleIds());
         principalRepository.save(principal);
 
-        // 3. 将 DTO 转换为领域对象
-        var identifiers = credential.identifiers().stream()
-                .map(dto -> Identifier.builder()
-                        .type(dto.type())
-                        .value(dto.value())
-                        .build())
-                .toList();
-
         // 4. 创建密码凭证
         PasswordCredential passwordCredential = PasswordCredential.create(
                 principal.getId(),
                 credential.password(),
-                identifiers
+                credential.identifiers()
         );
         passwordCredentialRepository.save(passwordCredential);
 

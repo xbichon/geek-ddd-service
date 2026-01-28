@@ -2,6 +2,7 @@ package vip.geekclub.security.domain.model;
 
 import jakarta.persistence.*;
 import jakarta.validation.Valid;
+import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 import lombok.*;
@@ -10,6 +11,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import vip.geekclub.framework.utils.ApplicationUtil;
 import vip.geekclub.framework.utils.AssertUtil;
 import vip.geekclub.security.domain.value.Identifier;
+import vip.geekclub.security.domain.value.IdentifierType;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -17,7 +19,8 @@ import java.util.Objects;
 
 @Entity
 @Table(name = "security_password_credential")
-@Getter @Setter(AccessLevel.PRIVATE)
+@Getter
+@Setter(AccessLevel.PRIVATE)
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class PasswordCredential extends Credential {
     private static final Lazy<@NonNull PasswordEncoder> passwordEncoder = Lazy.of(() ->
@@ -29,10 +32,9 @@ public class PasswordCredential extends Credential {
      */
     @ElementCollection
     @CollectionTable(
-            name = "security_identifier",
-            joinColumns = @JoinColumn(name = "password_credential_id")
+        name = "security_identifier",
+        joinColumns = @JoinColumn(name = "password_credential_id")
     )
-    @Valid
     private List<Identifier> identifiers = new ArrayList<>();
 
     /**
@@ -40,7 +42,6 @@ public class PasswordCredential extends Credential {
      */
     @Size(max = 200, message = "密码长度不能超过200个字符")
     private String password;
-
 
     /**
      * 私有构造函数
@@ -54,8 +55,7 @@ public class PasswordCredential extends Credential {
     /**
      * 创建包含多个标识符的密码凭证
      */
-    public static PasswordCredential create(
-            Long principalId, String password, List<Identifier> identifiers) {
+    public static PasswordCredential create(Long principalId, String password, List<Identifier> identifiers) {
         return new PasswordCredential(principalId, password, identifiers);
     }
 
@@ -68,11 +68,36 @@ public class PasswordCredential extends Credential {
         }
         // 检查是否已存在相同类型的标识符
         for (Identifier existing : identifiers) {
-            if (existing.getType() == identifier.getType()) {
+            if (existing.type() == identifier.type()) {
                 throw new IllegalArgumentException("该类型的标识符已存在");
             }
         }
         identifiers.add(identifier);
+    }
+
+    /**
+     * 移除标识符
+     */
+    public void removeIdentifier(Identifier identifier) {
+        identifiers.removeIf(i -> i.type() == identifier.type());
+    }
+
+    /**
+     * 根据类型获取标识符
+     */
+    public Identifier getIdentifier(IdentifierType type) {
+        return identifiers.stream()
+            .filter(i -> i.type() == type)
+            .findFirst()
+            .orElse(null);
+    }
+
+    /**
+     * 根据类型获取标识符值
+     */
+    public String getIdentifierValue(IdentifierType type) {
+        Identifier identifier = getIdentifier(type);
+        return identifier != null ? identifier.value() : null;
     }
 
     /**
@@ -103,10 +128,9 @@ public class PasswordCredential extends Credential {
      */
     private void setIdentifiers(@NotNull List<Identifier> identifiers) {
         AssertUtil.isTrue(identifiers != null && !identifiers.isEmpty(), () -> "至少需要一个标识符");
-
         // 检查是否有重复类型的标识符
         long distinctCount = identifiers.stream()
-            .map(Identifier::getType)
+            .map(Identifier::type)
             .distinct()
             .count();
         if (distinctCount < identifiers.size()) {

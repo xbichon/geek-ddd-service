@@ -3,18 +3,11 @@ package vip.geekclub.config.security;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.AuthenticationProvider;
-import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.stereotype.Service;
-import vip.geekclub.framework.security.JwtAuthentication;
-import vip.geekclub.framework.security.JwtPrincipal;
 import vip.geekclub.framework.security.WechatAuthenticationToken;
-import vip.geekclub.security.domain.value.CredentialType;
 import vip.geekclub.security.application.query.AuthenticationQueryService;
-import vip.geekclub.security.application.query.dto.CredentialResult;
-
-import java.util.Objects;
 
 /**
  * 微信小程序登录 Provider：

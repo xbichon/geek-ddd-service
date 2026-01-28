@@ -45,10 +45,7 @@ public class CreateAdminCommandHandler implements CommandHandler<CreateAdminComm
         PasswordCredential credential = PasswordCredential.create(
                 admin.getId(),
                 command.password(),
-                List.of(Identifier.builder()
-                        .type(IdentifierType.USERNAME)
-                        .value(command.username())
-                        .build())
+                List.of(new Identifier(command.username(), IdentifierType.USERNAME))
         );
         passwordCredentialRepository.save(credential);
 
