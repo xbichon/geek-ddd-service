@@ -1,8 +1,6 @@
 package vip.geekclub.security.domain.model;
 
 import jakarta.persistence.*;
-import jakarta.validation.Valid;
-import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 import lombok.*;
@@ -55,7 +53,7 @@ public class PasswordCredential extends Credential {
     /**
      * 创建包含多个标识符的密码凭证
      */
-    public static PasswordCredential create(Long principalId, String password, List<Identifier> identifiers) {
+    public static PasswordCredential create(Long principalId, List<Identifier> identifiers, String password) {
         return new PasswordCredential(principalId, password, identifiers);
     }
 

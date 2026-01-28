@@ -44,8 +44,7 @@ public class CreateAdminCommandHandler implements CommandHandler<CreateAdminComm
         // 4. 创建用户名密码认证信息
         PasswordCredential credential = PasswordCredential.create(
                 admin.getId(),
-                command.password(),
-                List.of(new Identifier(command.username(), IdentifierType.USERNAME))
+                List.of(new Identifier(command.username(), IdentifierType.USERNAME)), command.password()
         );
         passwordCredentialRepository.save(credential);
 

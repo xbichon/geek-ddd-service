@@ -5,7 +5,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import vip.geekclub.framework.command.CommandHandler;
 import vip.geekclub.framework.command.CommandResult;
-import vip.geekclub.security.domain.value.Identifier;
 import vip.geekclub.security.domain.model.PasswordCredential;
 import vip.geekclub.security.domain.model.Principal;
 import vip.geekclub.security.domain.repository.PasswordCredentialRepository;
@@ -22,10 +21,9 @@ public class CreatePrincipalCommandHandler implements CommandHandler<CreatePrinc
     @Override
     @Transactional
     public CommandResult<Void> execute(CreatePrincipalCommand command) {
-        var credential = command.credential();
 
         // 1. 检查所有标识符是否已存在
-        for (var identifier : credential.identifiers()) {
+        for (var identifier : command.identifiers()) {
             if (passwordCredentialRepository.existsByIdentifierTypeAndValue(
                     identifier.type(), identifier.value())) {
                 throw new AuthenticationAlreadyExistsException("该标识符已被使用: " + identifier.value());
@@ -39,8 +37,7 @@ public class CreatePrincipalCommandHandler implements CommandHandler<CreatePrinc
         // 4. 创建密码凭证
         PasswordCredential passwordCredential = PasswordCredential.create(
                 principal.getId(),
-                credential.password(),
-                credential.identifiers()
+                command.identifiers(), command.password()
         );
         passwordCredentialRepository.save(passwordCredential);
 
