@@ -21,23 +21,33 @@ public class CreatePrincipalCommandHandler implements CommandHandler<CreatePrinc
     @Override
     @Transactional
     public CommandResult<Void> execute(CreatePrincipalCommand command) {
+        // 从credentials集合中获取第一个凭证（假设至少有一个）
+        var credentials = command.credentials();
+        if (credentials == null || credentials.isEmpty()) {
+            throw new IllegalArgumentException("至少需要一个凭证");
+        }
+
         // 1. 认证信息查重
-        if (credentialRepository.existsByTypeAndIdentifier(command.credentialType(), command.identifier())) {
-            throw new AuthenticationAlreadyExistsException("该用户的凭证已经存在,不需要重复创建");
+        for (var credential : credentials) {
+            if (credentialRepository.existsByTypeAndIdentifier(credential.credentialType(), credential.identifier())) {
+                throw new AuthenticationAlreadyExistsException("该用户的凭证已经存在,不能重复创建");
+            }
         }
 
         // 2. 创建用户领域对象（如果roleIds存在，通过构造函数设置）
-        Principal principal = new Principal(command.appType(), command.authId(), command.roleIds());
+        Principal principal = new Principal(command.userType(), command.authId(), command.roleIds());
         principalRepository.save(principal);
 
         // 3. 创建认证信息
-        Credential credential = new Credential(
-                principal.getId(),
-                command.credentialType(),
-                command.identifier(),
-                command.password()
-        );
-        credentialRepository.save(credential);
+        for (var credential : credentials) {
+            credentialRepository.save(new Credential(
+                    principal.getId(),
+                    credential.credentialType(),
+                    credential.identifier(),
+                    credential.password()
+            ));
+        }
+
 
         return CommandResult.ok();
     }

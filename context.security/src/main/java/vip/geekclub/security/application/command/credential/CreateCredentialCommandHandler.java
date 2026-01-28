@@ -23,7 +23,7 @@ public class CreateCredentialCommandHandler implements CommandHandler<CreateCred
     @Transactional
     public CommandResult<Void> execute(CreateCredentialCommand command) {
         // 1. 认证信息查重
-        Principal principal = principalRepository.findByAuthId(command.externalUuid()).orElseThrow(() -> new NotFoundException("用户不存在"));
+        Principal principal = principalRepository.findByAuthId(command.authId()).orElseThrow(() -> new NotFoundException("用户不存在"));
 
         // 2. 认证信息查重
         if (credentialRepository.existsByTypeAndPrincipalId(command.credentialType(), principal.getId())) {

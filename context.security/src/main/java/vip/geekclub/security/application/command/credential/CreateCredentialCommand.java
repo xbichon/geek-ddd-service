@@ -8,7 +8,7 @@ import vip.geekclub.security.domain.value.CredentialType;
 
 import java.util.UUID;
 
-public record CreateCredentialCommand(@NotBlank UUID externalUuid
+public record CreateCredentialCommand(@NotBlank UUID authId
         , @NotNull CredentialType credentialType
         , @NotBlank String identifier
         , @NotBlank String password) implements Command {
