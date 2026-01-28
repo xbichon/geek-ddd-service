@@ -1,6 +1,9 @@
 package vip.geekclub.security.application.command.credential;
 
-public record VerifyPasswordResult(
+/**
+ * 认证结果
+ */
+public record AuthResult(
         String authId,
         String userType
 ) {
