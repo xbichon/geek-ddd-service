@@ -6,7 +6,7 @@ import jakarta.validation.constraints.Size;
 import org.springframework.util.StringUtils;
 import vip.geekclub.framework.command.Command;
 import vip.geekclub.framework.command.CommandHandlerMapping;
-import vip.geekclub.security.domain.model.Identifier;
+import vip.geekclub.security.domain.value.Identifier;
 import vip.geekclub.security.domain.value.IdentifierType;
 
 import java.util.List;

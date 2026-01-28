@@ -2,7 +2,6 @@ package vip.geekclub.security.domain.model;
 
 import jakarta.persistence.*;
 import jakarta.validation.Valid;
-import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 import lombok.*;
@@ -10,7 +9,7 @@ import org.springframework.data.util.Lazy;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import vip.geekclub.framework.utils.ApplicationUtil;
 import vip.geekclub.framework.utils.AssertUtil;
-import vip.geekclub.security.domain.value.IdentifierType;
+import vip.geekclub.security.domain.value.Identifier;
 
 import java.util.ArrayList;
 import java.util.List;

@@ -5,7 +5,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import vip.geekclub.framework.command.CommandHandler;
 import vip.geekclub.framework.command.CommandResult;
-import vip.geekclub.security.domain.model.Identifier;
+import vip.geekclub.security.domain.value.Identifier;
 import vip.geekclub.security.domain.model.PasswordCredential;
 import vip.geekclub.security.domain.model.Principal;
 import vip.geekclub.security.domain.repository.PasswordCredentialRepository;

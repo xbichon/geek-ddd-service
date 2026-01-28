@@ -1,9 +1,8 @@
-package vip.geekclub.security.domain.model;
+package vip.geekclub.security.domain.value;
 
 import jakarta.persistence.Embeddable;
 import jakarta.validation.constraints.Size;
 import lombok.*;
-import vip.geekclub.security.domain.value.IdentifierType;
 
 @Embeddable
 @Builder
