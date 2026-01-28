@@ -7,6 +7,7 @@ import lombok.*;
 import org.springframework.data.util.Lazy;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import vip.geekclub.framework.exception.BusinessException;
+import vip.geekclub.framework.exception.InvalidCredentialsException;
 import vip.geekclub.framework.utils.ApplicationUtil;
 import vip.geekclub.framework.utils.AssertUtil;
 import vip.geekclub.security.domain.value.Identifier;
@@ -81,7 +82,7 @@ public class PasswordCredential extends Credential {
      */
     public void verifyPassword(String rawPassword) {
         if(!passwordEncoder.get().matches(rawPassword, this.password)){
-            throw new BusinessException(401,"密码错误");
+            throw new InvalidCredentialsException("密码错误");
         }
     }
 
@@ -90,7 +91,7 @@ public class PasswordCredential extends Credential {
      */
     public void changePassword(String oldPassword, String newPassword) {
         if(!passwordEncoder.get().matches(oldPassword, this.password)){
-            throw new BusinessException(401,"旧密码错误");
+            throw new InvalidCredentialsException("旧密码错误");
         }
         setPassword(newPassword);
     }

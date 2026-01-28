@@ -7,6 +7,7 @@ import org.springframework.transaction.annotation.Transactional;
 import vip.geekclub.framework.command.CommandHandler;
 import vip.geekclub.framework.command.CommandResult;
 import vip.geekclub.framework.exception.BusinessException;
+import vip.geekclub.framework.exception.InvalidCredentialsException;
 import vip.geekclub.framework.exception.NotFoundException;
 import vip.geekclub.security.domain.model.Principal;
 import vip.geekclub.security.domain.repository.PasswordCredentialRepository;
@@ -26,14 +27,14 @@ public class VerifyPasswordCommandHandler implements CommandHandler<VerifyPasswo
 
         // 1. 获取该用户的密码凭证
         var credential = passwordCredentialRepository.findByIdentifiersValue(command.identifier())
-                .orElseThrow(() -> new NotFoundException("账户未找到"));
+                .orElseThrow(() -> new InvalidCredentialsException("账户未找到"));
 
         // 2. 验证用户名和密码
         credential.verifyPassword(command.password());
 
         // 3. 获取用户信息
         Principal principal = principalRepository.findById(credential.getPrincipalId())
-                .orElseThrow(() -> new NotFoundException("用户未找到"));
+                .orElseThrow(() -> new InvalidCredentialsException("用户未找到"));
 
         return CommandResult.ok(new VerifyPasswordResult(principal.getAuthId(), principal.getUserType()));
     }

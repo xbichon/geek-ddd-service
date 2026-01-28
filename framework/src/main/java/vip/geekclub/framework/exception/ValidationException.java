@@ -1,5 +1,8 @@
 package vip.geekclub.framework.exception;
 
+/**
+ * 验证异常
+ */
 public class ValidationException extends BusinessException {
     public ValidationException(String message) {
         super( 400,message);
