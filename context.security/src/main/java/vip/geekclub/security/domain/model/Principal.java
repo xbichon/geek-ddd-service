@@ -32,6 +32,9 @@ public class Principal extends EntitySupport implements AggregateRoot<Long> {
     @NotNull(message = "用户类型不能为空")
     private String userType;
 
+    @Column(name = "is_super_admin")
+    private boolean isSuperAdmin = false;
+
     @Column(name = "auth_id")
     private UUID authId;
 
@@ -41,28 +44,22 @@ public class Principal extends EntitySupport implements AggregateRoot<Long> {
     @OnDelete(action = OnDeleteAction.CASCADE)
     private final Set<Long> roleIds = new HashSet<>();
 
-    public Principal(String userType) {
-        this(userType, null);
-    }
-
-    public Principal(String userType, UUID authId) {
-        this.userType = userType;
-        this.authId = authId;
-        AssertUtil.notNull(userType, () -> "应用类型不能为空");
-    }
-
     public Principal(String userType, UUID authId, Set<Long> roleIds) {
         AssertUtil.notNull(userType, () -> "应用类型不能为空");
         this.userType = userType;
         this.authId = authId;
-
         if (roleIds != null && !roleIds.isEmpty()) {
-            if (roleIds.contains(-1L)) {
-                this.roleIds.add(-1L);
-            } else {
-                this.roleIds.addAll(roleIds);
-            }
+            this.roleIds.addAll(roleIds);
         }
+    }
+
+    /**
+     * 新建超级管理员(Teacher)
+     */
+    public static Principal newAdmin(String userType, UUID authId) {
+        var principal = new Principal(userType, authId, null);
+        principal.isSuperAdmin = true;
+        return principal;
     }
 
     /**
@@ -77,14 +74,5 @@ public class Principal extends EntitySupport implements AggregateRoot<Long> {
         this.roleIds.retainAll(roleIds);
         // 增加新的角色
         this.roleIds.addAll(roleIds);
-    }
-
-    /**
-     * 新建超级管理员(Teacher)
-     */
-    public static Principal newAdmin(String userType) {
-        Principal principal = new Principal(userType);
-        principal.roleIds.add(-1L);
-        return principal;
     }
 }

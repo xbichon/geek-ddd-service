@@ -25,7 +25,7 @@ public class AuthenticationQueryService {
                         credentialTable.PASSWORD,
                         credentialTable.TYPE,
                         credentialTable.PRINCIPAL_ID,
-                        principalTable.APP_TYPE
+                        principalTable.USER_TYPE
                 )
                 .from(credentialTable)
                 .join(principalTable).on(credentialTable.PRINCIPAL_ID.eq(principalTable.ID))
@@ -38,7 +38,7 @@ public class AuthenticationQueryService {
                                 record.get(credentialTable.PASSWORD),
                                 CredentialType.valueOf(record.get(credentialTable.TYPE)),
                                 record.get(credentialTable.PRINCIPAL_ID),
-                                record.get(principalTable.APP_TYPE))
+                                record.get(principalTable.USER_TYPE))
                 );
     }
 }
