@@ -11,7 +11,7 @@ import lombok.Setter;
 import vip.geekclub.security.domain.value.ThirdPartyType;
 
 @Entity
-@Table(name = "security_third_party_credential")
+@Table(name = "security_credential_third_party")
 @Getter
 @Setter(AccessLevel.PRIVATE)
 @NoArgsConstructor(access = AccessLevel.PROTECTED)

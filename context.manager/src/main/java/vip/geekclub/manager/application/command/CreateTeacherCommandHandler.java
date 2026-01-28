@@ -2,17 +2,20 @@ package vip.geekclub.manager.application.command;
 
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import vip.geekclub.framework.command.CommandDispatcher;
 import vip.geekclub.framework.command.CommandHandler;
 import vip.geekclub.framework.command.CommandResult;
 import vip.geekclub.framework.command.IdResult;
 import vip.geekclub.manager.application.command.dto.CreateTeacherCommand;
-import vip.geekclub.manager.application.port.dto.TeacherCredential;
 import vip.geekclub.manager.domain.model.Teacher;
 import vip.geekclub.manager.domain.repository.TeacherRepository;
 import lombok.RequiredArgsConstructor;
 import vip.geekclub.manager.domain.service.TeacherCreationUpdateValidator;
-import vip.geekclub.security.domain.value.CredentialType;
+import vip.geekclub.security.application.command.principal.CreatePrincipalCommand;
+import vip.geekclub.security.domain.value.Identifier;
+import vip.geekclub.security.domain.value.IdentifierType;
 
+import java.util.List;
 import java.util.Set;
 
 /**
@@ -25,7 +28,6 @@ public class CreateTeacherCommandHandler implements CommandHandler<CreateTeacher
 
     private final TeacherRepository teacherRepository;
     private final TeacherCreationUpdateValidator teacherCreationUpdateValidator;
-//    private final SecurityServicePort securityServicePort;
 
     @Override
     public CommandResult<IdResult> execute(CreateTeacherCommand command) {
@@ -43,12 +45,14 @@ public class CreateTeacherCommandHandler implements CommandHandler<CreateTeacher
         teacherRepository.save(teacher);
 
         // 3. 创建用户的凭证
-//        securityServicePort.createCredential(new TeacherCredential(teacher.getAuthId()
-//                , teacher.getEmail()
-//                , "12345678"
-//                , CredentialType.EMAIL
-//                , Set.of()
-//        ));
+        CommandDispatcher.dispatch(new CreatePrincipalCommand(
+                teacher.getAuthId().toString(),
+                "teacher",
+                List.of(new Identifier(IdentifierType.EMAIL, teacher.getEmail())
+                        , new Identifier(IdentifierType.PHONE, teacher.getPhone())),
+                "123456",
+                Set.of()
+        ));
 
         // 4. 返回结果
         return CommandResult.ok(teacher.getId());

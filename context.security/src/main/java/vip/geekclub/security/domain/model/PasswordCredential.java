@@ -17,7 +17,7 @@ import java.util.List;
 import java.util.Objects;
 
 @Entity
-@Table(name = "security_password_credential")
+@Table(name = "security_credential_password")
 @Getter
 @Setter(AccessLevel.PRIVATE)
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
@@ -32,7 +32,7 @@ public class PasswordCredential extends Credential {
     @ElementCollection
     @CollectionTable(
         name = "security_identifier",
-        joinColumns = @JoinColumn(name = "password_credential_id")
+        joinColumns = @JoinColumn(name = "credential_id")
     )
     private List<Identifier> identifiers = new ArrayList<>();
 
@@ -59,29 +59,6 @@ public class PasswordCredential extends Credential {
     }
 
     /**
-     * 添加标识符
-     */
-    public void addIdentifier(Identifier identifier) {
-        if (identifier == null) {
-            throw new IllegalArgumentException("标识符不能为空");
-        }
-        // 检查是否已存在相同类型的标识符
-        for (Identifier existing : identifiers) {
-            if (existing.type() == identifier.type()) {
-                throw new IllegalArgumentException("该类型的标识符已存在");
-            }
-        }
-        identifiers.add(identifier);
-    }
-
-    /**
-     * 移除标识符
-     */
-    public void removeIdentifier(Identifier identifier) {
-        identifiers.removeIf(i -> i.type() == identifier.type());
-    }
-
-    /**
      * 根据类型获取标识符
      */
     public Identifier getIdentifier(IdentifierType type) {
@@ -89,14 +66,6 @@ public class PasswordCredential extends Credential {
             .filter(i -> i.type() == type)
             .findFirst()
             .orElse(null);
-    }
-
-    /**
-     * 根据类型获取标识符值
-     */
-    public String getIdentifierValue(IdentifierType type) {
-        Identifier identifier = getIdentifier(type);
-        return identifier != null ? identifier.value() : null;
     }
 
     /**

@@ -11,14 +11,11 @@ import vip.geekclub.security.domain.value.Identifier;
 
 import java.util.List;
 import java.util.Set;
-import java.util.UUID;
 
 @CommandHandlerMapping(CreatePrincipalCommandHandler.class)
 public record CreatePrincipalCommand(
-        String identifier,
         @NotNull(message = "外部用户ID不能为空") String authId,
         @NotNull(message = "应用类型不能为空") String userType,
-        Set<Long> roleIds,
 
         @Valid
         @NotEmpty(message = "标识符不能为空")
@@ -27,6 +24,9 @@ public record CreatePrincipalCommand(
 
         @NotBlank(message = "密码不能为空")
         @Size(min = 6, max = 20, message = "密码长度必须在6-20个字符之间")
-        String password
+        String password,
+
+        Set<Long> roleIds
+
 ) implements Command {
 }

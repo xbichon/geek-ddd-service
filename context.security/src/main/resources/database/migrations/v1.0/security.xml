@@ -11,7 +11,7 @@
                 <constraints primaryKey="true" nullable="false"/>
             </column>
             <column name="user_type" type="VARCHAR(20)"/>
-            <column name="auth_id" type="VARCHAR(20)">
+            <column name="auth_id" type="VARCHAR(36)">
                 <constraints unique="true" nullable="false"/>
             </column>
             <column name="is_super_admin" type="boolean"/>
@@ -28,7 +28,7 @@
 
     <!-- 创建密码凭证表结构 -->
     <changeSet id="1748008821470-2" author="bichon">
-        <createTable tableName="security_password_credential">
+        <createTable tableName="security_credential_password">
             <column name="id" type="BIGINT" autoIncrement="true" remarks="主键">
                 <constraints primaryKey="true" nullable="false"/>
             </column>
@@ -40,7 +40,7 @@
             <column name="version" type="BIGINT" defaultValue="0" remarks="版本"/>
         </createTable>
 
-        <createIndex tableName="security_password_credential" indexName="idx_principal_id">
+        <createIndex tableName="security_credential_password" indexName="idx_principal_id">
             <column name="principal_id"/>
         </createIndex>
     </changeSet>
@@ -51,7 +51,7 @@
             <column name="id" type="BIGINT" autoIncrement="true" remarks="主键">
                 <constraints primaryKey="true" nullable="false"/>
             </column>
-            <column name="password_credential_id" type="BIGINT" remarks="关联密码凭证ID">
+            <column name="credential_id" type="BIGINT" remarks="关联密码凭证ID">
                 <constraints nullable="false"/>
             </column>
             <column name="type" type="VARCHAR(20)" remarks="标识符类型：USERNAME/EMAIL/PHONE"/>
@@ -63,14 +63,14 @@
             <column name="value"/>
         </createIndex>
 
-        <createIndex tableName="security_identifier" indexName="idx_password_credential_id">
-            <column name="password_credential_id"/>
+        <createIndex tableName="security_identifier" indexName="idx_credential_id">
+            <column name="credential_id"/>
         </createIndex>
     </changeSet>
 
     <!-- 创建三方凭证表结构 -->
     <changeSet id="1748008821470-4" author="bichon">
-        <createTable tableName="security_third_party_credential">
+        <createTable tableName="security_credential_third_party">
             <column name="id" type="BIGINT" autoIncrement="true" remarks="主键">
                 <constraints primaryKey="true" nullable="false"/>
             </column>
@@ -83,11 +83,11 @@
             <column name="version" type="BIGINT" defaultValue="0" remarks="版本"/>
         </createTable>
 
-        <createIndex tableName="security_third_party_credential" indexName="idx_principal_id">
+        <createIndex tableName="security_credential_third_party" indexName="idx_principal_id">
             <column name="principal_id"/>
         </createIndex>
 
-        <createIndex tableName="security_third_party_credential" indexName="idx_provider_identifier" unique="true">
+        <createIndex tableName="security_credential_third_party" indexName="idx_provider_identifier" unique="true">
             <column name="provider"/>
             <column name="identifier"/>
         </createIndex>

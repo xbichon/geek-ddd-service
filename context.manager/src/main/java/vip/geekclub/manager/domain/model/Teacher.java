@@ -73,7 +73,7 @@ public class Teacher extends EntitySupport implements AggregateRoot<Long> {
     private String remark;
 
     @Column(name = "auth_id", unique = true, nullable = false)
-    private UUID authId;
+    private String authId;
 
     // ================================ 构造函数 ================================
 
@@ -88,7 +88,7 @@ public class Teacher extends EntitySupport implements AggregateRoot<Long> {
         setStatus(TeacherStatus.ENABLED);
         setRemark(remark);
 
-        this.authId = UUID.randomUUID();
+        this.authId = UUID.randomUUID().toString();
     }
 
     // ================================ 业务方法 ================================
