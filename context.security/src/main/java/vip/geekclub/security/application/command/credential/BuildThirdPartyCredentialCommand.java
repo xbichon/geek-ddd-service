@@ -9,14 +9,14 @@ import vip.geekclub.security.domain.value.ThirdPartyType;
 
 import java.util.UUID;
 
-@CommandHandlerMapping(CreateThirdPartyCredentialCommandHandler.class)
-public record CreateThirdPartyCredentialCommand(
+@CommandHandlerMapping(BuildThirdPartyCredentialCommandHandler.class)
+public record BuildThirdPartyCredentialCommand(
         @NotBlank(message = "用户ID不能为空") UUID authId,
         @NotNull(message = "第三方提供商不能为空") ThirdPartyType type,
         @NotBlank(message = "标识符不能为空") String identifier
 ) implements Command {
 
-    public CreateThirdPartyCredentialCommand {
+    public BuildThirdPartyCredentialCommand {
         identifier = StringUtils.trimAllWhitespace(identifier);
     }
 }

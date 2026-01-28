@@ -14,14 +14,14 @@ import vip.geekclub.security.exception.AuthenticationAlreadyExistsException;
 
 @AllArgsConstructor
 @Service
-public class CreateThirdPartyCredentialCommandHandler implements CommandHandler<CreateThirdPartyCredentialCommand, Void> {
+public class BuildThirdPartyCredentialCommandHandler implements CommandHandler<BuildThirdPartyCredentialCommand, Void> {
 
     private final ThirdPartyCredentialRepository thirdPartyCredentialRepository;
     private final PrincipalRepository principalRepository;
 
     @Override
     @Transactional
-    public CommandResult<Void> execute(CreateThirdPartyCredentialCommand command) {
+    public CommandResult<Void> execute(BuildThirdPartyCredentialCommand command) {
         // 1. 查询用户
         Principal principal = principalRepository.findByAuthId(command.authId())
                 .orElseThrow(() -> new NotFoundException("用户不存在"));
