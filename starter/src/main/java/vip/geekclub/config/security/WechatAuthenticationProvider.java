@@ -7,7 +7,6 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.stereotype.Service;
 import vip.geekclub.framework.security.WechatAuthenticationToken;
-import vip.geekclub.security.application.query.AuthenticationQueryService;
 
 /**
  * 微信小程序登录 Provider：
@@ -19,7 +18,6 @@ import vip.geekclub.security.application.query.AuthenticationQueryService;
 @RequiredArgsConstructor
 public class WechatAuthenticationProvider implements AuthenticationProvider {
 
-    private final AuthenticationQueryService authenticationQueryService;
 
     @Override
     public Authentication authenticate(@NonNull Authentication authentication) throws AuthenticationException {

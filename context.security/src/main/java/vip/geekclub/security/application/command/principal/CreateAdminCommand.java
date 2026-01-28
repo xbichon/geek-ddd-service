@@ -6,9 +6,6 @@ import jakarta.validation.constraints.Size;
 import org.springframework.util.StringUtils;
 import vip.geekclub.framework.command.Command;
 import vip.geekclub.framework.command.CommandHandlerMapping;
-import vip.geekclub.security.domain.value.CredentialType;
-
-import java.util.UUID;
 
 @CommandHandlerMapping(CreateAdminCommandHandler.class)
 public record CreateAdminCommand(

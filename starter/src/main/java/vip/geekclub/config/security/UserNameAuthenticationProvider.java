@@ -8,17 +8,12 @@ import vip.geekclub.framework.security.JwtAuthentication;
 import vip.geekclub.framework.security.JwtPrincipal;
 import vip.geekclub.security.application.command.credential.VerifyPasswordCommand;
 import vip.geekclub.security.application.command.credential.VerifyPasswordResult;
-import vip.geekclub.security.application.query.AuthenticationQueryService;
-import vip.geekclub.security.application.query.dto.CredentialResult;
 import lombok.AllArgsConstructor;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
-import vip.geekclub.security.domain.value.CredentialType;
-import vip.geekclub.security.domain.value.IdentifierType;
 
 
 /**
@@ -32,8 +27,6 @@ import vip.geekclub.security.domain.value.IdentifierType;
 @AllArgsConstructor
 public class UserNameAuthenticationProvider implements AuthenticationProvider {
 
-    private final PasswordEncoder passwordEncoder;
-    private final AuthenticationQueryService authenticationQueryService;
 
     @Override
     public Authentication authenticate(@NonNull Authentication authentication) throws AuthenticationException {
