@@ -6,8 +6,7 @@ import vip.geekclub.framework.domain.model.AggregateRoot;
 import vip.geekclub.framework.domain.model.EntitySupport;
 
 @MappedSuperclass
-@Getter
-@Setter(AccessLevel.PROTECTED)
+@Getter @Setter(AccessLevel.PROTECTED)
 @EqualsAndHashCode(callSuper = false)
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor(access = AccessLevel.PRIVATE)

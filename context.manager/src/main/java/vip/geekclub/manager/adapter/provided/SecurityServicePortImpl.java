@@ -18,13 +18,13 @@
 //    @Override
 //    public void createCredential(TeacherCredential teacherCredential) {
 //        var credentialDto = new PasswordCredentialDto(
-//                List.of(new PasswordCredentialDto.IdentifierDto(teacherCredential.identifier(), teacherCredential.credentialType()))
+//                List.of(new PasswordCredentialDto.IdentifierDto(teacherCredential.code(), teacherCredential.credentialType()))
 //                teacherCredential.password(),
 //                teacherCredential.credentialType()
 //        );
 //
 //        CommandDispatcher.dispatch(new CreatePrincipalCommand(
-//                teacherCredential.identifier(),
+//                teacherCredential.code(),
 //                teacherCredential.authId(),
 //                "manager",
 //                Set.of(credentialDto),

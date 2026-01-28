@@ -19,6 +19,10 @@ public record CommandResult<T>(String message, T data) {
         return new CommandResult<>("操作成功", new IdResult(primaryKey));
     }
 
+    public static <T> CommandResult<T> ok(T result) {
+        return new CommandResult<>("操作成功", result);
+    }
+
     /**
      * 创建包含消息和主键的成功结果
      */

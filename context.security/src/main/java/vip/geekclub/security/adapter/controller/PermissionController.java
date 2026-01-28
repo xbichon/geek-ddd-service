@@ -20,7 +20,7 @@ public class PermissionController {
     @GetMapping("/permission")
     public ApiResponse<Set<String>> getPermissionByUserId(UserSession userSession) {
 
-        Set<String> permissions = permissionQueryService.getPermissionByUserId(userSession.userId());
+        Set<String> permissions = permissionQueryService.getPermissionByAuthId(userSession.authId());
         return ApiResponse.success(permissions);
     }
 }

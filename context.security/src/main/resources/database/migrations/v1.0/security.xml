@@ -11,7 +11,7 @@
                 <constraints primaryKey="true" nullable="false"/>
             </column>
             <column name="user_type" type="VARCHAR(20)"/>
-            <column name="auth_id" type="binary(16)">
+            <column name="auth_id" type="VARCHAR(20)">
                 <constraints unique="true" nullable="false"/>
             </column>
             <column name="is_super_admin" type="boolean"/>

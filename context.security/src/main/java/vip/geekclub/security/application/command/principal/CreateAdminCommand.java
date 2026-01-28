@@ -19,8 +19,8 @@ public record CreateAdminCommand(
         @Size(min = 6, max = 20, message = "密码长度必须在6-20个字符之间")
         String password,
 
-        @NotNull(message = "外部用户ID不能为空")
-        UUID authId,
+        @NotBlank(message = "认证标识不能为空")
+        String authId,
 
         @NotNull(message = "应用类型不能为空")
         String userType
@@ -29,5 +29,6 @@ public record CreateAdminCommand(
     public CreateAdminCommand {
         username = StringUtils.trimAllWhitespace(username);
         password = StringUtils.trimAllWhitespace(password);
+        authId = StringUtils.trimAllWhitespace(authId);
     }
 }

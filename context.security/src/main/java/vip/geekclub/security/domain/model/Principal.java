@@ -13,7 +13,6 @@ import vip.geekclub.framework.utils.AssertUtil;
 
 import java.util.HashSet;
 import java.util.Set;
-import java.util.UUID;
 
 @Entity
 @Table(name = "security_principal")
@@ -36,7 +35,7 @@ public class Principal extends EntitySupport implements AggregateRoot<Long> {
     private boolean isSuperAdmin = false;
 
     @Column(name = "auth_id")
-    private UUID authId;
+    private String authId;
 
     @ElementCollection(fetch = FetchType.EAGER)
     @CollectionTable(name = "security_principal_role", joinColumns = @JoinColumn(name = "principal_id"))
@@ -44,7 +43,7 @@ public class Principal extends EntitySupport implements AggregateRoot<Long> {
     @OnDelete(action = OnDeleteAction.CASCADE)
     private final Set<Long> roleIds = new HashSet<>();
 
-    public Principal(String userType, UUID authId, Set<Long> roleIds) {
+    public Principal(String userType, String authId, Set<Long> roleIds) {
         AssertUtil.notNull(userType, () -> "应用类型不能为空");
         this.userType = userType;
         this.authId = authId;
@@ -56,7 +55,7 @@ public class Principal extends EntitySupport implements AggregateRoot<Long> {
     /**
      * 新建超级管理员(Teacher)
      */
-    public static Principal newAdmin(String userType, UUID authId) {
+    public static Principal newAdmin(String userType, String authId) {
         var principal = new Principal(userType, authId, null);
         principal.isSuperAdmin = true;
         return principal;

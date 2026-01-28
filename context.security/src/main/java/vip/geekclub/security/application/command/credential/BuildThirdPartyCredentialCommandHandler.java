@@ -32,12 +32,12 @@ public class BuildThirdPartyCredentialCommandHandler implements CommandHandler<B
         }
 
         // 3. 认证标识查重
-        if (thirdPartyCredentialRepository.existsByTypeAndCode(command.type(), command.identifier())) {
+        if (thirdPartyCredentialRepository.existsByTypeAndCode(command.type(), command.code())) {
             throw new AuthenticationAlreadyExistsException("该第三方标识符已被使用");
         }
 
         // 4. 创建第三方凭证
-        ThirdPartyCredential credential = new ThirdPartyCredential(principal.getId(), command.type(), command.identifier());
+        ThirdPartyCredential credential = new ThirdPartyCredential(principal.getId(), command.type(), command.code());
         thirdPartyCredentialRepository.save(credential);
 
         return CommandResult.ok();

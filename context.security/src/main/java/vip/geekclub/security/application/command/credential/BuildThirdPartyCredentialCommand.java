@@ -13,10 +13,10 @@ import java.util.UUID;
 public record BuildThirdPartyCredentialCommand(
         @NotBlank(message = "用户ID不能为空") UUID authId,
         @NotNull(message = "第三方提供商不能为空") ThirdPartyType type,
-        @NotBlank(message = "标识符不能为空") String identifier
+        @NotBlank(message = "标识符不能为空") String code
 ) implements Command {
 
     public BuildThirdPartyCredentialCommand {
-        identifier = StringUtils.trimAllWhitespace(identifier);
+        code = StringUtils.trimAllWhitespace(code);
     }
 }

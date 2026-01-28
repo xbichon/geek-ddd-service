@@ -8,6 +8,8 @@ import org.springframework.stereotype.Repository;
 import vip.geekclub.security.domain.model.PasswordCredential;
 import vip.geekclub.security.domain.value.IdentifierType;
 
+import java.util.Optional;
+
 @Repository
 public interface PasswordCredentialRepository extends JpaRepository<@NonNull PasswordCredential, @NonNull Long> {
 
@@ -32,6 +34,9 @@ public interface PasswordCredentialRepository extends JpaRepository<@NonNull Pas
             "WHERE i.type = :type AND i.value = :value")
     boolean existsByIdentifierTypeAndValue(@Param("type") IdentifierType type,
                                         @Param("value") String value);
+
+
+    Optional<PasswordCredential> findByIdentifiersValue( String value);
 
     /**
      * 根据凭证类型和用户 ID 检查是否已存在该类型的标识符

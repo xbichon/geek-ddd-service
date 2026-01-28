@@ -13,7 +13,7 @@ import java.util.Map;
  * JWT主体信息
  * 包含用户ID和用户类型信息
  */
-public record JwtPrincipal(Long userId, String userType) implements Principal {
+public record JwtPrincipal(String authId, String userType) implements Principal {
 
     private static final LazyUtils<JwtUtil> jwtUtil = new LazyUtils<>(() -> ApplicationUtil.getBean(JwtUtil.class));
 
@@ -22,13 +22,13 @@ public record JwtPrincipal(Long userId, String userType) implements Principal {
     private static final String USER_TYPE_CLAIM = "userType";
 
     public JwtPrincipal {
-        AssertUtil.greaterThan(userId, 0, "用户ID不能为空且必须大于0");
+        AssertUtil.notBlank(authId, ()->"用户ID不能为空");
         AssertUtil.notNull(userType, "用户类型不能为空");
     }
 
     @Override
     public String getName() {
-        return userId.toString();
+        return "" ;
     }
 
     /**
@@ -36,7 +36,7 @@ public record JwtPrincipal(Long userId, String userType) implements Principal {
      */
     public Map<String, Object> getMap() {
         Map<String, Object> jwtMap = new HashMap<>();
-        jwtMap.put(SUBJECT_CLAIM, userId.toString());
+        jwtMap.put(SUBJECT_CLAIM, authId);
         jwtMap.put(USER_TYPE_CLAIM, userType);
         return jwtMap;
     }
@@ -74,9 +74,9 @@ public record JwtPrincipal(Long userId, String userType) implements Principal {
         AssertUtil.notNull(userTypeClaim, "JWT声明缺少必要信息");
 
         try {
-            Long userId = Long.valueOf(subClaim.toString());
+            String authId = subClaim.toString();
             String userType = userTypeClaim.toString();
-            return new JwtPrincipal(userId, userType);
+            return new JwtPrincipal(authId, userType);
         } catch (NumberFormatException e) {
             throw new IllegalArgumentException("用户ID格式错误: " + subClaim, e);
         } catch (IllegalArgumentException e) {

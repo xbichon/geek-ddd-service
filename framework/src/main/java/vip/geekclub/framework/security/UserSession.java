@@ -1,4 +1,4 @@
 package vip.geekclub.framework.security;
 
-public record UserSession(Long userId) {
+public record UserSession(String authId) {
 }

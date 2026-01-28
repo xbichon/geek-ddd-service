@@ -58,10 +58,6 @@ public class JwtAuthentication implements Authentication {
         return jwtPrincipal.getName();
     }
 
-    public Long getUserId() {
-        return jwtPrincipal.userId();
-    }
-
     /**
      * 获取JWT令牌（使用默认过期时间）
      *

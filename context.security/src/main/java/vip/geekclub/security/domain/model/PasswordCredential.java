@@ -6,6 +6,7 @@ import jakarta.validation.constraints.Size;
 import lombok.*;
 import org.springframework.data.util.Lazy;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import vip.geekclub.framework.exception.BusinessException;
 import vip.geekclub.framework.utils.ApplicationUtil;
 import vip.geekclub.framework.utils.AssertUtil;
 import vip.geekclub.security.domain.value.Identifier;
@@ -109,15 +110,19 @@ public class PasswordCredential extends Credential {
     /**
      * 验证密码
      */
-    public boolean verifyPassword(String rawPassword) {
-        return passwordEncoder.get().matches(rawPassword, this.password);
+    public void verifyPassword(String rawPassword) {
+        if(!passwordEncoder.get().matches(rawPassword, this.password)){
+            throw new BusinessException(401,"密码错误");
+        }
     }
 
     /**
      * 变更密码
      */
     public void changePassword(String oldPassword, String newPassword) {
-        AssertUtil.isTrue(verifyPassword(oldPassword), () -> "旧密码错误");
+        if(!passwordEncoder.get().matches(oldPassword, this.password)){
+            throw new BusinessException(401,"旧密码错误");
+        }
         setPassword(newPassword);
     }
 

@@ -2,8 +2,12 @@ package vip.geekclub.config.security;
 
 import lombok.NonNull;
 import org.springframework.security.authentication.AuthenticationProvider;
+import vip.geekclub.framework.command.CommandDispatcher;
+import vip.geekclub.framework.command.CommandResult;
 import vip.geekclub.framework.security.JwtAuthentication;
 import vip.geekclub.framework.security.JwtPrincipal;
+import vip.geekclub.security.application.command.credential.VerifyPasswordCommand;
+import vip.geekclub.security.application.command.credential.VerifyPasswordResult;
 import vip.geekclub.security.application.query.AuthenticationQueryService;
 import vip.geekclub.security.application.query.dto.CredentialResult;
 import lombok.AllArgsConstructor;
@@ -42,17 +46,16 @@ public class UserNameAuthenticationProvider implements AuthenticationProvider {
         String username = token.getPrincipal().toString();
         String password = token.getCredentials().toString();
 
-        // 使用更明确的异常消息
-        CredentialResult credentialResult = authenticationQueryService
-                .getAuthenticationByIdentifier(username, IdentifierType.USERNAME)
-                .orElseThrow(() -> new BadCredentialsException("用户不存在"));
+        try {
+            VerifyPasswordCommand command = new VerifyPasswordCommand(username, password);
+            CommandResult<VerifyPasswordResult> commandResult = CommandDispatcher.dispatch(command);
+            VerifyPasswordResult verifyPasswordResult = commandResult.data();
 
-        if (!passwordEncoder.matches(password, credentialResult.password())) {
-            throw new BadCredentialsException("用户名或密码错误");
+            JwtPrincipal jwtPrincipal = new JwtPrincipal(verifyPasswordResult.authId(), verifyPasswordResult.userType().toString());
+            return new JwtAuthentication(jwtPrincipal);
+        } catch (Exception e) {
+            throw new BadCredentialsException(e.getMessage());
         }
-
-        JwtPrincipal jwtPrincipal = new JwtPrincipal(credentialResult.userId(), credentialResult.userType().toString());
-        return new JwtAuthentication(jwtPrincipal);
     }
 
     @Override

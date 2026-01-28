@@ -57,7 +57,7 @@ public class JwtRequestFilter extends OncePerRequestFilter {
 
     private void setAuthentication(String tokenValue) {
         JwtPrincipal jwtPrincipal = JwtPrincipal.buildByToken(tokenValue);
-        Set<String> permissions = permissionQueryService.getPermissionByUserId(jwtPrincipal.userId());
+        Set<String> permissions = permissionQueryService.getPermissionByAuthId(jwtPrincipal.authId());
 
         JwtAuthentication jwtAuthentication = new JwtAuthentication(jwtPrincipal, permissions);
         SecurityContextHolder.getContext().setAuthentication(jwtAuthentication);

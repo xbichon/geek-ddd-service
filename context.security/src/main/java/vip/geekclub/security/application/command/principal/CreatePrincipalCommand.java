@@ -16,7 +16,7 @@ import java.util.UUID;
 @CommandHandlerMapping(CreatePrincipalCommandHandler.class)
 public record CreatePrincipalCommand(
         String identifier,
-        @NotNull(message = "外部用户ID不能为空") UUID authId,
+        @NotNull(message = "外部用户ID不能为空") String authId,
         @NotNull(message = "应用类型不能为空") String userType,
         Set<Long> roleIds,
 
