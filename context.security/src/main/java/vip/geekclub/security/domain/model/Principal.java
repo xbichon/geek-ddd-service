@@ -30,7 +30,7 @@ public class Principal extends EntitySupport implements AggregateRoot<Long> {
     private Long id;
 
     @NotNull(message = "用户类型不能为空")
-    private String appType;
+    private String userType;
 
     @Column(name = "auth_id")
     private UUID authId;
@@ -41,19 +41,19 @@ public class Principal extends EntitySupport implements AggregateRoot<Long> {
     @OnDelete(action = OnDeleteAction.CASCADE)
     private final Set<Long> roleIds = new HashSet<>();
 
-    public Principal(String appType) {
-        this(appType, null);
+    public Principal(String userType) {
+        this(userType, null);
     }
 
-    public Principal(String appType, UUID authId) {
-        this.appType = appType;
+    public Principal(String userType, UUID authId) {
+        this.userType = userType;
         this.authId = authId;
-        AssertUtil.notNull(appType, () -> "应用类型不能为空");
+        AssertUtil.notNull(userType, () -> "应用类型不能为空");
     }
 
-    public Principal(String appType, UUID authId, Set<Long> roleIds) {
-        AssertUtil.notNull(appType, () -> "应用类型不能为空");
-        this.appType = appType;
+    public Principal(String userType, UUID authId, Set<Long> roleIds) {
+        AssertUtil.notNull(userType, () -> "应用类型不能为空");
+        this.userType = userType;
         this.authId = authId;
 
         if (roleIds != null && !roleIds.isEmpty()) {

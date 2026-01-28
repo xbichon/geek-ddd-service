@@ -11,7 +11,7 @@
             <column name="id" type="BIGINT" autoIncrement="true" remarks="主键">
                 <constraints primaryKey="true" nullable="false"/>
             </column>
-            <column name="app_type" type="VARCHAR(20)"/>
+            <column name="user_type" type="VARCHAR(20)"/>
             <column name="auth_id" type="binary(16)">
                 <constraints unique="true" nullable="false"/>
             </column>
