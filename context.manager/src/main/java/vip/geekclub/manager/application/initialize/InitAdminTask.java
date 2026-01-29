@@ -1,4 +1,4 @@
-package vip.geekclub.manager.application.init;
+package vip.geekclub.manager.application.initialize;
 
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -14,7 +14,7 @@ import java.beans.Transient;
 @Slf4j
 @Service
 @AllArgsConstructor
-public class InitAdminRunner implements InitTask {
+public class InitAdminTask implements InitTask {
     private final TeacherRepository teacherRepository;
 
     @Transient
