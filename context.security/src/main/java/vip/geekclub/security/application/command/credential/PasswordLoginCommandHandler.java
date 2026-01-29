@@ -6,6 +6,7 @@ import org.springframework.transaction.annotation.Transactional;
 import vip.geekclub.framework.command.CommandHandler;
 import vip.geekclub.framework.command.CommandResult;
 import vip.geekclub.framework.exception.InvalidCredentialsException;
+import vip.geekclub.framework.security.UserPrincipal;
 import vip.geekclub.security.domain.model.Principal;
 import vip.geekclub.security.domain.repository.PasswordCredentialRepository;
 import vip.geekclub.security.domain.repository.PrincipalRepository;
@@ -13,14 +14,14 @@ import vip.geekclub.security.domain.repository.PrincipalRepository;
 
 @AllArgsConstructor
 @Service
-public class PasswordLoginCommandHandler implements CommandHandler<PasswordLoginCommand, AuthResult> {
+public class PasswordLoginCommandHandler implements CommandHandler<PasswordLoginCommand, UserPrincipal> {
 
     private final PasswordCredentialRepository passwordCredentialRepository;
     private final PrincipalRepository principalRepository;
 
     @Override
     @Transactional
-    public CommandResult<AuthResult> execute(PasswordLoginCommand command) {
+    public CommandResult<UserPrincipal> execute(PasswordLoginCommand command) {
 
         // 1. 获取该用户的密码凭证
         var credential = passwordCredentialRepository.findByIdentifiersValue(command.identifier())
@@ -33,6 +34,6 @@ public class PasswordLoginCommandHandler implements CommandHandler<PasswordLogin
         Principal principal = principalRepository.findById(credential.getPrincipalId())
                 .orElseThrow(() -> new InvalidCredentialsException("用户未找到"));
 
-        return CommandResult.ok(new AuthResult(principal.getAuthId(), principal.getUserType()));
+        return CommandResult.ok(new UserPrincipal(principal.getAuthId(), principal.getUserType()));
     }
 }

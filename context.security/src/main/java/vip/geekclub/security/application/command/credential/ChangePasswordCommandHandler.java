@@ -26,7 +26,6 @@ public class ChangePasswordCommandHandler implements CommandHandler<ChangePasswo
                 .orElseThrow(() -> new InvalidCredentialsException("账户未找到"));
 
         credential.changePassword(command.oldPassword(), command.newPassword());
-
         return CommandResult.ok();
     }
 }

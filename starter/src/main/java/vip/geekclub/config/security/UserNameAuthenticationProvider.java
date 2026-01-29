@@ -44,9 +44,8 @@ public class UserNameAuthenticationProvider implements AuthenticationProvider {
 
         try {
             PasswordLoginCommand command = new PasswordLoginCommand(username, password);
-            CommandResult<AuthResult> commandResult = CommandDispatcher.dispatch(command);
-            AuthResult authResult = commandResult.data();
-            UserPrincipal userPrincipal = new UserPrincipal(authResult.authId(), authResult.userType());
+            CommandResult<UserPrincipal> commandResult = CommandDispatcher.dispatch(command);
+            UserPrincipal userPrincipal = commandResult.data();
             return new UserAuthenticationToken(userPrincipal, Set.of());
         } catch (Exception e) {
             throw new BadCredentialsException(e.getMessage());
