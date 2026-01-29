@@ -2,6 +2,7 @@ package vip.geekclub.framework.utils;
 
 import io.jsonwebtoken.*;
 import io.jsonwebtoken.security.Keys;
+import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.context.properties.ConfigurationProperties;
@@ -99,6 +100,7 @@ public class JwtUtil {
         }
     }
 
+
     /**
      * 生成JWT令牌（简化版本）
      *
@@ -118,6 +120,25 @@ public class JwtUtil {
      */
     public String generateToken(Map<String, Object> claims, long expirationSeconds) {
         return generateToken("", claims, expirationSeconds);
+    }
+
+    /**
+     * 生成JWT令牌（将对象序列化为JSON存入data字段）
+     *
+     * @param data             数据对象
+     * @param expirationSeconds 过期时间（秒）
+     * @param <T>              数据类型
+     * @return JWT令牌字符串
+     */
+    public <T> String generateToken(T data, long expirationSeconds) {
+        try {
+            String jsonData = JsonUtils.getObjectMapper().writeValueAsString(data);
+            Map<String, Object> claims = Map.of("data", jsonData);
+            return generateToken(claims, expirationSeconds);
+        } catch (Exception e) {
+            log.error("生成JWT令牌失败: data={}, error={}", data, e.getMessage(), e);
+            throw new RuntimeException("生成JWT令牌失败", e);
+        }
     }
 
     /**
@@ -142,6 +163,28 @@ public class JwtUtil {
             throw new JwtParseException("令牌参数错误", e);
         } catch (Exception e) {
             throw new JwtParseException("令牌解析失败", e);
+        }
+    }
+
+    /**
+     * 解析token（从data字段反序列化为指定类型对象）
+     *
+     * @param token JWT令牌字符串
+     * @param type  目标类型
+     * @param <T>   数据类型
+     * @return 反序列化后的对象
+     */
+    public <T> T parseToken(String token, Class<T> type) {
+        Claims claims = parseToken(token);
+        Object data = claims.get("data");
+        if (data == null) {
+            throw new JwtParseException("令牌中缺少data字段");
+        }
+        try {
+            return JsonUtils.getObjectMapper().readValue(data.toString(), type);
+        } catch (Exception e) {
+            log.error("解析token数据失败: data={}, type={}, error={}", data, type.getName(), e.getMessage(), e);
+            throw new JwtParseException("解析token数据失败", e);
         }
     }
 

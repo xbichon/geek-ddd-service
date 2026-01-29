@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import vip.geekclub.framework.controller.ApiResponse;
 import vip.geekclub.framework.security.AuthSessionManager;
+import vip.geekclub.framework.security.AuthSessionManagerImpl;
 import vip.geekclub.framework.security.UserAuthenticationToken;
 import vip.geekclub.security.adapter.controller.dto.UserNameLoginRequest;
 
@@ -23,7 +24,7 @@ import vip.geekclub.security.adapter.controller.dto.UserNameLoginRequest;
 public class PasswordAuthController {
 
     private final AuthenticationManager authenticationManager;
-    private final long expirationSeconds = 60 * 60 * 24 * 30;
+    private final AuthSessionManager authSessionManager;
 
     /**
      * 用户名密码登录
@@ -56,7 +57,7 @@ public class PasswordAuthController {
         // 验证码验证通过，继续执行登录逻辑
         UsernamePasswordAuthenticationToken usernamePasswordAuthenticationToken = new UsernamePasswordAuthenticationToken(request.username(), request.password());
         UserAuthenticationToken userAuthenticationToken = (UserAuthenticationToken) authenticationManager.authenticate(usernamePasswordAuthenticationToken);
-        String jwtToken = AuthSessionManager.createSession(userAuthenticationToken);
+        String jwtToken = authSessionManager.createSession(userAuthenticationToken);
         return ApiResponse.success(jwtToken);
     }
 }

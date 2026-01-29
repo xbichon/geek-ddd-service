@@ -1,10 +1,13 @@
 package vip.geekclub.config.security;
 
+import lombok.AllArgsConstructor;
 import lombok.NonNull;
+import lombok.RequiredArgsConstructor;
 import org.springframework.util.AntPathMatcher;
+import vip.geekclub.framework.security.AuthSessionManager;
 import vip.geekclub.framework.security.UserAuthenticationToken;
 import vip.geekclub.framework.exception.JwtParseException;
-import vip.geekclub.framework.security.AuthSessionManager;
+import vip.geekclub.framework.security.AuthSessionManagerImpl;
 import vip.geekclub.security.application.query.PermissionQueryService;
 
 import java.util.Arrays;
@@ -26,17 +29,14 @@ import java.io.IOException;
  * 负责从请求中提取JWT令牌，验证其有效性，并设置认证信息
  */
 @Component
+@RequiredArgsConstructor
 public class JwtRequestFilter extends OncePerRequestFilter {
 
     private final HttpUtil httpUtil;
-    private final PermissionQueryService permissionQueryService;
     private final AntPathMatcher pathMatcher = new AntPathMatcher();
+    private final AuthSessionManager authSessionManager;
     private String[] PERMIT_PATHS = {};
 
-    public JwtRequestFilter(HttpUtil httpUtil, PermissionQueryService permissionQueryService) {
-        this.httpUtil = httpUtil;
-        this.permissionQueryService = permissionQueryService;
-    }
 
     @Override
     protected boolean shouldNotFilter(@NonNull HttpServletRequest request) {
@@ -48,7 +48,7 @@ public class JwtRequestFilter extends OncePerRequestFilter {
     protected void doFilterInternal(@NonNull HttpServletRequest request, @NonNull HttpServletResponse response, @NonNull FilterChain filterChain) throws ServletException, IOException {
         try {
             httpUtil.getJwtFromRequest(request).ifPresent(tokenValue -> {
-                UserAuthenticationToken userAuthenticationToken = AuthSessionManager.buildPrincipal(tokenValue);
+                UserAuthenticationToken userAuthenticationToken = authSessionManager.getSession(tokenValue);
                 SecurityContextHolder.getContext().setAuthentication(userAuthenticationToken);
             });
             filterChain.doFilter(request, response);

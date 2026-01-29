@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import vip.geekclub.framework.security.AuthSessionManager;
+import vip.geekclub.framework.security.AuthSessionManagerImpl;
 import vip.geekclub.framework.security.UserAuthenticationToken;
 import vip.geekclub.framework.security.WechatAuthenticationToken;
 import vip.geekclub.framework.controller.ApiResponse;
@@ -27,7 +28,7 @@ public class WechatAuthController {
 
     private final AuthenticationManager authenticationManager;
     private final WechatService wechatService;
-    private final static long DEFAULT_EXPIRATION_SECONDS = 60 * 60 * 24 * 30;
+    private final AuthSessionManager authSessionManager;
 
     /**
      * 微信小程序登录
@@ -41,7 +42,7 @@ public class WechatAuthController {
         String unionId = wechatService.getUnionId(request.code());
         WechatAuthenticationToken authRequest = new WechatAuthenticationToken(unionId);
         UserAuthenticationToken userSession = (UserAuthenticationToken) authenticationManager.authenticate(authRequest);
-        String jwtToken = AuthSessionManager.createSession(userSession);
+        String jwtToken = authSessionManager.createSession(userSession);
         return ApiResponse.success(jwtToken);
     }
 
@@ -61,7 +62,7 @@ public class WechatAuthController {
 
         // 派发绑定命令
 //        commandBus.dispatch(new CreateCredentialCommand());
-        String jwtToken = AuthSessionManager.createSession(userAuthenticationToken);
+        String jwtToken = authSessionManager.createSession(userAuthenticationToken);
         return ApiResponse.success(jwtToken);
     }
 }
