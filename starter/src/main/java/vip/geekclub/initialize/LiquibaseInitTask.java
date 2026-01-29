@@ -7,13 +7,11 @@ import liquibase.database.DatabaseFactory;
 import liquibase.database.jvm.JdbcConnection;
 import liquibase.resource.ClassLoaderResourceAccessor;
 import lombok.AllArgsConstructor;
-import lombok.NonNull;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.boot.ApplicationArguments;
-import org.springframework.boot.ApplicationRunner;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
-import org.springframework.scheduling.annotation.Async;
+import org.springframework.core.annotation.Order;
 import org.springframework.stereotype.Component;
+import vip.geekclub.framework.initialize.InitTask;
 
 import javax.sql.DataSource;
 
@@ -21,17 +19,13 @@ import javax.sql.DataSource;
 @Component
 @ConditionalOnProperty(name = "spring.liquibase.enabled", havingValue = "false", matchIfMissing = true)
 @AllArgsConstructor
-public class LazyLiquibaseRunner implements ApplicationRunner {
+@Order(Integer.MIN_VALUE)
+public class LiquibaseInitTask implements InitTask {
 
     private DataSource dataSource;
 
-    @Async
     @Override
-    public void run(@NonNull ApplicationArguments args) {
-        runLiquibaseMigration();
-    }
-
-    private void runLiquibaseMigration() {
+    public void initialize() {
         // 手动执行Liquibase迁移
         try {
             Liquibase liquibase = new Liquibase(

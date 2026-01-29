@@ -2,28 +2,24 @@ package vip.geekclub.manager.application.init;
 
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.boot.CommandLineRunner;
-import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 import vip.geekclub.framework.command.CommandDispatcher;
+import vip.geekclub.framework.initialize.InitTask;
 import vip.geekclub.manager.domain.model.Teacher;
 import vip.geekclub.manager.domain.repository.TeacherRepository;
 import vip.geekclub.security.application.command.principal.CreateAdminCommand;
 
 import java.beans.Transient;
 
-
 @Slf4j
 @Service
 @AllArgsConstructor
-public class InitAdminRunner implements CommandLineRunner {
+public class InitAdminRunner implements InitTask {
     private final TeacherRepository teacherRepository;
 
-    @Async
-    @Override
     @Transient
-    public void run(String[] args) {
-
+    @Override
+    public void initialize() {
         if (teacherRepository.existsByEmail("admin@example.com")) {
             return;
         }
@@ -39,7 +35,6 @@ public class InitAdminRunner implements CommandLineRunner {
         teacherRepository.save(teacher);
 
         // 2. 创建用户的凭证
-
         CreateAdminCommand command = new CreateAdminCommand(
                 "admin",
                 "888888",
@@ -47,6 +42,5 @@ public class InitAdminRunner implements CommandLineRunner {
                 "teacher"
         );
         CommandDispatcher.dispatch(command);
-
     }
 }
