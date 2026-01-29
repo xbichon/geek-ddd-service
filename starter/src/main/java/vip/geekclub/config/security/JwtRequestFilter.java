@@ -3,8 +3,9 @@ package vip.geekclub.config.security;
 import lombok.NonNull;
 import org.springframework.util.AntPathMatcher;
 import vip.geekclub.framework.exception.JwtParseException;
-import vip.geekclub.framework.security.JwtAuthentication;
-import vip.geekclub.framework.security.JwtPrincipal;
+import vip.geekclub.framework.security.UserAuthenticationToken;
+import vip.geekclub.framework.security.JwtToken;
+import vip.geekclub.framework.security.UserPrincipal;
 import vip.geekclub.security.application.query.PermissionQueryService;
 
 import java.util.Arrays;
@@ -56,11 +57,11 @@ public class JwtRequestFilter extends OncePerRequestFilter {
     }
 
     private void setAuthentication(String tokenValue) {
-        JwtPrincipal jwtPrincipal = JwtPrincipal.buildByToken(tokenValue);
-        Set<String> permissions = permissionQueryService.getPermissionByAuthId(jwtPrincipal.authId());
-
-        JwtAuthentication jwtAuthentication = new JwtAuthentication(jwtPrincipal, permissions);
-        SecurityContextHolder.getContext().setAuthentication(jwtAuthentication);
+        JwtToken jwtToken = JwtToken.buildPrincipal(tokenValue);
+        UserPrincipal userPrincipal = jwtToken.getUserPrincipal(); // 解析JWT令牌
+        Set<String> permissions = permissionQueryService.getPermissionByAuthId(userPrincipal.authId());
+        UserAuthenticationToken userAuthenticationToken = new UserAuthenticationToken(userPrincipal, permissions);
+        SecurityContextHolder.getContext().setAuthentication(userAuthenticationToken);
     }
 
     /**

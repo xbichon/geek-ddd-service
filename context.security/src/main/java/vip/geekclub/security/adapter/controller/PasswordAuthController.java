@@ -9,7 +9,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import vip.geekclub.framework.controller.ApiResponse;
-import vip.geekclub.framework.security.JwtAuthentication;
+import vip.geekclub.framework.security.JwtToken;
+import vip.geekclub.framework.security.UserAuthenticationToken;
 import vip.geekclub.security.adapter.controller.dto.UserNameLoginRequest;
 
 /**
@@ -22,6 +23,7 @@ import vip.geekclub.security.adapter.controller.dto.UserNameLoginRequest;
 public class PasswordAuthController {
 
     private final AuthenticationManager authenticationManager;
+    private final long expirationSeconds = 60 * 60 * 24 * 30;
 
     /**
      * 用户名密码登录
@@ -50,10 +52,11 @@ public class PasswordAuthController {
 //        if (!storedCaptcha.equalsIgnoreCase(request.captcha())) {
 //            return ApiResponse.fail(400, "验证码错误");
 //        }
-        
+
         // 验证码验证通过，继续执行登录逻辑
         UsernamePasswordAuthenticationToken authRequest = new UsernamePasswordAuthenticationToken(request.username(), request.password());
-        JwtAuthentication userSession =   (JwtAuthentication) authenticationManager.authenticate(authRequest);
-        return ApiResponse.success(userSession.getToken());
+        UserAuthenticationToken userAuthenticationToken = (UserAuthenticationToken) authenticationManager.authenticate(authRequest);
+        JwtToken jwtToken = new JwtToken(userAuthenticationToken.getUserPrincipal());
+        return ApiResponse.success(jwtToken.getToken(expirationSeconds));
     }
 }

@@ -4,8 +4,9 @@ import lombok.NonNull;
 import org.springframework.security.authentication.AuthenticationProvider;
 import vip.geekclub.framework.command.CommandDispatcher;
 import vip.geekclub.framework.command.CommandResult;
-import vip.geekclub.framework.security.JwtAuthentication;
-import vip.geekclub.framework.security.JwtPrincipal;
+import vip.geekclub.framework.security.UserAuthenticationToken;
+import vip.geekclub.framework.security.JwtToken;
+import vip.geekclub.framework.security.UserPrincipal;
 import vip.geekclub.security.application.command.credential.PasswordLoginCommand;
 import vip.geekclub.security.application.command.credential.AuthResult;
 import lombok.AllArgsConstructor;
@@ -14,6 +15,8 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.stereotype.Service;
+
+import java.util.Set;
 
 
 /**
@@ -43,9 +46,8 @@ public class UserNameAuthenticationProvider implements AuthenticationProvider {
             PasswordLoginCommand command = new PasswordLoginCommand(username, password);
             CommandResult<AuthResult> commandResult = CommandDispatcher.dispatch(command);
             AuthResult authResult = commandResult.data();
-
-            JwtPrincipal jwtPrincipal = new JwtPrincipal(authResult.authId(), authResult.userType());
-            return new JwtAuthentication(jwtPrincipal);
+            UserPrincipal userPrincipal = new UserPrincipal(authResult.authId(), authResult.userType());
+            return new UserAuthenticationToken(userPrincipal, Set.of());
         } catch (Exception e) {
             throw new BadCredentialsException(e.getMessage());
         }

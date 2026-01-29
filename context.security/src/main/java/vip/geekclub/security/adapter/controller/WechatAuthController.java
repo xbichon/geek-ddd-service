@@ -9,7 +9,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import vip.geekclub.framework.controller.ApiResponse;
-import vip.geekclub.framework.security.JwtAuthentication;
+import vip.geekclub.framework.security.JwtToken;
+import vip.geekclub.framework.security.UserAuthenticationToken;
 import vip.geekclub.framework.security.WechatAuthenticationToken;
 import vip.geekclub.security.adapter.controller.dto.WechatBindRequest;
 import vip.geekclub.security.adapter.controller.dto.WechatLoginRequest;
@@ -26,7 +27,7 @@ public class WechatAuthController {
 
     private final AuthenticationManager authenticationManager;
     private final WechatService wechatService;
-    private final static  long DEFAULT_EXPIRATION_SECONDS =  60 * 60 * 24 * 30;
+    private final static long DEFAULT_EXPIRATION_SECONDS = 60 * 60 * 24 * 30;
 
     /**
      * 微信小程序登录
@@ -39,9 +40,9 @@ public class WechatAuthController {
         // 调用微信接口换取 unionId
         String unionId = wechatService.getUnionId(request.code());
         WechatAuthenticationToken authRequest = new WechatAuthenticationToken(unionId);
-        JwtAuthentication userSession = (JwtAuthentication) authenticationManager.authenticate(authRequest);
-
-        return ApiResponse.success(userSession.getToken(DEFAULT_EXPIRATION_SECONDS));
+        UserAuthenticationToken userSession = (UserAuthenticationToken) authenticationManager.authenticate(authRequest);
+        JwtToken jwtToken = new JwtToken(userSession.getUserPrincipal());
+        return ApiResponse.success(jwtToken.getToken(DEFAULT_EXPIRATION_SECONDS));
     }
 
     /**
@@ -55,11 +56,13 @@ public class WechatAuthController {
     public ApiResponse<?> bind(@RequestBody @Valid WechatBindRequest request) {
 
         UsernamePasswordAuthenticationToken authRequest = new UsernamePasswordAuthenticationToken(request.identify(), request.code());
-        JwtAuthentication userSession = (JwtAuthentication) authenticationManager.authenticate(authRequest);
+        UserAuthenticationToken userSession = (UserAuthenticationToken) authenticationManager.authenticate(authRequest);
         String unionId = wechatService.getUnionId(request.code());
 
         // 派发绑定命令
 //        commandBus.dispatch(new CreateCredentialCommand());
-        return ApiResponse.success(userSession.getToken(DEFAULT_EXPIRATION_SECONDS));
+
+        JwtToken jwtToken = new JwtToken(userSession.getUserPrincipal());
+        return ApiResponse.success(jwtToken.getToken(DEFAULT_EXPIRATION_SECONDS));
     }
 }
