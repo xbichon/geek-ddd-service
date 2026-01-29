@@ -2,10 +2,10 @@ package vip.geekclub.config.security;
 
 import lombok.NonNull;
 import org.springframework.security.authentication.AuthenticationProvider;
-import vip.geekclub.framework.command.CommandDispatcher;
-import vip.geekclub.framework.command.CommandResult;
 import vip.geekclub.framework.security.UserAuthenticationToken;
 import vip.geekclub.framework.security.UserPrincipal;
+import vip.geekclub.framework.command.CommandDispatcher;
+import vip.geekclub.framework.command.CommandResult;
 import vip.geekclub.security.application.command.credential.PasswordLoginCommand;
 import lombok.AllArgsConstructor;
 import org.springframework.security.authentication.BadCredentialsException;

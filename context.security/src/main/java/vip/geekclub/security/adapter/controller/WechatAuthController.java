@@ -8,10 +8,10 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-import vip.geekclub.framework.controller.ApiResponse;
-import vip.geekclub.framework.security.JwtToken;
+import vip.geekclub.framework.security.AuthSessionManager;
 import vip.geekclub.framework.security.UserAuthenticationToken;
 import vip.geekclub.framework.security.WechatAuthenticationToken;
+import vip.geekclub.framework.controller.ApiResponse;
 import vip.geekclub.security.adapter.controller.dto.WechatBindRequest;
 import vip.geekclub.security.adapter.controller.dto.WechatLoginRequest;
 import vip.geekclub.security.adapter.gateway.WechatService;
@@ -41,8 +41,8 @@ public class WechatAuthController {
         String unionId = wechatService.getUnionId(request.code());
         WechatAuthenticationToken authRequest = new WechatAuthenticationToken(unionId);
         UserAuthenticationToken userSession = (UserAuthenticationToken) authenticationManager.authenticate(authRequest);
-        JwtToken jwtToken = new JwtToken(userSession.getUserPrincipal());
-        return ApiResponse.success(jwtToken.getToken(DEFAULT_EXPIRATION_SECONDS));
+        String jwtToken = AuthSessionManager.createSession(userSession);
+        return ApiResponse.success(jwtToken);
     }
 
     /**
@@ -56,13 +56,12 @@ public class WechatAuthController {
     public ApiResponse<?> bind(@RequestBody @Valid WechatBindRequest request) {
 
         UsernamePasswordAuthenticationToken authRequest = new UsernamePasswordAuthenticationToken(request.identify(), request.code());
-        UserAuthenticationToken userSession = (UserAuthenticationToken) authenticationManager.authenticate(authRequest);
+        UserAuthenticationToken userAuthenticationToken = (UserAuthenticationToken) authenticationManager.authenticate(authRequest);
         String unionId = wechatService.getUnionId(request.code());
 
         // 派发绑定命令
 //        commandBus.dispatch(new CreateCredentialCommand());
-
-        JwtToken jwtToken = new JwtToken(userSession.getUserPrincipal());
-        return ApiResponse.success(jwtToken.getToken(DEFAULT_EXPIRATION_SECONDS));
+        String jwtToken = AuthSessionManager.createSession(userAuthenticationToken);
+        return ApiResponse.success(jwtToken);
     }
 }

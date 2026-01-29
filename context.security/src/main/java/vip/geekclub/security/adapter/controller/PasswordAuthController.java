@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import vip.geekclub.framework.controller.ApiResponse;
-import vip.geekclub.framework.security.JwtToken;
+import vip.geekclub.framework.security.AuthSessionManager;
 import vip.geekclub.framework.security.UserAuthenticationToken;
 import vip.geekclub.security.adapter.controller.dto.UserNameLoginRequest;
 
@@ -54,9 +54,9 @@ public class PasswordAuthController {
 //        }
 
         // 验证码验证通过，继续执行登录逻辑
-        UsernamePasswordAuthenticationToken authRequest = new UsernamePasswordAuthenticationToken(request.username(), request.password());
-        UserAuthenticationToken userAuthenticationToken = (UserAuthenticationToken) authenticationManager.authenticate(authRequest);
-        JwtToken jwtToken = new JwtToken(userAuthenticationToken.getUserPrincipal());
-        return ApiResponse.success(jwtToken.getToken(expirationSeconds));
+        UsernamePasswordAuthenticationToken usernamePasswordAuthenticationToken = new UsernamePasswordAuthenticationToken(request.username(), request.password());
+        UserAuthenticationToken userAuthenticationToken = (UserAuthenticationToken) authenticationManager.authenticate(usernamePasswordAuthenticationToken);
+        String jwtToken = AuthSessionManager.createSession(userAuthenticationToken);
+        return ApiResponse.success(jwtToken);
     }
 }

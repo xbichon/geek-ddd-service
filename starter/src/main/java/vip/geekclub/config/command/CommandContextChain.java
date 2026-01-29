@@ -1,8 +1,12 @@
-package vip.geekclub.framework.command;
+package vip.geekclub.config.command;
 
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import vip.geekclub.framework.security.UserAuthenticationToken;
+import vip.geekclub.framework.command.Command;
+import vip.geekclub.framework.command.CommandContext;
+import vip.geekclub.framework.command.CommandHandlerChain;
+import vip.geekclub.framework.command.CommandResult;
 
 /**
  * 用户上下文命令拦截器

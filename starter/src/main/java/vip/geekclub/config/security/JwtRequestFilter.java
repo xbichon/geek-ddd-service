@@ -2,14 +2,12 @@ package vip.geekclub.config.security;
 
 import lombok.NonNull;
 import org.springframework.util.AntPathMatcher;
-import vip.geekclub.framework.exception.JwtParseException;
 import vip.geekclub.framework.security.UserAuthenticationToken;
-import vip.geekclub.framework.security.JwtToken;
-import vip.geekclub.framework.security.UserPrincipal;
+import vip.geekclub.framework.exception.JwtParseException;
+import vip.geekclub.framework.security.AuthSessionManager;
 import vip.geekclub.security.application.query.PermissionQueryService;
 
 import java.util.Arrays;
-import java.util.Set;
 
 import vip.geekclub.framework.utils.HttpUtil;
 import jakarta.servlet.FilterChain;
@@ -49,19 +47,14 @@ public class JwtRequestFilter extends OncePerRequestFilter {
     @Override
     protected void doFilterInternal(@NonNull HttpServletRequest request, @NonNull HttpServletResponse response, @NonNull FilterChain filterChain) throws ServletException, IOException {
         try {
-            httpUtil.getJwtFromRequest(request).ifPresent(this::setAuthentication);
+            httpUtil.getJwtFromRequest(request).ifPresent(tokenValue -> {
+                UserAuthenticationToken userAuthenticationToken = AuthSessionManager.buildPrincipal(tokenValue);
+                SecurityContextHolder.getContext().setAuthentication(userAuthenticationToken);
+            });
             filterChain.doFilter(request, response);
         } catch (JwtParseException e) {
             httpUtil.setResponse(response, ApiResponse.fail(401, e.getMessage()));
         }
-    }
-
-    private void setAuthentication(String tokenValue) {
-        JwtToken jwtToken = JwtToken.buildPrincipal(tokenValue);
-        UserPrincipal userPrincipal = jwtToken.getUserPrincipal(); // 解析JWT令牌
-        Set<String> permissions = permissionQueryService.getPermissionByAuthId(userPrincipal.authId());
-        UserAuthenticationToken userAuthenticationToken = new UserAuthenticationToken(userPrincipal, permissions);
-        SecurityContextHolder.getContext().setAuthentication(userAuthenticationToken);
     }
 
     /**

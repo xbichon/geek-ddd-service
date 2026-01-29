@@ -1,5 +1,6 @@
 package vip.geekclub.framework.command;
 
+
 import vip.geekclub.framework.security.UserPrincipal;
 
 /**
