@@ -6,7 +6,7 @@ import vip.geekclub.framework.security.UserPrincipal;
  * 用户上下文
  * 使用 ThreadLocal 存储当前请求的用户信息
  */
-public class UserContext {
+public class CommandContext {
 
     private static final ThreadLocal<UserPrincipal> CURRENT_USER = new ThreadLocal<>();
 

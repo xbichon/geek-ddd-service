@@ -3,9 +3,11 @@ package vip.geekclub.security.application.command.credential;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import vip.geekclub.framework.command.CommandContext;
 import vip.geekclub.framework.command.CommandHandler;
 import vip.geekclub.framework.command.CommandResult;
 import vip.geekclub.framework.exception.InvalidCredentialsException;
+import vip.geekclub.framework.security.UserPrincipal;
 import vip.geekclub.security.domain.model.PasswordCredential;
 import vip.geekclub.security.domain.repository.PasswordCredentialRepository;
 
@@ -18,7 +20,9 @@ public class ChangePasswordCommandHandler implements CommandHandler<ChangePasswo
     @Override
     @Transactional
     public CommandResult<Void> execute(ChangePasswordCommand command) {
-        PasswordCredential credential = passwordCredentialRepository.findByIdentifiersValue(command.authId())
+        UserPrincipal currentPrincipal = CommandContext.getCurrentPrincipal();
+
+        PasswordCredential credential = passwordCredentialRepository.findByIdentifiersValue(currentPrincipal.authId())
                 .orElseThrow(() -> new InvalidCredentialsException("账户未找到"));
 
         credential.changePassword(command.oldPassword(), command.newPassword());

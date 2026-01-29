@@ -14,13 +14,13 @@ public class  CommandBusConfig {
 
     @Lazy
     @Bean
-    public CommandBus commandBus(List<CommandHandler<?,?>> commandHandlers, UserContextCommandChain userContextCommandChain, CommandValidatorHandleChain commandValidatorHandleChain) {
+    public CommandBus commandBus(List<CommandHandler<?,?>> commandHandlers, CommandContextChain commandContextChain, CommandValidatorHandleChain commandValidatorHandleChain) {
         log.info("初始化命令总线...");
         SimpleCommandBus commandBus = new SimpleCommandBus();
         commandBus.addHandlers(commandHandlers);
         // 注意：后添加的链先执行
         // 1. 先提取用户上下文
-        commandBus.addChain(userContextCommandChain);
+        commandBus.addChain(commandContextChain);
         // 2. 再验证命令
         commandBus.addChain(commandValidatorHandleChain);
         return commandBus;
