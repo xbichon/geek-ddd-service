@@ -2,7 +2,6 @@ package vip.geekclub.framework.utils;
 
 import io.jsonwebtoken.*;
 import io.jsonwebtoken.security.Keys;
-import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.context.properties.ConfigurationProperties;
@@ -29,9 +28,14 @@ import java.util.UUID;
 @Data
 public class JwtUtil {
 
-    // ================================ 配置属性 ================================
+    // ================================ 常量定义 ================================
 
-    private final static String secretKeyPrefix = "GeKV@";
+    private static final String SECRET_KEY_PREFIX = "GeKV@";
+    private static final String JWT_HEADER_TYPE = "JWT";
+    private static final String JWT_HEADER_ALGORITHM = "HS256";
+    private static final String DATA_FIELD = "data";
+
+    // ================================ 配置属性 ================================
 
     /**
      * JWT签名密钥
@@ -48,76 +52,70 @@ public class JwtUtil {
      */
     private String issuer = "geekclub.vip";
 
-    /**
-     * 算法
-     */
-    private String algorithm = "HS256";
+    // ================================ 缓存对象 ================================
 
-    // ================================ 核心方法 ================================
+    private SecretKey cachedKey;
+    private JwtParser cachedParser;
+
+    // ================================ 核心方法 ================================…
+
 
     /**
-     * 生成JWT令牌（指定过期时间）
+     * 生成JWT令牌（将对象序列化为JSON存入data字段）
      *
-     * @param subject           主题（通常是用户ID）
-     * @param claims            声明信息
+     * @param subject           主题
+     * @param data              数据对象
      * @param expirationSeconds 过期时间（秒）
+     * @param <T>               数据类型
      * @return JWT令牌字符串
      */
-    public String generateToken(String subject, Map<String, Object> claims, long expirationSeconds) {
+    public <T> String generateToken(String id, T data, long expirationSeconds) {
         try {
-            // 计算过期时间
+            String jsonData = JsonUtils.getObjectMapper().writeValueAsString(data);
+            Map<String, Object> claims = Map.of(DATA_FIELD, jsonData);
+
             Date expirationDate = Date.from(Instant.now().plusSeconds(expirationSeconds));
-            SecretKey key = generateHmacShaKey();
+            SecretKey key = getHmacShaKey();
 
             return Jwts.builder()
                     .header()
-                    .add("typ", "JWT")
-                    .add("alg", "HS256")
+                    .type(JWT_HEADER_TYPE)
                     .and()
-                    .id(UUID.randomUUID().toString())
-                    .subject(subject)
+                    .id(id)
                     .expiration(expirationDate)
                     .issuedAt(Date.from(Instant.now()))
                     .issuer(issuer)
                     .claims(claims)
                     .signWith(key)
                     .compact();
-        } catch (Exception e) {
-            log.error("生成JWT令牌失败: subject={}, error={}", subject, e.getMessage(), e);
-            throw new RuntimeException("生成JWT令牌失败", e);
-        }
-    }
 
-
-    /**
-     * 生成JWT令牌（将对象序列化为JSON存入data字段）
-     *
-     * @param data              数据对象
-     * @param expirationSeconds 过期时间（秒）
-     * @param <T>               数据类型
-     * @return JWT令牌字符串
-     */
-    public <T> String generateToken(String subject, T data, long expirationSeconds) {
-        try {
-            String jsonData = JsonUtils.getObjectMapper().writeValueAsString(data);
-            Map<String, Object> claims = Map.of("data", jsonData);
-            return generateToken(subject, claims, expirationSeconds);
         } catch (Exception e) {
             log.error("生成JWT令牌失败: data={}, error={}", data, e.getMessage(), e);
-            throw new RuntimeException("生成JWT令牌失败", e);
+            throw new JwtParseException("生成JWT令牌失败", e);
         }
     }
 
     /**
-     * 解析token
+     * 解析token（从data字段反序列化为指定类型对象）
+     *
+     * @param token JWT令牌字符串
+     * @param type  目标类型
+     * @param <T>   数据类型
+     * @return 反序列化后的对象
      */
-    public Claims parseToken(String token) {
-
+    public <T> JwtValue<T> parseToken(String token, Class<T> type) {
         if (token == null || token.trim().isEmpty()) {
             throw new JwtParseException("令牌不能为空");
         }
         try {
-            return getJwtParser().parseSignedClaims(token).getPayload();
+            Claims claims = getJwtParser().parseSignedClaims(token).getPayload();
+            Object data = claims.get(DATA_FIELD);
+            if (data == null) {
+                throw new JwtParseException("令牌中缺少data字段");
+            }
+            T value = JsonUtils.getObjectMapper().readValue(data.toString(), type);
+            return new JwtValue<>(claims.getId(), value);
+
         } catch (ExpiredJwtException e) {
             throw new JwtParseException("令牌已过期", e);
         } catch (UnsupportedJwtException e) {
@@ -133,41 +131,26 @@ public class JwtUtil {
         }
     }
 
-    /**
-     * 解析token（从data字段反序列化为指定类型对象）
-     *
-     * @param token JWT令牌字符串
-     * @param type  目标类型
-     * @param <T>   数据类型
-     * @return 反序列化后的对象
-     */
-    public <T> T parseToken(String token, Class<T> type) {
-        Claims claims = parseToken(token);
-        Object data = claims.get("data");
-        if (data == null) {
-            throw new JwtParseException("令牌中缺少data字段");
-        }
-        try {
-            return JsonUtils.getObjectMapper().readValue(data.toString(), type);
-        } catch (Exception e) {
-            log.error("解析token数据失败: data={}, type={}, error={}", data, type.getName(), e.getMessage(), e);
-            throw new JwtParseException("解析token数据失败", e);
-        }
-    }
-
     // ================================ 私有方法 ================================
 
     /**
-     * 获取签名密钥
+     * 获取签名密钥（带缓存）
      */
-    private SecretKey generateHmacShaKey() {
-        return Keys.hmacShaKeyFor((secretKeyPrefix + "-" + secretKey).getBytes(StandardCharsets.UTF_8));
+    private SecretKey getHmacShaKey() {
+        if (cachedKey == null) {
+            String fullKey = SECRET_KEY_PREFIX + "-" + secretKey;
+            cachedKey = Keys.hmacShaKeyFor(fullKey.getBytes(StandardCharsets.UTF_8));
+        }
+        return cachedKey;
     }
 
     /**
-     * 获取JWT解析器
+     * 获取JWT解析器（带缓存）
      */
     private JwtParser getJwtParser() {
-        return Jwts.parser().verifyWith(generateHmacShaKey()).build();
+        if (cachedParser == null) {
+            cachedParser = Jwts.parser().verifyWith(getHmacShaKey()).build();
+        }
+        return cachedParser;
     }
 }

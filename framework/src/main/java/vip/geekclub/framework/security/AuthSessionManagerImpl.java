@@ -3,6 +3,7 @@ package vip.geekclub.framework.security;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 import vip.geekclub.framework.utils.JwtUtil;
+import vip.geekclub.framework.utils.JwtValue;
 
 import java.util.Set;
 
@@ -23,7 +24,7 @@ public class AuthSessionManagerImpl implements AuthSessionManager {
     }
 
     public UserAuthenticationToken getSession(String token) {
-        UserPrincipal userPrincipal = jwtUtil.parseToken(token, UserPrincipal.class);
-        return new UserAuthenticationToken(userPrincipal, Set.of());
+        JwtValue<UserPrincipal> jwtValue = jwtUtil.parseToken(token, UserPrincipal.class);
+        return new UserAuthenticationToken(jwtValue.data(), Set.of());
     }
 }
