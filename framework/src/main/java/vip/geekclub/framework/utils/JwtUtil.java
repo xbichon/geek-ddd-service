@@ -56,18 +56,6 @@ public class JwtUtil {
     // ================================ 核心方法 ================================
 
     /**
-     * 生成JWT令牌
-     *
-     * @param subject 主题（通常是用户ID）
-     * @param claims  声明信息
-     * @return JWT令牌字符串
-     */
-    public String generateToken(String subject, Map<String, Object> claims) {
-        // 使用默认过期时间
-        return generateToken(subject, claims, expirationDays * 24 * 60 * 60);
-    }
-
-    /**
      * 生成JWT令牌（指定过期时间）
      *
      * @param subject           主题（通常是用户ID）
@@ -102,39 +90,18 @@ public class JwtUtil {
 
 
     /**
-     * 生成JWT令牌（简化版本）
-     *
-     * @param claims 声明信息
-     * @return JWT令牌字符串
-     */
-    public String generateToken(Map<String, Object> claims) {
-        return generateToken("", claims);
-    }
-
-    /**
-     * 生成JWT令牌（简化版本，指定过期时间）
-     *
-     * @param claims            声明信息
-     * @param expirationSeconds 过期时间（秒）
-     * @return JWT令牌字符串
-     */
-    public String generateToken(Map<String, Object> claims, long expirationSeconds) {
-        return generateToken("", claims, expirationSeconds);
-    }
-
-    /**
      * 生成JWT令牌（将对象序列化为JSON存入data字段）
      *
-     * @param data             数据对象
+     * @param data              数据对象
      * @param expirationSeconds 过期时间（秒）
-     * @param <T>              数据类型
+     * @param <T>               数据类型
      * @return JWT令牌字符串
      */
-    public <T> String generateToken(T data, long expirationSeconds) {
+    public <T> String generateToken(String subject, T data, long expirationSeconds) {
         try {
             String jsonData = JsonUtils.getObjectMapper().writeValueAsString(data);
             Map<String, Object> claims = Map.of("data", jsonData);
-            return generateToken(claims, expirationSeconds);
+            return generateToken(subject, claims, expirationSeconds);
         } catch (Exception e) {
             log.error("生成JWT令牌失败: data={}, error={}", data, e.getMessage(), e);
             throw new RuntimeException("生成JWT令牌失败", e);
