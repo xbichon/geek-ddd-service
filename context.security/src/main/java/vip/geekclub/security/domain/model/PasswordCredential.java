@@ -29,7 +29,7 @@ public class PasswordCredential extends Credential {
     /**
      * 标识符列表，一个用户可以有多个标识符（用户名、邮箱、电话等）
      */
-    @OneToMany(mappedBy = "credentialId", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "credential", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
     private List<Identifier> identifiers = new ArrayList<>();
 
     /**
@@ -97,7 +97,7 @@ public class PasswordCredential extends Credential {
         }
 
         identifierValues.forEach(identifierValue -> {
-            Identifier identifier = new Identifier(this.getId(), identifierValue.value(), identifierValue.type(), userType);
+            Identifier identifier = new Identifier(identifierValue.value(), identifierValue.type(), userType, this);
             this.identifiers.add(identifier);
         });
     }
