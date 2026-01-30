@@ -1,0 +1,32 @@
+spring:
+  datasource:
+    url: jdbc:mysql://localhost:3306/geek_prod?useSSL=true&serverTimezone=Asia/Shanghai&useUnicode=true&characterEncoding=utf-8
+    username: ${DB_USERNAME}
+    password: ${DB_PASSWORD}
+  data:
+    redis:
+      host: ${REDIS_HOST}
+      port: ${REDIS_PORT:6379}
+  jpa:
+    show-sql: false
+
+server:
+  port: 8080
+
+logging:
+  level:
+    vip.geekclub: WARN
+
+config:
+  # JWT配置
+  jwt:
+    secret-key: ${JWT_SECRET_KEY:Geek2024SecurityDianComChina12987T23001Y-Q8Y05OOD}
+    expiration-days: ${JWT_EXPIRATION_DAYS:7}
+    issuer: geekclub.vip
+  # 微信小程序配置
+  wechat:
+    mini-program:
+      app-id: ${WECHAT_APP_ID:wx4169de1d28757b63}
+      app-secret: ${WECHAT_APP_SECRET:630ce71078cbc6d87f1e96efe0b4b09d}
+      api-base-url: ${WECHAT_API_BASE_URL:https://api.weixin.qq.com}
+      jscode2session-url: ${WECHAT_JSCODE2SESSION_URL:/sns/jscode2session}
