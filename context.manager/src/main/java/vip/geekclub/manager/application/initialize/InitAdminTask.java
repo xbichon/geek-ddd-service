@@ -3,6 +3,7 @@ package vip.geekclub.manager.application.initialize;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import vip.geekclub.framework.command.CommandDispatcher;
 import vip.geekclub.framework.initialize.InitTask;
 import vip.geekclub.manager.domain.model.Teacher;
@@ -17,7 +18,7 @@ import java.beans.Transient;
 public class InitAdminTask implements InitTask {
     private final TeacherRepository teacherRepository;
 
-    @Transient
+    @Transactional
     @Override
     public void initialize() {
         if (teacherRepository.existsByEmail("admin@example.com")) {
