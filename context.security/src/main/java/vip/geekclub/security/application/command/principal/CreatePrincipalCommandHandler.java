@@ -24,8 +24,8 @@ public class CreatePrincipalCommandHandler implements CommandHandler<CreatePrinc
 
         // 1. 检查所有标识符是否已存在
         for (var identifier : command.identifierValues()) {
-            if (passwordCredentialRepository.existsByIdentifierValueAndIdentifierType(
-                    identifier.type(), identifier.value())) {
+            if (passwordCredentialRepository.existsByIdentifier(
+                    command.userType(), identifier.value())) {
                 throw new AuthenticationAlreadyExistsException("该标识符已被使用: " + identifier.value());
             }
         }

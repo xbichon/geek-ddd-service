@@ -2,6 +2,7 @@ package vip.geekclub.security.application.command.principal;
 
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 import org.springframework.util.StringUtils;
@@ -13,7 +14,7 @@ import java.util.List;
 
 @CommandHandlerMapping(CreateAdminCommandHandler.class)
 public record CreateAdminCommand(
-        @NotBlank @Min(value =1, message = "用户ID不能为空")
+        @NotEmpty(message = "标识符列表不能为空")
         List<IdentifierValue> identifierValues,
 
         @NotBlank(message = "密码不能为空")

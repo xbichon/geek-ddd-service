@@ -18,13 +18,20 @@ public class Identifier {
     @Setter
     private String value;
     private String type;
+    @Column(name = "credential_id")
     private Long credentialId;
     private String userType;
 
-    public Identifier(Long credentialId, String value, String type, String userType) {
+    public Identifier(String value, String type, String userType) {
         this.value = value;
         this.type = type;
+        this.userType = userType;
+    }
+
+    public Identifier(Long credentialId, String value, String type, String userType) {
         this.credentialId = credentialId;
+        this.value = value;
+        this.type = type;
         this.userType = userType;
     }
 

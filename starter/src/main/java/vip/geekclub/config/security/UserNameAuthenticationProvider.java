@@ -41,7 +41,7 @@ public class UserNameAuthenticationProvider implements AuthenticationProvider {
         String password = token.getCredentials().toString();
 
         try {
-            PasswordLoginCommand command = new PasswordLoginCommand(username, password);
+            PasswordLoginCommand command = new PasswordLoginCommand(username, password, "teacher");
             CommandResult<UserPrincipal> commandResult = CommandDispatcher.dispatch(command);
             UserPrincipal userPrincipal = commandResult.data();
             return new UserAuthenticationToken(userPrincipal, Set.of());

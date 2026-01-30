@@ -6,7 +6,7 @@ import jakarta.validation.constraints.NotBlank;
 /**
  * 标识符值对象
  */
-@Embeddable
+
 public record IdentifierValue(
         @NotBlank(message = "标识符类型不能为空") String type,
         @NotBlank(message = "标识符值不能为空") String value

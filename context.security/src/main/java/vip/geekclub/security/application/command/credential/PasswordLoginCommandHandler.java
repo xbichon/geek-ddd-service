@@ -24,7 +24,7 @@ public class PasswordLoginCommandHandler implements CommandHandler<PasswordLogin
     public CommandResult<UserPrincipal> execute(PasswordLoginCommand command) {
 
         // 1. 获取该用户的密码凭证
-        var credential = passwordCredentialRepository.findByIdentifierValue(command.identifier())
+        var credential = passwordCredentialRepository.findByIdentifiersValueAndIdentifiersUserType(command.identifier(), command.userType())
                 .orElseThrow(() -> new InvalidCredentialsException("账户未找到"));
 
         // 2. 验证用户名和密码

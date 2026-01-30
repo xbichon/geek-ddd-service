@@ -35,8 +35,8 @@ public class CreateAdminCommandHandler implements CommandHandler<CreateAdminComm
 
         // 认证信息查重（检查用户名是否已存在）
         for (IdentifierValue identifierValue : command.identifierValues()) {
-            if (passwordCredentialRepository.existsByIdentifierValueAndIdentifierType(
-                    identifierValue.type(), identifierValue.value())) {
+            if (passwordCredentialRepository.existsByIdentifier(
+                    identifierValue.value(), identifierValue.type())) {
                 throw new AuthenticationAlreadyExistsException("该用户名已被使用");
             }
         }

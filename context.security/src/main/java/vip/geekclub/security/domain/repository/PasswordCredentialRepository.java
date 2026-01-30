@@ -15,16 +15,16 @@ public interface PasswordCredentialRepository extends JpaRepository<@NonNull Pas
     /**
      * 根据凭证类型和标识符值检查认证信息是否存在
      *
-     * @param type 凭证类型
-     * @param value 标识符值
      * @return 是否存在
      */
-    boolean existsByIdentifierValueAndIdentifierType(String type, String value);
+    @Query("SELECT COUNT(*) =1 FROM Identifier i WHERE  i.value = :value AND i.userType = :userType")
+    boolean existsByIdentifier(@Param("value") String value, @Param("userType") String userType);
 
-
-
-    Optional<PasswordCredential> findByIdentifierValue( String value);
-
-    Optional<PasswordCredential> find(Long principalId);
+    /**
+     * 根据凭证类型和标识符值查询密码凭证
+     *
+     * @return 密码凭证
+     */
+    Optional<PasswordCredential> findByIdentifiersValueAndIdentifiersUserType(@Param("value") String value, @Param("userType") String userType);
 
 }

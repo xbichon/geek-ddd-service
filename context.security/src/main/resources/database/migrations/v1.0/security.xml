@@ -56,6 +56,10 @@
             </column>
             <column name="type" type="VARCHAR(20)" remarks="标识符类型：USERNAME/EMAIL/PHONE"/>
             <column name="value" type="VARCHAR(200)" remarks="标识符值"/>
+            <column name="user_type" type="VARCHAR(20)" remarks="用户类型"/>
+            <column name="create_time" defaultValueComputed="CURRENT_TIMESTAMP" type="DATETIME" remarks="创建时间"/>
+            <column name="update_time" type="DATETIME" remarks="更新时间"
+                    defaultValueComputed="CURRENT_TIMESTAMP on update CURRENT_TIMESTAMP"/>
         </createTable>
 
         <createIndex tableName="security_identifier" indexName="idx_identifier_type_value" unique="true">

@@ -25,10 +25,12 @@ public class PasswordCredential extends Credential {
             Objects.requireNonNull(ApplicationUtil.getBean(PasswordEncoder.class))
     );
 
+
     /**
      * 标识符列表，一个用户可以有多个标识符（用户名、邮箱、电话等）
      */
-    private List<Identifier> identifier = new ArrayList<>();
+    @OneToMany(mappedBy = "credentialId", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
+    private List<Identifier> identifiers = new ArrayList<>();
 
     /**
      * 加密后的密码
@@ -74,7 +76,7 @@ public class PasswordCredential extends Credential {
      * 验证密码
      */
     public void verifyPassword(String rawPassword) {
-        if(!passwordEncoder.get().matches(rawPassword, this.password)){
+        if (!passwordEncoder.get().matches(rawPassword, this.password)) {
             throw new InvalidCredentialsException("密码错误");
         }
     }
@@ -96,7 +98,7 @@ public class PasswordCredential extends Credential {
 
         identifierValues.forEach(identifierValue -> {
             Identifier identifier = new Identifier(this.getId(), identifierValue.value(), identifierValue.type(), userType);
-            this.identifier.add(identifier);
+            this.identifiers.add(identifier);
         });
     }
 }
