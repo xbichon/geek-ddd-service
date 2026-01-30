@@ -23,8 +23,8 @@ public class CreatePrincipalCommandHandler implements CommandHandler<CreatePrinc
     public CommandResult<Void> execute(CreatePrincipalCommand command) {
 
         // 1. 检查所有标识符是否已存在
-        for (var identifier : command.identifiers()) {
-            if (passwordCredentialRepository.existsByIdentifierTypeAndValue(
+        for (var identifier : command.identifierValues()) {
+            if (passwordCredentialRepository.existsByIdentifierValueAndIdentifierType(
                     identifier.type(), identifier.value())) {
                 throw new AuthenticationAlreadyExistsException("该标识符已被使用: " + identifier.value());
             }
@@ -37,7 +37,9 @@ public class CreatePrincipalCommandHandler implements CommandHandler<CreatePrinc
         // 4. 创建密码凭证
         PasswordCredential passwordCredential = PasswordCredential.create(
                 principal.getId(),
-                command.identifiers(), command.password()
+                command.identifierValues(),
+                command.password(),
+                command.userType()
         );
         passwordCredentialRepository.save(passwordCredential);
 

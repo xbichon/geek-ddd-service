@@ -6,7 +6,6 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 import vip.geekclub.security.domain.model.PasswordCredential;
-import vip.geekclub.security.domain.value.IdentifierType;
 
 import java.util.Optional;
 
@@ -20,27 +19,12 @@ public interface PasswordCredentialRepository extends JpaRepository<@NonNull Pas
      * @param value 标识符值
      * @return 是否存在
      */
-    @Query("SELECT CASE WHEN COUNT(pc) > 0 THEN true ELSE false END " +
-            "FROM PasswordCredential pc " +
-            "JOIN pc.identifiers i " +
-            "WHERE i.type = :type AND i.value = :value")
-    boolean existsByIdentifierTypeAndValue(@Param("type") IdentifierType type,
-                                        @Param("value") String value);
+    boolean existsByIdentifierValueAndIdentifierType(String type, String value);
 
 
-    Optional<PasswordCredential> findByIdentifiersValue( String value);
 
-    /**
-     * 根据凭证类型和用户 ID 检查是否已存在该类型的标识符
-     *
-     * @param type 凭证类型
-     * @param principalId 用户 ID
-     * @return 是否存在
-     */
-    @Query("SELECT CASE WHEN COUNT(pc) > 0 THEN true ELSE false END " +
-            "FROM PasswordCredential pc " +
-            "JOIN pc.identifiers i " +
-            "WHERE pc.principalId = :principalId AND i.type = :type")
-    boolean existsByIdentifierTypeAndPrincipalId(@Param("type") IdentifierType type,
-                                             @Param("principalId") Long principalId);
+    Optional<PasswordCredential> findByIdentifierValue( String value);
+
+    Optional<PasswordCredential> find(Long principalId);
+
 }

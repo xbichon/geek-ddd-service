@@ -9,8 +9,9 @@ import vip.geekclub.framework.initialize.InitTask;
 import vip.geekclub.manager.domain.model.Teacher;
 import vip.geekclub.manager.domain.repository.TeacherRepository;
 import vip.geekclub.security.application.command.principal.CreateAdminCommand;
+import vip.geekclub.security.domain.value.IdentifierValue;
 
-import java.beans.Transient;
+import java.util.List;
 
 @Slf4j
 @Service
@@ -37,7 +38,7 @@ public class InitAdminTask implements InitTask {
 
         // 2. 创建用户的凭证
         CreateAdminCommand command = new CreateAdminCommand(
-                "admin",
+                List.of(IdentifierValue.ofUsername("admin"), IdentifierValue.ofEmail("admin@example.com")),
                 "888888",
                 teacher.getAuthId(),
                 "teacher"

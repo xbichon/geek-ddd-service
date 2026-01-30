@@ -9,8 +9,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import vip.geekclub.framework.exception.InvalidCredentialsException;
 import vip.geekclub.framework.utils.ApplicationUtil;
 import vip.geekclub.framework.utils.AssertUtil;
-import vip.geekclub.security.domain.value.Identifier;
-import vip.geekclub.security.domain.value.IdentifierType;
+import vip.geekclub.security.domain.value.IdentifierValue;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -23,18 +22,13 @@ import java.util.Objects;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class PasswordCredential extends Credential {
     private static final Lazy<@NonNull PasswordEncoder> passwordEncoder = Lazy.of(() ->
-        Objects.requireNonNull(ApplicationUtil.getBean(PasswordEncoder.class))
+            Objects.requireNonNull(ApplicationUtil.getBean(PasswordEncoder.class))
     );
 
     /**
      * 标识符列表，一个用户可以有多个标识符（用户名、邮箱、电话等）
      */
-    @ElementCollection
-    @CollectionTable(
-        name = "security_identifier",
-        joinColumns = @JoinColumn(name = "credential_id")
-    )
-    private List<Identifier> identifiers = new ArrayList<>();
+    private List<Identifier> identifier = new ArrayList<>();
 
     /**
      * 加密后的密码
@@ -45,17 +39,17 @@ public class PasswordCredential extends Credential {
     /**
      * 私有构造函数
      */
-    private PasswordCredential(Long principalId, String password, List<Identifier> identifiers) {
+    private PasswordCredential(Long principalId, List<IdentifierValue> identifierValues, String password, String userType) {
         setPrincipalId(principalId);
         setPassword(password);
-        setIdentifiers(identifiers);
+        setIdentifier(identifierValues, userType);
     }
 
     /**
      * 创建包含多个标识符的密码凭证
      */
-    public static PasswordCredential create(Long principalId, List<Identifier> identifiers, String password) {
-        return new PasswordCredential(principalId, password, identifiers);
+    public static PasswordCredential create(Long principalId, List<IdentifierValue> identifierValues, String password, String userType) {
+        return new PasswordCredential(principalId, identifierValues, password, userType);
     }
 
     /**
@@ -67,6 +61,16 @@ public class PasswordCredential extends Credential {
     }
 
     /**
+     * 变更密码
+     */
+    public void changePassword(String oldPassword, String newPassword) {
+        if (!passwordEncoder.get().matches(oldPassword, this.password)) {
+            throw new InvalidCredentialsException("旧密码错误");
+        }
+        setPassword(newPassword);
+    }
+
+    /**
      * 验证密码
      */
     public void verifyPassword(String rawPassword) {
@@ -75,29 +79,24 @@ public class PasswordCredential extends Credential {
         }
     }
 
-    /**
-     * 变更密码
-     */
-    public void changePassword(String oldPassword, String newPassword) {
-        if(!passwordEncoder.get().matches(oldPassword, this.password)){
-            throw new InvalidCredentialsException("旧密码错误");
-        }
-        setPassword(newPassword);
-    }
 
     /**
      * 设置标识符列表
      */
-    private void setIdentifiers(@NotNull List<Identifier> identifiers) {
-        AssertUtil.isTrue(identifiers != null && !identifiers.isEmpty(), () -> "至少需要一个标识符");
+    private void setIdentifier(@NotNull List<IdentifierValue> identifierValues, String userType) {
+        AssertUtil.isTrue(identifierValues != null && !identifierValues.isEmpty(), () -> "至少需要一个标识符");
         // 检查是否有重复类型的标识符
-        long distinctCount = identifiers.stream()
-            .map(Identifier::type)
-            .distinct()
-            .count();
-        if (distinctCount < identifiers.size()) {
+        long distinctCount = identifierValues.stream()
+                .map(IdentifierValue::type)
+                .distinct()
+                .count();
+        if (distinctCount < identifierValues.size()) {
             throw new IllegalArgumentException("标识符类型不能重复");
         }
-        this.identifiers = new ArrayList<>(identifiers);
+
+        identifierValues.forEach(identifierValue -> {
+            Identifier identifier = new Identifier(this.getId(), identifierValue.value(), identifierValue.type(), userType);
+            this.identifier.add(identifier);
+        });
     }
 }

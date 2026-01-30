@@ -12,8 +12,7 @@ import vip.geekclub.manager.domain.repository.TeacherRepository;
 import lombok.RequiredArgsConstructor;
 import vip.geekclub.manager.domain.service.TeacherCreationUpdateValidator;
 import vip.geekclub.security.application.command.principal.CreatePrincipalCommand;
-import vip.geekclub.security.domain.value.Identifier;
-import vip.geekclub.security.domain.value.IdentifierType;
+import vip.geekclub.security.domain.value.IdentifierValue;
 
 import java.util.List;
 import java.util.Set;
@@ -48,8 +47,8 @@ public class CreateTeacherCommandHandler implements CommandHandler<CreateTeacher
         CommandDispatcher.dispatch(new CreatePrincipalCommand(
                 teacher.getAuthId(),
                 "teacher",
-                List.of(new Identifier(IdentifierType.EMAIL, teacher.getEmail())
-                        , new Identifier(IdentifierType.PHONE, teacher.getPhone())),
+                List.of(new IdentifierValue(IdentifierValue.EMAIL, teacher.getEmail())
+                        , new IdentifierValue(IdentifierValue.PHONE, teacher.getPhone())),
                 "123456",
                 Set.of()
         ));

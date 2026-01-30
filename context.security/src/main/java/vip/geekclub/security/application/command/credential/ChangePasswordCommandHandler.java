@@ -20,12 +20,12 @@ public class ChangePasswordCommandHandler implements CommandHandler<ChangePasswo
     @Override
     @Transactional
     public CommandResult<Void> execute(ChangePasswordCommand command) {
-        UserPrincipal currentPrincipal = CommandContext.getCurrentPrincipal();
-
-        PasswordCredential credential = passwordCredentialRepository.findByIdentifiersValue(currentPrincipal.authId())
-                .orElseThrow(() -> new InvalidCredentialsException("账户未找到"));
-
-        credential.changePassword(command.oldPassword(), command.newPassword());
+//        UserPrincipal currentPrincipal = CommandContext.getCurrentPrincipal();
+//
+//        PasswordCredential credential = passwordCredentialRepository.(currentPrincipal.authId())
+//                .orElseThrow(() -> new InvalidCredentialsException("账户未找到"));
+//
+//        credential.changePassword(command.oldPassword(), command.newPassword());
         return CommandResult.ok();
     }
 }

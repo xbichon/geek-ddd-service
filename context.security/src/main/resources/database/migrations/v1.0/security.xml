@@ -76,7 +76,7 @@
             </column>
             <column name="principal_id" type="BIGINT" remarks="关联用户ID"/>
             <column name="provider" type="VARCHAR(20)" remarks="第三方提供商：WECHAT/ALIPAY/GOOGLE/GITHUB"/>
-            <column name="identifier" type="VARCHAR(200)" remarks="第三方标识符，如微信 openId"/>
+            <column name="identifierValue" type="VARCHAR(200)" remarks="第三方标识符，如微信 openId"/>
             <column name="create_time" defaultValueComputed="CURRENT_TIMESTAMP" type="DATETIME" remarks="创建时间"/>
             <column name="update_time" type="DATETIME" remarks="更新时间"
                     defaultValueComputed="CURRENT_TIMESTAMP on update CURRENT_TIMESTAMP"/>
@@ -89,7 +89,7 @@
 
         <createIndex tableName="security_credential_third_party" indexName="idx_provider_identifier" unique="true">
             <column name="provider"/>
-            <column name="identifier"/>
+            <column name="identifierValue"/>
         </createIndex>
     </changeSet>
 
