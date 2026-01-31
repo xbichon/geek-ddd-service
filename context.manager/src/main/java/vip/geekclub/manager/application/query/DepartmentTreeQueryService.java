@@ -22,7 +22,6 @@ import java.util.stream.Collectors;
 @Service
 @RequiredArgsConstructor
 public class DepartmentTreeQueryService {
-
     private final DSLContext dslContext;
     private static final DepartmentTable table = DepartmentTable.Department;
     private static final Field<?>[] QUERY_FIELDS = {

@@ -31,7 +31,7 @@ public class PermissionQueryService {
             throw new BusinessException(404, "用户不存在");
         }
         long principalId = userRecord.get(principalTable.ID);
-        boolean isSuperAdmin = userRecord.get(principalTable.IS_SUPER_ADMIN) == 1;
+        boolean isSuperAdmin = userRecord.get(principalTable.IS_SUPER_ADMIN)==1;
         //String userType = userRecord.get(principalTable.USER_TYPE);
 
         if (isSuperAdmin) {
