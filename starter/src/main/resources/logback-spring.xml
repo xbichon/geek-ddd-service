@@ -72,26 +72,21 @@
     <springProfile name="dev">
         <root level="INFO">
             <appender-ref ref="CONSOLE"/>
-            <appender-ref ref="FILE"/>
-            <appender-ref ref="ERROR_FILE"/>
         </root>
 
         <!-- SQL日志 -->
         <logger name="org.jooq" level="DEBUG" additivity="false">
             <appender-ref ref="CONSOLE"/>
-            <appender-ref ref="SQL_FILE"/>
         </logger>
 
         <!-- Hibernate SQL日志 -->
         <logger name="org.hibernate.SQL" level="DEBUG" additivity="false">
             <appender-ref ref="CONSOLE"/>
-            <appender-ref ref="SQL_FILE"/>
         </logger>
 
         <!-- Hibernate参数日志 -->
         <logger name="org.hibernate.type.descriptor.sql.BasicBinder" level="TRACE" additivity="false">
             <appender-ref ref="CONSOLE"/>
-            <appender-ref ref="SQL_FILE"/>
         </logger>
     </springProfile>
 
