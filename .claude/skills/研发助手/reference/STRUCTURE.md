@@ -5,30 +5,31 @@
 ## 1. 总体结构
 
 ```
-├── context.{业务领域}/                 # 业务领域模块
-│   ├── src/main/
-│   │   ├── java/vip/geekclub/{业务领域}/
-│   │   │   ├── adapter/              # 适配器层（防腐层）
-│   │   │   │   ├── controller/       # 控制器（处理HTTP请求）
-│   │   │   ├── application/          # 应用层
-│   │   │   │   ├── command/          # 命令处理器（写操作）
-│   │   │   │   │   ├── dto/          # 命令数据传输对象
-│   │   │   │   ├── initialize/       # 初始化相关
-│   │   │   │   └── query/            # 查询处理器（读操作）
-│   │   │   │   │   └── dto/          # 查询数据传输对象
-│   │   │   ├── domain/               # 领域层
-│   │   │   │   ├── model/            # 领域模型
-│   │   │   │   ├── repository/       # 领域仓储
-│   │   │   │   ├── service/          # 领域服务
-│   │   │   │   ├── event/            # 领域事件
-│   │   │   │   ├── value/            # 值对象
-│   │   │   │   └── exception/        # 领域异常
-├── infrastructure/                   # 基础设施模块
-│   ├── src/main/java/vip/geekclub/framework/ # 基础设施代码
-│   ├── src/main/java/vip/geekclub/database/  # 数据库相关代码
-├── starter/                          # 启动模块
-│   ├── src/main/java/vip/geekclub/   # 启动代码
-│   └── src/main/resources/           # 配置文件
+├── service/                        # 服务模块
+│    ├── context.{业务领域}/                 # 业务领域模块
+│    │   ├── src/main/
+│    │   │   ├── java/vip/geekclub/{业务领域}/
+│    │   │   │   ├── adapter/              # 适配器层（防腐层）
+│    │   │   │   │   ├── controller/       # 控制器（处理HTTP请求）
+│    │   │   │   ├── application/          # 应用层
+│    │   │   │   │   ├── command/          # 命令处理器（写操作）
+│    │   │   │   │   │   ├── dto/          # 命令数据传输对象
+│    │   │   │   │   ├── initialize/       # 初始化相关
+│    │   │   │   │   └── query/            # 查询处理器（读操作）
+│    │   │   │   │   │   └── dto/          # 查询数据传输对象
+│    │   │   │   ├── domain/               # 领域层
+│    │   │   │   │   ├── model/            # 领域模型
+│    │   │   │   │   ├── repository/       # 领域仓储
+│    │   │   │   │   ├── service/          # 领域服务
+│    │   │   │   │   ├── event/            # 领域事件
+│    │   │   │   │   ├── value/            # 值对象
+│    │   │   │   │   └── exception/        # 领域异常
+│    ├── infrastructure/                   # 基础设施模块
+│    │   ├── src/main/java/vip/geekclub/framework/ # 基础设施代码
+│    │   ├── src/main/java/vip/geekclub/database/  # 数据库相关代码
+│    ├── starter/                          # 启动模块
+│    │   ├── src/main/java/vip/geekclub/   # 启动代码
+│    │   └── src/main/resources/           # 配置文件
 ```
 
 ## 2. 设计规范
