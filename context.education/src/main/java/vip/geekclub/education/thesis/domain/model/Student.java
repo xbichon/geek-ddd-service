@@ -19,7 +19,7 @@ public class Student {
     private String studentId;
     
     /**
-     * 年级/届 (如：2020代表2020届)
+     * 年级/届
      */
     private Integer grade;
     
@@ -32,4 +32,5 @@ public class Student {
      * 班级
      */
     private String className;
+
 }
