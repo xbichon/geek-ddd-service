@@ -42,7 +42,7 @@
         </dependency>
         <dependency>
             <groupId>vip.geekclub</groupId>
-            <artifactId>framework</artifactId>
+            <artifactId>infrastructure</artifactId>
             <version>0.0.1-SNAPSHOT</version>
         </dependency>
         <dependency>
@@ -60,12 +60,16 @@
                 <artifactId>properties-maven-plugin</artifactId>
             </plugin>
             <plugin>
-                <groupId>org.liquibase</groupId>
-                <artifactId>liquibase-maven-plugin</artifactId>
-            </plugin>
-            <plugin>
                 <groupId>org.jooq</groupId>
                 <artifactId>jooq-codegen-maven</artifactId>
+                <configuration>
+                    <generator>
+                        <database>
+                            <!-- 生成表的过滤 -->
+                            <includes>manager_.*</includes>
+                        </database>
+                    </generator>
+                </configuration>
             </plugin>
         </plugins>
     </build>

@@ -11,7 +11,7 @@
     <description>arc</description>
     <modules>
         <module>starter</module>
-        <module>framework</module>
+        <module>infrastructure</module>
         <module>context.security</module>
         <module>context.education</module>
         <module>context.manager</module>
@@ -54,7 +54,6 @@
     <build>
         <pluginManagement>
             <plugins>
-
                 <plugin>
                     <groupId>org.codehaus.mojo</groupId>
                     <artifactId>properties-maven-plugin</artifactId>
@@ -68,36 +67,12 @@
                             <configuration>
                                 <files>
                                     <!-- 读取子模块的配置文件 -->
-                                    <file>${project.basedir}/../starter/src/main/resources/db-connection.properties</file>
+                                    <file>${project.basedir}/../starter/src/main/resources/db-connection.properties
+                                    </file>
                                 </files>
                             </configuration>
                         </execution>
                     </executions>
-                </plugin>
-
-                <!-- LiQiuBase数据库生成插件-->
-                <plugin>
-                    <groupId>org.liquibase</groupId>
-                    <artifactId>liquibase-maven-plugin</artifactId>
-                    <executions>
-                        <execution>
-                            <phase>generate-resources</phase>
-                            <goals>
-                                <goal>update</goal>
-                            </goals>
-                        </execution>
-                    </executions>
-                    <configuration>
-                        <!--suppress UnresolvedMavenProperty -->
-                        <driver>${db.driver}</driver>
-                        <!--suppress UnresolvedMavenProperty -->
-                        <url>${db.url}</url>
-                        <!--suppress UnresolvedMavenProperty -->
-                        <username>${db.user}</username>
-                        <!--suppress UnresolvedMavenProperty -->
-                        <password>${db.password}</password>
-                        <changeLogFile>src/main/resources/database/plugin/liquibase-config.xml</changeLogFile>
-                    </configuration>
                 </plugin>
                 <!--JOOQ代码生成插件-->
                 <plugin>
@@ -112,7 +87,6 @@
                         </execution>
                     </executions>
                     <configuration>
-                        <configurationFile>src/main/resources/database/plugin/jooq-config.xml</configurationFile>
                         <jdbc>
                             <!--suppress UnresolvedMavenProperty -->
                             <driver>${db.driver}</driver>
@@ -164,31 +138,5 @@
                 </plugin>
             </plugins>
         </pluginManagement>
-        <plugins>
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-resources-plugin</artifactId>
-                <executions>
-                    <execution>
-                        <id>copy-resources</id>
-                        <phase>generate-sources</phase>
-                        <goals>
-                            <goal>copy-resources</goal>
-                        </goals>
-                        <configuration>
-                            <outputDirectory>${project.build.outputDirectory}</outputDirectory>
-                            <resources>
-                                <resource>
-                                    <directory>src/main/resources</directory>
-                                    <includes>
-                                        <include>database/migrations/**/*.xml</include>
-                                    </includes>
-                                </resource>
-                            </resources>
-                        </configuration>
-                    </execution>
-                </executions>
-            </plugin>
-        </plugins>
     </build>
 </project>

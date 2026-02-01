@@ -43,7 +43,7 @@
         </dependency>
         <dependency>
             <groupId>vip.geekclub</groupId>
-            <artifactId>framework</artifactId>
+            <artifactId>infrastructure</artifactId>
             <version>0.0.1-SNAPSHOT</version>
             <scope>compile</scope>
         </dependency>
@@ -57,12 +57,15 @@
                 <artifactId>properties-maven-plugin</artifactId>
             </plugin>
             <plugin>
-                <groupId>org.liquibase</groupId>
-                <artifactId>liquibase-maven-plugin</artifactId>
-            </plugin>
-            <plugin>
                 <groupId>org.jooq</groupId>
                 <artifactId>jooq-codegen-maven</artifactId>
+                <configuration>
+                    <generator>
+                        <database>
+                            <includes>education_.*</includes>
+                        </database>
+                    </generator>
+                </configuration>
             </plugin>
         </plugins>
     </build>
