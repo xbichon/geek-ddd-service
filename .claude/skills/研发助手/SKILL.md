@@ -39,7 +39,7 @@ description: 实现在该项目中的模块初始化，代码编写等功能。
 
 #### (1) 操作步骤
 
-- 第一步：阅读编码规范文档[CODING.md](reference/CODING.md)；
+- 第一步：阅读[编码规范](reference/Codeing_Standards/Codeing_Standards.md)；
 - 第二步：根据用户需求，思考并规划需要编写的代码清单；
 - 第三步：根据计划和编写规范进行编写；
 
