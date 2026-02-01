@@ -41,3 +41,6 @@ Icon?
 *.swp
 *~
 .*
+
+### Claude AI ###
+!.claude/skills/**
