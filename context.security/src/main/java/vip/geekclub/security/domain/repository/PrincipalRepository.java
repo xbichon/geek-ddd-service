@@ -1,7 +1,7 @@
 package vip.geekclub.security.domain.repository;
 
 import lombok.NonNull;
-import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;
 import vip.geekclub.security.domain.model.Principal;
 
@@ -9,7 +9,7 @@ import java.util.Optional;
 import java.util.UUID;
 
 @Repository
-public interface PrincipalRepository extends JpaRepository<@NonNull Principal, @NonNull Long> {
+public interface PrincipalRepository extends CrudRepository<@NonNull Principal, @NonNull Long> {
 
     /**
      * 根据外部用户ID查询用户
