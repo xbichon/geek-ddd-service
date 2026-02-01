@@ -23,7 +23,7 @@ description: 实现在该项目中的模块初始化，代码编写等功能。
 
 #### (1) 操作步骤
 
-- 第一步：阅读模块初始化步骤的文档[MODEL_INIT.md](reference/MODEL_INIT.md)，及该文档中提到的相关规范；
+- 第一步：阅读模块初始化步骤的文档[MODEL_INIT.md](reference/INITPROCESS.md)，及该文档中提到的相关规范；
 - 第二步：规划执行步骤；
 - 第三步：执行初始化的操作；
 

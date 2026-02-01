@@ -13,8 +13,8 @@
         <module>starter</module>
         <module>infrastructure</module>
         <module>context.security</module>
-        <module>context.education</module>
         <module>context.manager</module>
+        <module>context.internship</module>
     </modules>
     <properties>
         <java.version>21</java.version>
