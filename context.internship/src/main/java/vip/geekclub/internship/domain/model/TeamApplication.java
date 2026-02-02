@@ -8,6 +8,9 @@ import lombok.Setter;
 import vip.geekclub.framework.domain.model.AggregateRoot;
 import vip.geekclub.framework.utils.AssertUtil;
 
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * 结组申请单模型
  * 用于管理学生论文结组申请信息
@@ -39,6 +42,13 @@ public class TeamApplication implements AggregateRoot<Long> {
     private String reason;
 
     /**
+     * 小组成员集合
+     */
+    @OneToMany(fetch = FetchType.LAZY)
+    @JoinColumn(name = "team_application_id", insertable = false, updatable = false)
+    private List<TeamMember> members = new ArrayList<>();
+
+    /**
      * 创建结组申请单
      *
      * @param thesisSelectionId 论文选题外键ID
@@ -53,15 +63,4 @@ public class TeamApplication implements AggregateRoot<Long> {
         this.reason = reason;
     }
 
-    /**
-     * 更新结组原因
-     *
-     * @param reason 新的结组原因
-     */
-    public void updateReason(String reason) {
-        AssertUtil.notNull(reason, () -> "结组原因不能为空");
-        AssertUtil.isTrue(!reason.trim().isEmpty(), () -> "结组原因不能为空");
-
-        this.reason = reason;
-    }
 }

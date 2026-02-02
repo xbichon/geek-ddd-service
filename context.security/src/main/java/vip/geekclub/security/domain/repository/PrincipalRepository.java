@@ -6,7 +6,6 @@ import org.springframework.stereotype.Repository;
 import vip.geekclub.security.domain.model.Principal;
 
 import java.util.Optional;
-import java.util.UUID;
 
 @Repository
 public interface PrincipalRepository extends CrudRepository<@NonNull Principal, @NonNull Long> {
