@@ -43,7 +43,6 @@ public class CreateThesisSelectionCommandHandler implements CommandHandler<Creat
                 studentIds
         );
 
-
         // 保存实体
         // 1. 保存论文选题
         thesisSelectionRepository.save(thesisSelection);

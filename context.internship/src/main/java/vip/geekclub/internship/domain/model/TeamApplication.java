@@ -45,8 +45,8 @@ public class TeamApplication implements AggregateRoot<Long> {
     /**
      * 小组成员集合
      */
-    @OneToMany(fetch = FetchType.LAZY)
-    @JoinColumn(name = "team_application_id", insertable = false, updatable = false)
+    @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
+    @JoinColumn(name = "team_application_id")
     private List<TeamMember> members = new ArrayList<>();
 
     /**

@@ -5,5 +5,168 @@
         xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
          https://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.9.xsd">
 
+    <!-- 创建学生表 -->
+    <changeSet id="20250202001-1" author="system">
+        <createTable tableName="internship_student" remarks="学生表">
+            <column name="id" type="BIGINT" autoIncrement="true" remarks="主键ID">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="name" type="VARCHAR(100)" remarks="姓名">
+                <constraints nullable="false"/>
+            </column>
+            <column name="student_no" type="VARCHAR(50)" remarks="学号">
+                <constraints nullable="false" unique="true"/>
+            </column>
+            <column name="grade" type="VARCHAR(20)" remarks="年级">
+                <constraints nullable="false"/>
+            </column>
+            <column name="major" type="VARCHAR(100)" remarks="专业">
+                <constraints nullable="false"/>
+            </column>
+            <column name="class_name" type="VARCHAR(50)" remarks="班级">
+                <constraints nullable="false"/>
+            </column>
+            <column name="advisor_id" type="BIGINT" remarks="指导教师ID"/>
+            <column name="create_time" type="DATETIME" defaultValueComputed="CURRENT_TIMESTAMP" remarks="创建时间"/>
+            <column name="update_time" type="DATETIME" defaultValueComputed="CURRENT_TIMESTAMP on update CURRENT_TIMESTAMP" remarks="更新时间"/>
+            <column name="version" type="BIGINT" defaultValue="0" remarks="版本号"/>
+        </createTable>
+
+        <createIndex tableName="internship_student" indexName="idx_student_no" unique="true">
+            <column name="student_no"/>
+        </createIndex>
+    </changeSet>
+
+    <!-- 创建论文表 -->
+    <changeSet id="20250202001-2" author="system">
+        <createTable tableName="internship_thesis" remarks="论文表">
+            <column name="id" type="BIGINT" autoIncrement="true" remarks="主键ID">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="title" type="VARCHAR(200)" remarks="论文标题">
+                <constraints nullable="false"/>
+            </column>
+            <column name="max_selections" type="INT" remarks="可选上限">
+                <constraints nullable="false"/>
+            </column>
+            <column name="current_selections" type="INT" defaultValue="0" remarks="已选人数">
+                <constraints nullable="false"/>
+            </column>
+            <column name="create_time" type="DATETIME" defaultValueComputed="CURRENT_TIMESTAMP" remarks="创建时间"/>
+            <column name="update_time" type="DATETIME" defaultValueComputed="CURRENT_TIMESTAMP on update CURRENT_TIMESTAMP" remarks="更新时间"/>
+            <column name="version" type="BIGINT" defaultValue="0" remarks="版本号"/>
+        </createTable>
+    </changeSet>
+
+    <!-- 创建论文成果形式关联表 -->
+    <changeSet id="20250202001-3" author="system">
+        <createTable tableName="internship_thesis_achievement_type" remarks="论文成果形式关联表">
+            <column name="thesis_id" type="BIGINT" remarks="论文ID">
+                <constraints nullable="false"/>
+            </column>
+            <column name="type" type="VARCHAR(50)" remarks="成果形式类型">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+
+        <addPrimaryKey tableName="internship_thesis_achievement_type" columnNames="thesis_id,type"/>
+        <createIndex tableName="internship_thesis_achievement_type" indexName="idx_thesis_id">
+            <column name="thesis_id"/>
+        </createIndex>
+    </changeSet>
+
+    <!-- 创建选题记录表 -->
+    <changeSet id="20250202001-4" author="system">
+        <createTable tableName="internship_thesis_selection" remarks="选题记录表">
+            <column name="id" type="BIGINT" autoIncrement="true" remarks="主键ID">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="thesis_id" type="BIGINT" remarks="论文ID">
+                <constraints nullable="false"/>
+            </column>
+            <column name="achievement_type" type="VARCHAR(50)" remarks="成果形式">
+                <constraints nullable="false"/>
+            </column>
+            <column name="selection_type" type="VARCHAR(20)" remarks="选择者类型(INDIVIDUAL/GROUP)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="create_time" type="DATETIME" defaultValueComputed="CURRENT_TIMESTAMP" remarks="创建时间"/>
+            <column name="update_time" type="DATETIME" defaultValueComputed="CURRENT_TIMESTAMP on update CURRENT_TIMESTAMP" remarks="更新时间"/>
+            <column name="version" type="BIGINT" defaultValue="0" remarks="版本号"/>
+        </createTable>
+
+        <createIndex tableName="internship_thesis_selection" indexName="idx_selection_thesis_id">
+            <column name="thesis_id"/>
+        </createIndex>
+    </changeSet>
+
+    <!-- 创建选择者表 -->
+    <changeSet id="20250202001-5" author="system">
+        <createTable tableName="internship_selector" remarks="选择者表">
+            <column name="id" type="BIGINT" autoIncrement="true" remarks="主键ID">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="student_id" type="BIGINT" remarks="学生ID">
+                <constraints nullable="false"/>
+            </column>
+            <column name="paper_selection_id" type="BIGINT" remarks="选题记录ID">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+
+        <createIndex tableName="internship_selector" indexName="idx_selector_student_id">
+            <column name="student_id"/>
+        </createIndex>
+        <createIndex tableName="internship_selector" indexName="idx_selector_selection_id">
+            <column name="paper_selection_id"/>
+        </createIndex>
+    </changeSet>
+
+    <!-- 创建结组申请单表 -->
+    <changeSet id="20250202001-6" author="system">
+        <createTable tableName="internship_team_application" remarks="结组申请单表">
+            <column name="id" type="BIGINT" autoIncrement="true" remarks="主键ID">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="thesis_selection_id" type="BIGINT" remarks="论文选题ID">
+                <constraints nullable="false"/>
+            </column>
+            <column name="reason" type="VARCHAR(500)" remarks="结组原因">
+                <constraints nullable="false"/>
+            </column>
+            <column name="create_time" type="DATETIME" defaultValueComputed="CURRENT_TIMESTAMP" remarks="创建时间"/>
+            <column name="update_time" type="DATETIME" defaultValueComputed="CURRENT_TIMESTAMP on update CURRENT_TIMESTAMP" remarks="更新时间"/>
+            <column name="version" type="BIGINT" defaultValue="0" remarks="版本号"/>
+        </createTable>
+
+        <createIndex tableName="internship_team_application" indexName="idx_team_app_selection_id">
+            <column name="thesis_selection_id"/>
+        </createIndex>
+    </changeSet>
+
+    <!-- 创建结组申请小组成员表 -->
+    <changeSet id="20250202001-7" author="system">
+        <createTable tableName="internship_team_member" remarks="结组申请小组成员表">
+            <column name="id" type="BIGINT" autoIncrement="true" remarks="主键ID">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="team_application_id" type="BIGINT" remarks="结组申请ID">
+                <constraints nullable="false"/>
+            </column>
+            <column name="student_id" type="BIGINT" remarks="学生ID">
+                <constraints nullable="false"/>
+            </column>
+            <column name="responsibility" type="VARCHAR(500)" remarks="职责描述">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+
+        <createIndex tableName="internship_team_member" indexName="idx_team_member_app_id">
+            <column name="team_application_id"/>
+        </createIndex>
+        <createIndex tableName="internship_team_member" indexName="idx_team_member_student_id">
+            <column name="student_id"/>
+        </createIndex>
+    </changeSet>
 
 </databaseChangeLog>
