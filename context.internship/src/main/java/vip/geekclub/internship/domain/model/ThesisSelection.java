@@ -36,8 +36,8 @@ public class ThesisSelection implements AggregateRoot<Long> {
      * 论文ID
      */
     @NotNull(message = "论文不能为空")
-    @Column(name = "paper_id", nullable = false)
-    private Long paperId;
+    @Column(name = "thesis_id", nullable = false)
+    private Long thesisId;
 
     /**
      * 成果形式
@@ -62,15 +62,15 @@ public class ThesisSelection implements AggregateRoot<Long> {
     /**
      * 创建选题记录
      *
-     * @param paperId        论文ID
+     * @param thesisId        论文ID
      * @param achievementType 成果形式
      * @param selectionType   选择者类型
      */
-    public ThesisSelection(Long paperId, String achievementType, SelectionType selectionType) {
-        AssertUtil.notNull(paperId, () -> "论文不能为空");
+    public ThesisSelection(Long thesisId, String achievementType, SelectionType selectionType) {
+        AssertUtil.notNull(thesisId, () -> "论文不能为空");
         AssertUtil.notNull(selectionType, () -> "选择者类型不能为空");
 
-        this.paperId = paperId;
+        this.thesisId = thesisId;
         this.achievementType = achievementType;
         this.selectionType = selectionType;
     }
