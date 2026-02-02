@@ -10,9 +10,12 @@ import vip.geekclub.framework.domain.model.AggregateRoot;
 import vip.geekclub.framework.exception.BusinessLogicException;
 import vip.geekclub.framework.utils.AssertUtil;
 import vip.geekclub.internship.domain.value.SelectionType;
+import vip.geekclub.internship.domain.value.SelectorValue;
 
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 /**
  * 选题记录模型
@@ -60,117 +63,54 @@ public class ThesisSelection implements AggregateRoot<Long> {
     private final Set<Selector> selectors = new HashSet<>();
 
     /**
-     * 创建选题记录
+     * 创建选题记录（带学生ID列表）
      *
      * @param thesisId        论文ID
      * @param achievementType 成果形式
      * @param selectionType   选择者类型
+     * @param studentIds      学生ID列表
      */
-    public ThesisSelection(Long thesisId, String achievementType, SelectionType selectionType) {
+    public ThesisSelection(Long thesisId, String achievementType, SelectionType selectionType, List<SelectorValue> studentIds) {
+
         AssertUtil.notNull(thesisId, () -> "论文不能为空");
         AssertUtil.notNull(selectionType, () -> "选择者类型不能为空");
 
         this.thesisId = thesisId;
         this.achievementType = achievementType;
         this.selectionType = selectionType;
+
+        // 验证并创建选择者
+        validateSelectorsCount(studentIds);
+
+        // 创建选择者
+        this.selectors.addAll(
+                studentIds.stream()
+                        .map(item -> new Selector(item.studentId(), this))
+                        .collect(Collectors.toSet())
+        );
     }
 
     /**
-     * 添加选择者
+     * 验证学生数量并创建选择者
      *
-     * @param selector 选择者
+     * @param studentIds 学生ID列表
      */
-    public void addSelector(Selector selector) {
-        AssertUtil.notNull(selector, () -> "选择者不能为空");
-
-        int currentCount = this.selectors.size();
-        int maxCount = this.selectionType.getMaxSelections();
-
-        if (currentCount >= maxCount) {
-            throw new BusinessLogicException(
-                String.format("当前选择者类型为%s，最多允许%d个选择者，已达到上限",
-                    this.selectionType == SelectionType.INDIVIDUAL ? "个人" : "组",
-                    maxCount)
-            );
+    private void validateSelectorsCount(List<SelectorValue> studentIds) {
+        if (studentIds == null || studentIds.isEmpty()) {
+            throw new BusinessLogicException("选择者列表不能为空");
         }
 
-        this.selectors.add(selector);
-    }
-
-    /**
-     * 批量添加选择者
-     *
-     * @param selectors 选择者集合
-     */
-    public void addSelectors(Set<Selector> selectors) {
-        AssertUtil.notNull(selectors, () -> "选择者集合不能为空");
-        AssertUtil.isTrue(!selectors.isEmpty(), () -> "选择者集合不能为空");
-
-        int currentCount = this.selectors.size();
-        int newCount = currentCount + selectors.size();
-        int maxCount = this.selectionType.getMaxSelections();
-
-        if (newCount > maxCount) {
-            throw new BusinessLogicException(
-                String.format("当前选择者类型为%s，最多允许%d个选择者，添加后将超过上限",
-                    this.selectionType == SelectionType.INDIVIDUAL ? "个人" : "组",
-                    maxCount)
-            );
+        int count = studentIds.size();
+        if (this.selectionType == SelectionType.INDIVIDUAL) {
+            // 个人形式：成员数只能是1个
+            if (studentIds.size() != 1) {
+                throw new BusinessLogicException("个人选题形式只能选择1个学生");
+            }
+        } else {
+            // 小组形式：成员数2-5个
+            if (count < 2 || count > 5) {
+                throw new BusinessLogicException("小组选题形式成员数量必须在2-5人之间");
+            }
         }
-
-        this.selectors.addAll(selectors);
-    }
-
-    /**
-     * 移除选择者
-     *
-     * @param selector 选择者
-     */
-    public void removeSelector(Selector selector) {
-        AssertUtil.notNull(selector, () -> "选择者不能为空");
-        this.selectors.remove(selector);
-    }
-
-    /**
-     * 验证选择者数量是否符合要求
-     */
-    public void validateSelectorCount() {
-        int count = this.selectors.size();
-        if (!this.selectionType.isValidSelectionCount(count)) {
-            throw new BusinessLogicException(
-                String.format("当前选择者类型为%s，允许%d-%d个选择者，当前为%d个",
-                    this.selectionType == SelectionType.INDIVIDUAL ? "个人" : "组",
-                    this.selectionType.getMinSelections(),
-                    this.selectionType.getMaxSelections(),
-                    count)
-            );
-        }
-    }
-
-    /**
-     * 获取选择者数量
-     *
-     * @return 选择者数量
-     */
-    public int getSelectorCount() {
-        return this.selectors.size();
-    }
-
-    /**
-     * 检查是否已满
-     *
-     * @return 是否已满
-     */
-    public boolean isFull() {
-        return this.selectors.size() >= this.selectionType.getMaxSelections();
-    }
-
-    /**
-     * 更新成果形式
-     *
-     * @param achievementType 成果形式
-     */
-    public void updateAchievementType(String achievementType) {
-        this.achievementType = achievementType;
     }
 }

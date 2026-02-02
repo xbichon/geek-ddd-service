@@ -28,8 +28,9 @@ public class TeamMember {
     /**
      * 结组申请外键ID
      */
-    @Column(name = "team_application_id", nullable = false)
-    private Long teamApplicationId;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "team_application_id", nullable = false)
+    private TeamApplication teamApplication;
 
     /**
      * 学生外键ID
@@ -46,17 +47,10 @@ public class TeamMember {
     /**
      * 创建小组成员
      *
-     * @param teamApplicationId 结组申请外键ID
-     * @param studentId         学生外键ID
-     * @param responsibility    职责描述
      */
-    public TeamMember(Long teamApplicationId, Long studentId, String responsibility) {
-        AssertUtil.notNull(teamApplicationId, () -> "结组申请外键ID不能为空");
-        AssertUtil.notNull(studentId, () -> "学生外键ID不能为空");
-        AssertUtil.notNull(responsibility, () -> "职责描述不能为空");
-        AssertUtil.isTrue(!responsibility.trim().isEmpty(), () -> "职责描述不能为空");
+    public TeamMember(TeamApplication teamApplication, Long studentId, String responsibility) {
 
-        this.teamApplicationId = teamApplicationId;
+        this.teamApplication = teamApplication;
         this.studentId = studentId;
         this.responsibility = responsibility;
     }

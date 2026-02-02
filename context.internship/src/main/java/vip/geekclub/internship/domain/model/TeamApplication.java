@@ -7,6 +7,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import vip.geekclub.framework.domain.model.AggregateRoot;
 import vip.geekclub.framework.utils.AssertUtil;
+import vip.geekclub.internship.domain.value.TeamApplicationValue;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -52,15 +53,15 @@ public class TeamApplication implements AggregateRoot<Long> {
      * 创建结组申请单
      *
      * @param thesisSelectionId 论文选题外键ID
-     * @param reason            结组原因
      */
-    public TeamApplication(Long thesisSelectionId, String reason) {
-        AssertUtil.notNull(thesisSelectionId, () -> "论文选题外键ID不能为空");
-        AssertUtil.notNull(reason, () -> "结组原因不能为空");
-        AssertUtil.isTrue(!reason.trim().isEmpty(), () -> "结组原因不能为空");
+    public TeamApplication(Long thesisSelectionId, TeamApplicationValue application) {
 
         this.thesisSelectionId = thesisSelectionId;
-        this.reason = reason;
+        this.reason = application.reason();
+
+        this.members = application.members().stream()
+                .map(item -> new TeamMember(this,item.studentId(), item.responsibility()))
+                .toList();
     }
 
 }
