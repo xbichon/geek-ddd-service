@@ -14,3 +14,5 @@
     * 领域服务：[09_domain_service.md](Codeing_Standards/09_domain_service.md)
     * 领域事件：[10_domain_event.md](Codeing_Standards/10_domain_event.md)
     * 值对象：[11_value_object.md](Codeing_Standards/11_value_object.md)
+    * 数据库迁移脚本：
+- 第3步：如新增/修改领域模型或值对象，需要阅读[12_database_migration.md](Codeing_Standards/12_database_migration.md)规范文档，并编写对应的数据库迁移脚本

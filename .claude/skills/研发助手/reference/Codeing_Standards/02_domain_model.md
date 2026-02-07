@@ -8,8 +8,11 @@
 - 采用lombok 注解，要求尽量保证所有的属性、默认构造函数，在没有必要的情况下使用private限制:
     * 使用`@Getter @Setter(AccessLevel.PRIVATE)`注解定义属性的访问权限；
     * 使用`@NoArgsConstructor(access = AccessLevel.PROTECTED)`注解定义无参构造函数；
+- 聚合根之间通过外键ID关联，不直接引用实体类；
+- 领域层属于命令端，禁止依赖查询端代码；
+- 用户未明确指定属性时，询问用户或仅保留ID字段，禁止自行添加属性；
 
-## 2、示例
+## 2、示例 
 ```java
 package vip.geekclub.security.domain.model;
 

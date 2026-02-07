@@ -58,7 +58,7 @@ public class Student extends EntitySupport implements AggregateRoot<Long> {
     private String className;
 
     /**
-     * 指导教师ID
+     * 指导教师
      */
     @Column(name = "advisor_id")
     private Long advisorId;
@@ -87,5 +87,4 @@ public class Student extends EntitySupport implements AggregateRoot<Long> {
         this.className = className;
         this.advisorId = advisorId;
     }
-
 }

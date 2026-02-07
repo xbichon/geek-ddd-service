@@ -5,8 +5,8 @@
         xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
          https://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.9.xsd">
 
-    <!-- 创建学生表 -->
     <changeSet id="20250202001-1" author="system">
+        <!-- 创建学生表 -->
         <createTable tableName="internship_student" remarks="学生表">
             <column name="id" type="BIGINT" autoIncrement="true" remarks="主键ID">
                 <constraints primaryKey="true" nullable="false"/>
@@ -28,17 +28,16 @@
             </column>
             <column name="advisor_id" type="BIGINT" remarks="指导教师ID"/>
             <column name="create_time" type="DATETIME" defaultValueComputed="CURRENT_TIMESTAMP" remarks="创建时间"/>
-            <column name="update_time" type="DATETIME" defaultValueComputed="CURRENT_TIMESTAMP on update CURRENT_TIMESTAMP" remarks="更新时间"/>
+            <column name="update_time" type="DATETIME"
+                    defaultValueComputed="CURRENT_TIMESTAMP on update CURRENT_TIMESTAMP" remarks="更新时间"/>
             <column name="version" type="BIGINT" defaultValue="0" remarks="版本号"/>
         </createTable>
 
         <createIndex tableName="internship_student" indexName="idx_student_no" unique="true">
             <column name="student_no"/>
         </createIndex>
-    </changeSet>
 
-    <!-- 创建论文表 -->
-    <changeSet id="20250202001-2" author="system">
+        <!-- 创建论文表 -->
         <createTable tableName="internship_thesis" remarks="论文表">
             <column name="id" type="BIGINT" autoIncrement="true" remarks="主键ID">
                 <constraints primaryKey="true" nullable="false"/>
@@ -53,13 +52,12 @@
                 <constraints nullable="false"/>
             </column>
             <column name="create_time" type="DATETIME" defaultValueComputed="CURRENT_TIMESTAMP" remarks="创建时间"/>
-            <column name="update_time" type="DATETIME" defaultValueComputed="CURRENT_TIMESTAMP on update CURRENT_TIMESTAMP" remarks="更新时间"/>
+            <column name="update_time" type="DATETIME"
+                    defaultValueComputed="CURRENT_TIMESTAMP on update CURRENT_TIMESTAMP" remarks="更新时间"/>
             <column name="version" type="BIGINT" defaultValue="0" remarks="版本号"/>
         </createTable>
-    </changeSet>
 
-    <!-- 创建论文成果形式关联表 -->
-    <changeSet id="20250202001-3" author="system">
+        <!-- 创建论文成果形式关联表 -->
         <createTable tableName="internship_thesis_achievement_type" remarks="论文成果形式关联表">
             <column name="thesis_id" type="BIGINT" remarks="论文ID">
                 <constraints nullable="false"/>
@@ -73,10 +71,8 @@
         <createIndex tableName="internship_thesis_achievement_type" indexName="idx_thesis_id">
             <column name="thesis_id"/>
         </createIndex>
-    </changeSet>
 
-    <!-- 创建选题记录表 -->
-    <changeSet id="20250202001-4" author="system">
+        <!-- 创建选题记录表 -->
         <createTable tableName="internship_thesis_selection" remarks="选题记录表">
             <column name="id" type="BIGINT" autoIncrement="true" remarks="主键ID">
                 <constraints primaryKey="true" nullable="false"/>
@@ -91,17 +87,16 @@
                 <constraints nullable="false"/>
             </column>
             <column name="create_time" type="DATETIME" defaultValueComputed="CURRENT_TIMESTAMP" remarks="创建时间"/>
-            <column name="update_time" type="DATETIME" defaultValueComputed="CURRENT_TIMESTAMP on update CURRENT_TIMESTAMP" remarks="更新时间"/>
+            <column name="update_time" type="DATETIME"
+                    defaultValueComputed="CURRENT_TIMESTAMP on update CURRENT_TIMESTAMP" remarks="更新时间"/>
             <column name="version" type="BIGINT" defaultValue="0" remarks="版本号"/>
         </createTable>
 
         <createIndex tableName="internship_thesis_selection" indexName="idx_selection_thesis_id">
             <column name="thesis_id"/>
         </createIndex>
-    </changeSet>
 
-    <!-- 创建选择者表 -->
-    <changeSet id="20250202001-5" author="system">
+        <!-- 创建选择者表 -->
         <createTable tableName="internship_selector" remarks="选择者表">
             <column name="id" type="BIGINT" autoIncrement="true" remarks="主键ID">
                 <constraints primaryKey="true" nullable="false"/>
@@ -120,10 +115,9 @@
         <createIndex tableName="internship_selector" indexName="idx_selector_selection_id">
             <column name="paper_selection_id"/>
         </createIndex>
-    </changeSet>
 
-    <!-- 创建结组申请单表 -->
-    <changeSet id="20250202001-6" author="system">
+
+        <!-- 创建结组申请单表 -->
         <createTable tableName="internship_team_application" remarks="结组申请单表">
             <column name="id" type="BIGINT" autoIncrement="true" remarks="主键ID">
                 <constraints primaryKey="true" nullable="false"/>
@@ -135,17 +129,16 @@
                 <constraints nullable="false"/>
             </column>
             <column name="create_time" type="DATETIME" defaultValueComputed="CURRENT_TIMESTAMP" remarks="创建时间"/>
-            <column name="update_time" type="DATETIME" defaultValueComputed="CURRENT_TIMESTAMP on update CURRENT_TIMESTAMP" remarks="更新时间"/>
+            <column name="update_time" type="DATETIME"
+                    defaultValueComputed="CURRENT_TIMESTAMP on update CURRENT_TIMESTAMP" remarks="更新时间"/>
             <column name="version" type="BIGINT" defaultValue="0" remarks="版本号"/>
         </createTable>
 
         <createIndex tableName="internship_team_application" indexName="idx_team_app_selection_id">
             <column name="thesis_selection_id"/>
         </createIndex>
-    </changeSet>
 
-    <!-- 创建结组申请小组成员表 -->
-    <changeSet id="20250202001-7" author="system">
+        <!-- 创建结组申请小组成员表 -->
         <createTable tableName="internship_team_member" remarks="结组申请小组成员表">
             <column name="id" type="BIGINT" autoIncrement="true" remarks="主键ID">
                 <constraints primaryKey="true" nullable="false"/>
@@ -167,6 +160,19 @@
         <createIndex tableName="internship_team_member" indexName="idx_team_member_student_id">
             <column name="student_id"/>
         </createIndex>
+
+        <!-- 创建指导教师表 -->
+        <createTable tableName="internship_advisor" remarks="指导教师表">
+            <column name="id" type="BIGINT" autoIncrement="true" remarks="主键ID">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="name" type="VARCHAR(100)" remarks="姓名">
+                <constraints nullable="false"/>
+            </column>
+            <column name="create_time" type="DATETIME" defaultValueComputed="CURRENT_TIMESTAMP" remarks="创建时间"/>
+            <column name="update_time" type="DATETIME" defaultValueComputed="CURRENT_TIMESTAMP on update CURRENT_TIMESTAMP" remarks="更新时间"/>
+            <column name="version" type="BIGINT" defaultValue="0" remarks="版本号"/>
+        </createTable>
     </changeSet>
 
 </databaseChangeLog>

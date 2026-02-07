@@ -1,4 +1,6 @@
 spring:
+  jmx:
+    enabled: false
   application:
     name: arc
   profiles:
@@ -38,6 +40,10 @@ spring:
     redis:
       repositories:
         enabled: false
+
+logging:
+  level:
+    sun.rmi.transport.tcp: ERROR
 
 server:
   servlet:
