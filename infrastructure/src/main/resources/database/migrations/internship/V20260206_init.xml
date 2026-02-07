@@ -17,13 +17,7 @@
             <column name="student_no" type="VARCHAR(50)" remarks="学号">
                 <constraints nullable="false" unique="true"/>
             </column>
-            <column name="grade" type="VARCHAR(20)" remarks="年级">
-                <constraints nullable="false"/>
-            </column>
-            <column name="major" type="VARCHAR(100)" remarks="专业">
-                <constraints nullable="false"/>
-            </column>
-            <column name="class_name" type="VARCHAR(50)" remarks="班级">
+            <column name="class_id" type="BIGINT" remarks="班级ID">
                 <constraints nullable="false"/>
             </column>
             <column name="advisor_id" type="BIGINT" remarks="指导教师ID"/>
@@ -35,6 +29,14 @@
 
         <createIndex tableName="internship_student" indexName="idx_student_no" unique="true">
             <column name="student_no"/>
+        </createIndex>
+
+        <createIndex tableName="internship_student" indexName="idx_student_class_id">
+            <column name="class_id"/>
+        </createIndex>
+
+        <createIndex tableName="internship_student" indexName="idx_student_advisor_id">
+            <column name="advisor_id"/>
         </createIndex>
 
         <!-- 创建论文表 -->
@@ -173,6 +175,59 @@
             <column name="update_time" type="DATETIME" defaultValueComputed="CURRENT_TIMESTAMP on update CURRENT_TIMESTAMP" remarks="更新时间"/>
             <column name="version" type="BIGINT" defaultValue="0" remarks="版本号"/>
         </createTable>
+
+        <!-- 创建年级表 -->
+        <createTable tableName="internship_grade" remarks="年级表">
+            <column name="id" type="BIGINT" autoIncrement="true" remarks="主键ID">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="name" type="VARCHAR(50)" remarks="年级名称">
+                <constraints nullable="false" unique="true"/>
+            </column>
+            <column name="create_time" type="DATETIME" defaultValueComputed="CURRENT_TIMESTAMP" remarks="创建时间"/>
+            <column name="update_time" type="DATETIME" defaultValueComputed="CURRENT_TIMESTAMP on update CURRENT_TIMESTAMP" remarks="更新时间"/>
+            <column name="version" type="BIGINT" defaultValue="0" remarks="版本号"/>
+        </createTable>
+
+        <!-- 创建专业表 -->
+        <createTable tableName="internship_major" remarks="专业表">
+            <column name="id" type="BIGINT" autoIncrement="true" remarks="主键ID">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="name" type="VARCHAR(100)" remarks="专业名称">
+                <constraints nullable="false"/>
+            </column>
+            <column name="grade_id" type="BIGINT" remarks="年级ID">
+                <constraints nullable="false"/>
+            </column>
+            <column name="create_time" type="DATETIME" defaultValueComputed="CURRENT_TIMESTAMP" remarks="创建时间"/>
+            <column name="update_time" type="DATETIME" defaultValueComputed="CURRENT_TIMESTAMP on update CURRENT_TIMESTAMP" remarks="更新时间"/>
+            <column name="version" type="BIGINT" defaultValue="0" remarks="版本号"/>
+        </createTable>
+
+        <createIndex tableName="internship_major" indexName="idx_major_grade_id">
+            <column name="grade_id"/>
+        </createIndex>
+
+        <!-- 创建班级表 -->
+        <createTable tableName="internship_class" remarks="班级表">
+            <column name="id" type="BIGINT" autoIncrement="true" remarks="主键ID">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="name" type="VARCHAR(100)" remarks="班级名称">
+                <constraints nullable="false"/>
+            </column>
+            <column name="major_id" type="BIGINT" remarks="专业ID">
+                <constraints nullable="false"/>
+            </column>
+            <column name="create_time" type="DATETIME" defaultValueComputed="CURRENT_TIMESTAMP" remarks="创建时间"/>
+            <column name="update_time" type="DATETIME" defaultValueComputed="CURRENT_TIMESTAMP on update CURRENT_TIMESTAMP" remarks="更新时间"/>
+            <column name="version" type="BIGINT" defaultValue="0" remarks="版本号"/>
+        </createTable>
+
+        <createIndex tableName="internship_class" indexName="idx_class_major_id">
+            <column name="major_id"/>
+        </createIndex>
     </changeSet>
 
 </databaseChangeLog>
