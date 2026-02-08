@@ -91,7 +91,7 @@
                                 <resource>
                                     <directory>src/main/resources</directory>
                                     <includes>
-                                        <include>database/migrations/**/*.xml</include>
+                                        <include>db/migration/**/*.xml</include>
                                     </includes>
                                 </resource>
                             </resources>
@@ -125,7 +125,7 @@
                     <username>${db.user}</username>
                     <!--suppress UnresolvedMavenProperty -->
                     <password>${db.password}</password>
-                    <changeLogFile>src/main/resources/database/migrations/master.xml</changeLogFile>
+                    <changeLogFile>src/main/resources/db/migration/master.xml</changeLogFile>
                 </configuration>
             </plugin>
         </plugins>

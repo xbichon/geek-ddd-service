@@ -6,5 +6,5 @@
         https://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-latest.xsd">
 
     <!-- 使用当前目录的相对路径 -->
-    <includeAll path="database/migrations" minDepth="2" />
+    <includeAll path="db/migration" minDepth="2" />
 </databaseChangeLog>

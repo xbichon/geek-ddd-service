@@ -29,7 +29,7 @@ public class LiquibaseInitTask implements InitTask {
         // 手动执行Liquibase迁移
         try {
             Liquibase liquibase = new Liquibase(
-                    "database/migrations/master.xml",
+                    "db/migration/master.xml",
                     new ClassLoaderResourceAccessor(),
                     DatabaseFactory.getInstance().findCorrectDatabaseImplementation(
                             new JdbcConnection(dataSource.getConnection())
