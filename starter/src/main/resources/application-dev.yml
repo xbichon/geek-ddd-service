@@ -1,14 +1,18 @@
 spring:
   datasource:
-    url: jdbc:mysql://localhost:3306/test?useSSL=true&serverTimezone=Asia/Shanghai&useUnicode=true&characterEncoding=utf-8
-    username: root
-    password: 12345678
+    url: ${config.database.url}
+    username: ${config.database.username}
+    password: ${config.database.password}
+    driver-class-name: ${config.database.driver-name}
   data:
     redis:
       host: localhost
       port: 6379
   jpa:
     show-sql: true
+    properties:
+      hibernate:
+        default_schema: ${config.database.name}
 
 server:
   port: 8090
@@ -18,6 +22,12 @@ logging:
     vip.geekclub: DEBUG
 
 config:
+  database:
+    driver-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://localhost:3306/test?useSSL=true&serverTimezone=Asia/Shanghai&useUnicode=true&characterEncoding=utf-8
+    username: root
+    password: 12345678
+    name: test
   # JWT配置
   jwt:
     secret-key: ${JWT_SECRET_KEY:Geek2024SecurityDianComChina12987T23001Y-Q8Y05OOD}

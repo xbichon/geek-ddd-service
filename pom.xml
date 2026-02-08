@@ -55,9 +55,9 @@
         <pluginManagement>
             <plugins>
                 <plugin>
-                    <groupId>org.codehaus.mojo</groupId>
-                    <artifactId>properties-maven-plugin</artifactId>
-                    <version>1.2.1</version>
+                    <groupId>it.ozimov</groupId>
+                    <artifactId>yaml-properties-maven-plugin</artifactId>
+                    <version>1.1.3</version>
                     <executions>
                         <execution>
                             <phase>generate-resources</phase>
@@ -66,9 +66,8 @@
                             </goals>
                             <configuration>
                                 <files>
-                                    <!-- 读取子模块的配置文件 -->
-                                    <file>${project.basedir}/../starter/src/main/resources/db-connection.properties
-                                    </file>
+                                    <!-- 读取子模块的YAML配置文件 -->
+                                    <file>${project.basedir}/../starter/src/main/resources/application-dev.yml</file>
                                 </files>
                             </configuration>
                         </execution>
@@ -89,19 +88,19 @@
                     <configuration>
                         <jdbc>
                             <!--suppress UnresolvedMavenProperty -->
-                            <driver>${db.driver}</driver>
+                            <driver>${config.database.driver-name}</driver>
                             <!--suppress UnresolvedMavenProperty -->
-                            <url>${db.url}</url>
+                            <url>${config.database.url}</url>
                             <!--suppress UnresolvedMavenProperty -->
-                            <user>${db.user}</user>
+                            <user>${config.database.username}</user>
                             <!--suppress UnresolvedMavenProperty -->
-                            <password>${db.password}</password>
+                            <password>${config.database.password}</password>
                         </jdbc>
                         <generator>
                             <database>
                                 <name>org.jooq.meta.mysql.MySQLDatabase</name>
                                 <!--suppress UnresolvedMavenProperty -->
-                                <inputSchema>${db.schema}</inputSchema>
+                                <inputSchema>${config.database.name}</inputSchema>
                             </database>
                             <generate>
                                 <records>false</records>

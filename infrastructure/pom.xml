@@ -100,8 +100,8 @@
                 </executions>
             </plugin>
             <plugin>
-                <groupId>org.codehaus.mojo</groupId>
-                <artifactId>properties-maven-plugin</artifactId>
+                <groupId>it.ozimov</groupId>
+                <artifactId>yaml-properties-maven-plugin</artifactId>
             </plugin>
 
             <!-- LiQiuBase数据库生成插件-->
@@ -118,13 +118,13 @@
                 </executions>
                 <configuration>
                     <!--suppress UnresolvedMavenProperty -->
-                    <driver>${db.driver}</driver>
+                    <driver>${config.database.driver-name}</driver>
                     <!--suppress UnresolvedMavenProperty -->
-                    <url>${db.url}</url>
+                    <url>${config.database.url}</url>
                     <!--suppress UnresolvedMavenProperty -->
-                    <username>${db.user}</username>
+                    <username>${config.database.username}</username>
                     <!--suppress UnresolvedMavenProperty -->
-                    <password>${db.password}</password>
+                    <password>${config.database.password}</password>
                     <changeLogFile>src/main/resources/db/migration/master.xml</changeLogFile>
                 </configuration>
             </plugin>
