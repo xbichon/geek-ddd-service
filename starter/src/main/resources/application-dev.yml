@@ -15,7 +15,7 @@ spring:
         default_schema: ${config.database.name}
 
 server:
-  port: 8090
+  port: 8091
 
 logging:
   level:

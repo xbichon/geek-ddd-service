@@ -4,7 +4,6 @@ import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Component;
 import vip.geekclub.framework.command.CommandBus;
 import vip.geekclub.framework.initialize.InitTask;
-import vip.geekclub.internship.application.command.thesisselection.BatchInitAdvisorCommand;
 
 import java.util.List;
 
@@ -24,7 +23,7 @@ public class InternshipInit implements InitTask {
                 "何飞", "王甜", "李笑雨", "张恩琪", "张晓楠"
         );
 
-        BatchInitAdvisorCommand command = new BatchInitAdvisorCommand(advisorNames);
-        commandBus.dispatch(command);
+//        BatchInitAdvisorCommand command = new BatchInitAdvisorCommand(advisorNames);
+//        commandBus.dispatch(command);
     }
 }

@@ -10,15 +10,15 @@ import vip.geekclub.framework.domain.model.EntitySupport;
 import vip.geekclub.framework.utils.AssertUtil;
 
 /**
- * 学生模型
+ * 实习生模型
  * 用于管理实习学生的基本信息，包括姓名、学号、班级和指导教师
  */
 @Entity
-@Table(name = "internship_student")
+@Table(name = "internship_intern")
 @Getter
 @Setter(AccessLevel.PRIVATE)
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class Student extends EntitySupport implements AggregateRoot<Long> {
+public class Intern extends EntitySupport implements AggregateRoot<Long> {
 
     /**
      * 主键ID
@@ -40,33 +40,33 @@ public class Student extends EntitySupport implements AggregateRoot<Long> {
     private String studentNo;
 
     /**
-     * 班级ID
+     * 班级名称
      */
-    @Column(name = "class_id", nullable = false)
-    private Long classId;
+    @Column(name = "class_name", nullable = false, length = 100)
+    private String className;
 
     /**
-     * 指导教师ID
+     * 指导教师姓名
      */
-    @Column(name = "advisor_id")
-    private Long advisorId;
+    @Column(name = "advisor_name", length = 100)
+    private String advisorName;
 
     /**
-     * 创建学生
+     * 创建实习生
      *
-     * @param name      姓名
-     * @param studentNo 学号
-     * @param classId   班级ID
-     * @param advisorId 指导教师ID
+     * @param name        姓名
+     * @param studentNo   学号
+     * @param className   班级名称
+     * @param advisorName 指导教师姓名
      */
-    public Student(String name, String studentNo, Long classId, Long advisorId) {
+    public Intern(String name, String studentNo, String className, String advisorName) {
         AssertUtil.notNull(name, () -> "姓名不能为空");
         AssertUtil.notNull(studentNo, () -> "学号不能为空");
-        AssertUtil.notNull(classId, () -> "班级ID不能为空");
+        AssertUtil.notNull(className, () -> "班级名称不能为空");
 
         this.name = name;
         this.studentNo = studentNo;
-        this.classId = classId;
-        this.advisorId = advisorId;
+        this.className = className;
+        this.advisorName = advisorName;
     }
 }
