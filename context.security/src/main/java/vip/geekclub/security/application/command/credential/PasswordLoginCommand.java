@@ -8,14 +8,20 @@ import vip.geekclub.framework.command.Command;
 
 @Builder
 public record PasswordLoginCommand(
+        @NotBlank(message = "用户类型不能为空") String userType,
         @NotBlank(message = "账号不能为空") String identifier,
         @NotBlank(message = "密码不能为空") @Size(min = 6, max = 20, message = "密码长度必须在6-20个字符之间") String password,
-        @NotBlank(message = "用户类型不能为空") String userType
+        String identifierType
 ) implements Command {
     public PasswordLoginCommand {
         identifier = StringUtils.trimAllWhitespace(identifier);
         password = StringUtils.trimAllWhitespace(password);
         userType = StringUtils.trimAllWhitespace(userType);
+        identifierType = StringUtils.trimAllWhitespace(identifierType);
+    }
+
+    public PasswordLoginCommand(String userType, String identifier,String  password){
+        this(userType,identifier,password,null);
     }
 
 }

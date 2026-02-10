@@ -17,12 +17,20 @@ public class PasswordAuthenticationToken extends AbstractAuthenticationToken {
     @Getter
     private final String password;
 
+    @Getter
+    private final String identifierType;
+
     // 未认证前的构造（仅包含 code）
-    public PasswordAuthenticationToken(String identifier, String password) {
+    public PasswordAuthenticationToken(String identifier, String password, String identifierType) {
         super((Collection<? extends GrantedAuthority>) null);
         this.identifier = identifier;
         this.password = password;
+        this.identifierType = identifierType;
         super.setAuthenticated(false);
+    }
+
+    public PasswordAuthenticationToken(String identifier, String password) {
+        this(identifier, password, "");
     }
 
     @Override

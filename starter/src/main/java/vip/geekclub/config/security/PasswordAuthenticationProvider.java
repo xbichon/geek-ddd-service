@@ -40,7 +40,7 @@ public class PasswordAuthenticationProvider implements AuthenticationProvider {
         }
 
         try {
-            PasswordLoginCommand command = new PasswordLoginCommand(token.getIdentifier(), token.getPassword(), "teacher");
+            PasswordLoginCommand command = new PasswordLoginCommand("teacher", token.getIdentifier(), token.getPassword());
             CommandResult<UserPrincipal> commandResult = CommandDispatcher.dispatch(command);
             UserPrincipal userPrincipal = commandResult.data();
             return new UserAuthenticationToken(userPrincipal, Set.of());
