@@ -9,6 +9,8 @@ import vip.geekclub.framework.domain.model.AggregateRoot;
 import vip.geekclub.framework.domain.model.EntitySupport;
 import vip.geekclub.framework.utils.AssertUtil;
 
+import java.util.UUID;
+
 /**
  * 实习生模型
  * 用于管理实习学生的基本信息，包括姓名、学号、班级和指导教师
@@ -40,6 +42,12 @@ public class Intern extends EntitySupport implements AggregateRoot<Long> {
     private String studentNo;
 
     /**
+     * 用户ID
+     */
+    @Column(name = "auth_id", nullable = false, unique = true)
+    private String authId;
+
+    /**
      * 班级名称
      */
     @Column(name = "class_name", nullable = false, length = 100)
@@ -66,6 +74,7 @@ public class Intern extends EntitySupport implements AggregateRoot<Long> {
 
         this.name = name;
         this.studentNo = studentNo;
+        this.authId = UUID.randomUUID().toString();
         this.className = className;
         this.advisorName = advisorName;
     }

@@ -17,6 +17,9 @@
             <column name="student_no" type="VARCHAR(50)" remarks="学号">
                 <constraints nullable="false" unique="true"/>
             </column>
+            <column name="auth_id" type="VARCHAR(100)" remarks="用户ID">
+                <constraints nullable="false" unique="true"/>
+            </column>
             <column name="class_name" type="VARCHAR(100)" remarks="班级名称">
                 <constraints nullable="false"/>
             </column>
