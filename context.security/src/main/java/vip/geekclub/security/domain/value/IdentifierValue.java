@@ -1,6 +1,5 @@
 package vip.geekclub.security.domain.value;
 
-import jakarta.persistence.Embeddable;
 import jakarta.validation.constraints.NotBlank;
 
 /**
@@ -34,4 +33,7 @@ public record IdentifierValue(
         return new IdentifierValue(PHONE, phone);
     }
 
+    public static IdentifierValue ofBusinessNo(String businessNo) {
+        return new IdentifierValue(BUSINESSNO, businessNo);
+    }
 }

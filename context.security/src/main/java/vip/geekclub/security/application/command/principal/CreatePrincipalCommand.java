@@ -14,6 +14,7 @@ import java.util.Set;
 
 @CommandHandlerMapping(CreatePrincipalCommandHandler.class)
 public record CreatePrincipalCommand(
+
         @NotNull(message = "外部用户ID不能为空") String authId,
         @NotNull(message = "应用类型不能为空") String userType,
 
@@ -29,4 +30,19 @@ public record CreatePrincipalCommand(
         Set<Long> roleIds
 
 ) implements Command {
+
+    /**
+     * 简化构造函数，无需传递角色ID
+     */
+    public CreatePrincipalCommand(String authId, String userType,
+                                  List<IdentifierValue> identifierValues,
+                                  String password) {
+        this(authId, userType, identifierValues, password, Set.of());
+    }
+
+    public CreatePrincipalCommand {
+        if (roleIds == null) {
+            roleIds = Set.of();
+        }
+    }
 }
