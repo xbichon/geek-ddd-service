@@ -28,10 +28,6 @@ public record AchievementType(
         return new AchievementType(type);
     }
 
-    public static AchievementType empty() {
-        return new AchievementType("");
-    }
-
     public boolean isEmpty() {
         return StringUtils.isEmpty(type);
     }

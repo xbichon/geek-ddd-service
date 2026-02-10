@@ -27,18 +27,19 @@ public class CreateThesisSelectionCommandHandler implements CommandHandler<Creat
     @Override
     @Transactional
     public CommandResult<Void> execute(CreateThesisSelectionCommand command) {
-        // 1. 获取当前用户
+        // 1. 获取当前的实习生信息
         var principal = CommandContext.getCurrentPrincipal();
         var intern = internRepository.findByAuthId(principal.authId())
                 .orElseThrow(() -> new ValidationException("当前用户不是实习生"));
 
-        // 2. 准备选题者列表
+        // 2. 准备选题者列表，根据选择的是组队还是个人，做不同的处理
         List<SelectorValue> studentIds = switch (command.selectionType()) {
             case GROUP -> {
                 var ids = command.teamApplication().members().stream()
                         .map(item -> new SelectorValue(item.studentId()))
                         .toList();
 
+                // 验证组队成员资格
                 teamMemberValidator.validateMembers(ids, intern);
                 yield ids;
             }
