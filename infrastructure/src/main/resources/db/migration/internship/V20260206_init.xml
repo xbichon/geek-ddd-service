@@ -106,7 +106,7 @@
             </column>
         </createTable>
 
-        <createIndex tableName="internship_selector" indexName="idx_selector_student_id">
+        <createIndex tableName="internship_selector" indexName="idx_selector_student_id" unique="true">
             <column name="student_id"/>
         </createIndex>
         <createIndex tableName="internship_selector" indexName="idx_selector_selection_id">

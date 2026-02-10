@@ -41,8 +41,17 @@ public class ThesisSelectionDomainService {
             throw new ValidationException("论文不存在");
         }
 
-        // 2. 业务规则：检查论文是否已满（使用乐观锁）
-        if (!thesisRepository.incrementSelectionCount(thesisId)) {
+        // 2. 业务规则：检查学生是否已选过论文
+        List<Long> studentIdList = studentIds.stream()
+                .map(SelectorValue::studentId)
+                .toList();
+        long existingCount = thesisSelectionRepository.countBySelectorsStudentIdIn(studentIdList);
+        if (existingCount > 0) {
+            throw new ValidationException("学生不能重复选择论文");
+        }
+
+        // 3. 业务规则：检查论文是否已满（使用乐观锁）
+        if (thesisRepository.incrementSelectionCount(thesisId) == 0) {
             throw new ValidationException("论文选择人数已达上限");
         }
 

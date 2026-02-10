@@ -5,9 +5,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.annotation.Rollback;
 import org.springframework.transaction.annotation.Transactional;
+import vip.geekclub.framework.command.CommandContext;
 import vip.geekclub.framework.command.CommandResult;
 import vip.geekclub.framework.command.IdResult;
 import vip.geekclub.framework.exception.BusinessLogicException;
+import vip.geekclub.framework.security.UserPrincipal;
 import vip.geekclub.internship.application.command.thesisselection.CreateThesisSelectionCommand;
 import vip.geekclub.internship.application.command.thesisselection.CreateThesisSelectionCommandHandler;
 import vip.geekclub.internship.domain.model.Thesis;
@@ -47,6 +49,10 @@ public class CreateThesisSelectionCommandHandlerTest {
     @Transactional()
     @Rollback(false)
     public void testCreateGroupSelection_Success() {
+
+        UserPrincipal currentUser = new UserPrincipal("cd5bbda6-5494-4cdd-9229-8e43d2895888","student" );
+        CommandContext.setCurrentUser(currentUser);
+
         List<TeamMemberValue> members = List.of(
                 new TeamMemberValue(1L, "负责需求分析"),
                 new TeamMemberValue(2L, "负责系统设计"),
@@ -61,7 +67,7 @@ public class CreateThesisSelectionCommandHandlerTest {
 
         // 4. 构建命令
         CreateThesisSelectionCommand command = new CreateThesisSelectionCommand(
-                4L,
+                1L,
                 "论文",
                 SelectionType.GROUP,
                 teamApplication

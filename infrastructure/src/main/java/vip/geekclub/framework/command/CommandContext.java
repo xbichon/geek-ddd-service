@@ -22,6 +22,10 @@ public class CommandContext {
      * 获取当前用户
      */
     public static UserPrincipal getCurrentPrincipal() {
+
+        if (!hasCurrentUser()) {
+            throw new IllegalStateException("获取当前用户失败，用户未登录");
+        }
         return CURRENT_USER.get();
     }
 

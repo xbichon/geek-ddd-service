@@ -25,5 +25,5 @@ public interface ThesisRepository extends JpaRepository<@NonNull Thesis, @NonNul
     @Modifying
     @Query("UPDATE Thesis t SET t.currentSelections = t.currentSelections + 1 " +
             "WHERE t.id = :thesisId AND t.currentSelections < t.maxSelections")
-    boolean incrementSelectionCount(@Param("thesisId") Long thesisId);
+    long incrementSelectionCount(@Param("thesisId") Long thesisId);
 }

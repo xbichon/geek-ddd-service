@@ -37,7 +37,6 @@ public class Selector {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "paper_selection_id", nullable = false)
     private ThesisSelection thesisSelection;
-
     /**
      * 创建选择者
      *
