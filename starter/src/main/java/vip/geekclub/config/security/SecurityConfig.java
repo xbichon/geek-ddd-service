@@ -24,7 +24,7 @@ public class SecurityConfig {
     /**
      * 免认证路径
      */
-    public static final String[] PERMIT_PATHS = {"/auth/**", "/test/**"};
+    public static final String[] PERMIT_PATHS = {"/security/auth/**", "/test/**"};
     private static final String SECURITY_PATH = "/**";
     private static final String[] ALLOWED_METHODS = {"GET", "POST", "PUT", "DELETE", "OPTIONS"};
     private static final String[] ALLOWED_HEADERS = {"*"};

@@ -12,7 +12,7 @@ import java.util.Set;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/auth")
+@RequestMapping("/security")
 public class PermissionController {
 
     private final PermissionQueryService permissionQueryService;
