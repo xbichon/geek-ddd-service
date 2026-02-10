@@ -38,7 +38,14 @@ public class JwtRequestFilter extends OncePerRequestFilter {
     @Override
     protected boolean shouldNotFilter(@NonNull HttpServletRequest request) {
         // 对于免认证路径，完全跳过此过滤器的执行
-        return isPermitAllPath(request);
+
+        // 去除 context-path 前缀
+        String contextPath = request.getContextPath();
+        String requestURI = request.getRequestURI();
+        final String path = contextPath.isEmpty() ? requestURI : requestURI.substring(contextPath.length());
+
+        return Arrays.stream(PERMIT_PATHS)
+                .anyMatch(pattern -> pathMatcher.match(pattern, path));
     }
 
     @Override
@@ -63,23 +70,5 @@ public class JwtRequestFilter extends OncePerRequestFilter {
         this.PERMIT_PATHS = PERMIT_ALL_PATHS;
     }
 
-    /**
-     * 检查请求路径是否为免认证路径
-     *
-     * @param request HTTP请求对象
-     * @return 如果是免认证路径返回true，否则返回false
-     */
-    public boolean isPermitAllPath(HttpServletRequest request) {
-        String requestUri = request.getRequestURI();
-        String contextPath = request.getContextPath();
 
-        // 去除 context-path 前缀
-        if (contextPath != null && !contextPath.isEmpty() && requestUri.startsWith(contextPath)) {
-            requestUri = requestUri.substring(contextPath.length());
-        }
-
-        String finalRequestUri = requestUri;
-        return Arrays.stream(PERMIT_PATHS)
-                .anyMatch(pattern -> pathMatcher.match(pattern, finalRequestUri));
-    }
 }
