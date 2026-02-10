@@ -39,6 +39,11 @@ public class CreateThesisSelectionCommandHandler implements CommandHandler<Creat
         var intern = internRepository.findByAuthId(principal.authId())
                 .orElseThrow(() -> new ValidationException("当前用户不是实习生"));
 
+        // 验证论文是否存在
+        if (!thesisRepository.existsById(command.thesisId())) {
+            throw new ValidationException("论文不存在");
+        }
+
         // 准备 选题者 对对ID列表
         List<SelectorValue> studentIds = switch (command.selectionType()) {
             case GROUP -> {
@@ -57,7 +62,7 @@ public class CreateThesisSelectionCommandHandler implements CommandHandler<Creat
             throw new ValidationException("论文选择人数已达上限");
         }
 
-        // 创建并保存论文选题实体
+        // 创建并保存论文选题
         ThesisSelection thesisSelection = new ThesisSelection(
                 command.thesisId(),
                 command.achievementType(),
