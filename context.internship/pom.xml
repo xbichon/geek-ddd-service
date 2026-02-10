@@ -53,6 +53,9 @@
                         <database>
                             <includes>internship_.*</includes>
                         </database>
+                        <target>
+                            <packageName>org.jooq.generated.internship</packageName>
+                        </target>
                     </generator>
                 </configuration>
             </plugin>

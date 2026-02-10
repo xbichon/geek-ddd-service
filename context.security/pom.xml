@@ -75,6 +75,9 @@
                         <database>
                             <includes>security_.*</includes>
                         </database>
+                        <target>
+                            <packageName>org.jooq.generated.security</packageName>
+                        </target>
                     </generator>
                 </configuration>
             </plugin>
