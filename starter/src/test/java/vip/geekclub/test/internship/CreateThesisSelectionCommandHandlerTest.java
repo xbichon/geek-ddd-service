@@ -68,7 +68,7 @@ public class CreateThesisSelectionCommandHandlerTest {
         );
 
         // 5. 执行命令
-        CommandResult<IdResult> result = commandHandler.execute(command);
+        commandHandler.execute(command);
 
         // 6. 验证结果
 

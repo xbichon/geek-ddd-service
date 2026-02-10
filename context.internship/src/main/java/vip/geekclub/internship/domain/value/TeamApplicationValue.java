@@ -27,7 +27,10 @@ public record TeamApplicationValue(
         reason = StringUtil.trimToNull(reason);
 
         if(members == null || members.isEmpty()) {
-            throw new IllegalArgumentException("结组申请必须包含至少一个小组成员");
+            throw new IllegalArgumentException("结组申请必须包含至少两个小组成员");
+        }
+        if (members.size() < 2 || members.size() > 5) {
+            throw new IllegalArgumentException("结组申请成员数量必须在2-5人之间");
         }
     }
 }
