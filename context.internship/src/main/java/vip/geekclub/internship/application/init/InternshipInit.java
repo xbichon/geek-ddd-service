@@ -21,13 +21,11 @@ public class InternshipInit implements InitTask {
     private final ThesisRepository thesisRepository;
     private final CommandBus commandBus;
 
-
     @Override
     public void initialize() {
         // 初始化5个实习生
         String advisorName = "张莺";
         String className = "软件工程2301班";
-
 
         // 判断没有学生时才初始化
         if (internRepository.count() == 0) {
@@ -55,7 +53,5 @@ public class InternshipInit implements InitTask {
             Thesis thesis2 = new Thesis("基于人工智能的图像识别系统研究", 3);
             thesisRepository.saveAll(List.of(thesis1, thesis2));
         }
-
-
     }
 }
