@@ -12,7 +12,6 @@ import vip.geekclub.security.application.command.principal.CreatePrincipalComman
 import vip.geekclub.security.domain.value.IdentifierValue;
 
 import java.util.List;
-import java.util.Set;
 
 @Component
 @AllArgsConstructor
@@ -42,8 +41,7 @@ public class InternshipInit implements InitTask {
             // 为每个实习生创建 Principal（密码默认为 666666）
             for (Intern intern : savedInterns) {
                 CreatePrincipalCommand command = new CreatePrincipalCommand(
-                        intern.getAuthId(),
-                        "STUDENT",
+                        "STUDENT", intern.getAuthId(),
                         List.of(new IdentifierValue("STUDENT_NO",intern.getStudentNo())),
                         "666666"
                 );

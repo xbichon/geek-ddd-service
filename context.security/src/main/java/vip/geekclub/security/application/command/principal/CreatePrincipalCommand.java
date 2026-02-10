@@ -33,7 +33,7 @@ public record CreatePrincipalCommand(
     /**
      * 简化构造函数，无需传递角色ID
      */
-    public CreatePrincipalCommand(String authId, String userType,
+    public CreatePrincipalCommand(String userType, String authId,
                                   List<IdentifierValue> identifierValues,
                                   String password) {
         this(userType, authId, identifierValues, password, Set.of());
