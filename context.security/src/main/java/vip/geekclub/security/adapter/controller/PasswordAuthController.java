@@ -7,14 +7,13 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.web.bind.annotation.*;
 import vip.geekclub.framework.controller.ApiResponse;
 import vip.geekclub.framework.security.AuthSessionManager;
 import vip.geekclub.framework.security.PasswordAuthenticationToken;
 import vip.geekclub.framework.security.UserAuthenticationToken;
 import vip.geekclub.security.adapter.controller.dto.CaptchaResponse;
-import vip.geekclub.security.adapter.controller.dto.UserNameLoginRequest;
+import vip.geekclub.security.adapter.controller.dto.PasswordLoginRequest;
 
 import java.io.ByteArrayOutputStream;
 import java.util.Base64;
@@ -42,7 +41,7 @@ public class PasswordAuthController {
      * @return JWT Token
      */
     @PostMapping("/login")
-    public ApiResponse<?> login(@RequestBody @Valid UserNameLoginRequest request) {
+    public ApiResponse<?> login(@RequestBody @Valid PasswordLoginRequest request) {
         // 验证验证码
         String captchaKey = request.captchaKey();
         String redisKey = "captcha:" + captchaKey;
@@ -64,7 +63,7 @@ public class PasswordAuthController {
         }
 
         // 验证码验证通过，继续执行登录逻辑
-        PasswordAuthenticationToken passwordAuthenticationToken = new PasswordAuthenticationToken(request.username(), request.password());
+        PasswordAuthenticationToken passwordAuthenticationToken = new PasswordAuthenticationToken(request.identifier(), request.password(), request.identifierType());
         UserAuthenticationToken userAuthenticationToken = (UserAuthenticationToken) authenticationManager.authenticate(passwordAuthenticationToken);
         String jwtToken = authSessionManager.createSession(userAuthenticationToken);
         return ApiResponse.success(jwtToken);
@@ -77,7 +76,7 @@ public class PasswordAuthController {
      * @return 验证码结果，包含图片Base64编码和UUID key
      */
     @GetMapping("/captcha")
-    public ApiResponse<CaptchaResponse> captcha()  {
+    public ApiResponse<CaptchaResponse> captcha() {
         // 定义图片的宽和高
         LineCaptcha lineCaptcha = CaptchaUtil.createLineCaptcha(200, 100);
 
