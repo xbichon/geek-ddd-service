@@ -2,6 +2,7 @@ package vip.geekclub.config.security;
 
 import lombok.NonNull;
 import org.springframework.security.authentication.AuthenticationProvider;
+import vip.geekclub.framework.security.PasswordAuthenticationToken;
 import vip.geekclub.framework.security.UserAuthenticationToken;
 import vip.geekclub.framework.security.UserPrincipal;
 import vip.geekclub.framework.command.CommandDispatcher;
@@ -26,22 +27,20 @@ import java.util.Set;
  */
 @Service
 @AllArgsConstructor
-public class UserNameAuthenticationProvider implements AuthenticationProvider {
+public class PasswordAuthenticationProvider implements AuthenticationProvider {
 
 
     @Override
     public Authentication authenticate(@NonNull Authentication authentication) throws AuthenticationException {
-        UsernamePasswordAuthenticationToken token = (UsernamePasswordAuthenticationToken) authentication;
+        PasswordAuthenticationToken token = (PasswordAuthenticationToken) authentication;
 
         // 检查用户名和密码是否为空
         if (token.getPrincipal() == null || token.getCredentials() == null) {
             throw new BadCredentialsException("用户名或密码不能为空");
         }
-        String username = token.getPrincipal().toString();
-        String password = token.getCredentials().toString();
 
         try {
-            PasswordLoginCommand command = new PasswordLoginCommand(username, password, "teacher");
+            PasswordLoginCommand command = new PasswordLoginCommand(token.getIdentifier(), token.getPassword(), "teacher");
             CommandResult<UserPrincipal> commandResult = CommandDispatcher.dispatch(command);
             UserPrincipal userPrincipal = commandResult.data();
             return new UserAuthenticationToken(userPrincipal, Set.of());

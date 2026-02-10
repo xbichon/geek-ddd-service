@@ -50,7 +50,7 @@ public class SecurityConfig {
     @Bean
     public AuthenticationManager authenticationManager(
             WechatAuthenticationProvider wechatAuthenticationProvider,
-            UserNameAuthenticationProvider userNameAuthenticationProvider) {
+            PasswordAuthenticationProvider userNameAuthenticationProvider) {
 
         // 直接创建ProviderManager，不使用默认AuthenticationManager作为父级
         // 这样避免了可能的循环引用导致堆栈溢出
