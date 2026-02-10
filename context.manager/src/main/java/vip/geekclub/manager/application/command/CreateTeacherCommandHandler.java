@@ -45,8 +45,7 @@ public class CreateTeacherCommandHandler implements CommandHandler<CreateTeacher
 
         // 3. 创建用户的凭证
         CommandDispatcher.dispatch(new CreatePrincipalCommand(
-                teacher.getAuthId(),
-                "teacher",
+                "teacher", teacher.getAuthId(),
                 List.of(new IdentifierValue(IdentifierValue.EMAIL, teacher.getEmail())
                         , new IdentifierValue(IdentifierValue.PHONE, teacher.getPhone())),
                 "123456",

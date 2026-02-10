@@ -14,9 +14,8 @@ import java.util.Set;
 
 @CommandHandlerMapping(CreatePrincipalCommandHandler.class)
 public record CreatePrincipalCommand(
-
-        @NotNull(message = "外部用户ID不能为空") String authId,
         @NotNull(message = "应用类型不能为空") String userType,
+        @NotNull(message = "外部用户ID不能为空") String authId,
 
         @Valid
         @NotEmpty(message = "标识符不能为空")
@@ -37,7 +36,7 @@ public record CreatePrincipalCommand(
     public CreatePrincipalCommand(String authId, String userType,
                                   List<IdentifierValue> identifierValues,
                                   String password) {
-        this(authId, userType, identifierValues, password, Set.of());
+        this(userType, authId, identifierValues, password, Set.of());
     }
 
     public CreatePrincipalCommand {
