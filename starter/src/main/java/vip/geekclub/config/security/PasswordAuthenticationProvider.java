@@ -10,7 +10,6 @@ import vip.geekclub.framework.command.CommandResult;
 import vip.geekclub.security.application.command.credential.PasswordLoginCommand;
 import lombok.AllArgsConstructor;
 import org.springframework.security.authentication.BadCredentialsException;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.stereotype.Service;
@@ -35,12 +34,12 @@ public class PasswordAuthenticationProvider implements AuthenticationProvider {
         PasswordAuthenticationToken token = (PasswordAuthenticationToken) authentication;
 
         // 检查用户名和密码是否为空
-        if (token.getPrincipal() == null || token.getCredentials() == null) {
+        if (token.getIdentifier() == null || token.getPassword() == null) {
             throw new BadCredentialsException("用户名或密码不能为空");
         }
 
         try {
-            PasswordLoginCommand command = new PasswordLoginCommand("teacher", token.getIdentifier(), token.getPassword());
+            PasswordLoginCommand command = new PasswordLoginCommand(token.getUserType(), token.getIdentifier(), token.getPassword());
             CommandResult<UserPrincipal> commandResult = CommandDispatcher.dispatch(command);
             UserPrincipal userPrincipal = commandResult.data();
             return new UserAuthenticationToken(userPrincipal, Set.of());
@@ -51,6 +50,6 @@ public class PasswordAuthenticationProvider implements AuthenticationProvider {
 
     @Override
     public boolean supports(Class<?> authentication) {
-        return authentication.equals(UsernamePasswordAuthenticationToken.class);
+        return authentication.equals(PasswordAuthenticationToken.class);
     }
 }

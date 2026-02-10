@@ -63,7 +63,7 @@ public class PasswordAuthController {
         }
 
         // 验证码验证通过，继续执行登录逻辑
-        PasswordAuthenticationToken passwordAuthenticationToken = new PasswordAuthenticationToken(request.identifier(), request.password(), request.identifierType());
+        PasswordAuthenticationToken passwordAuthenticationToken = new PasswordAuthenticationToken(request.userType(), request.identifier(), request.password(), request.identifierType());
         UserAuthenticationToken userAuthenticationToken = (UserAuthenticationToken) authenticationManager.authenticate(passwordAuthenticationToken);
         String jwtToken = authSessionManager.createSession(userAuthenticationToken);
         return ApiResponse.success(jwtToken);

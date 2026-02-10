@@ -5,7 +5,9 @@ import jakarta.validation.constraints.Size;
 import lombok.Builder;
 import org.springframework.util.StringUtils;
 import vip.geekclub.framework.command.Command;
+import vip.geekclub.framework.command.CommandHandlerMapping;
 
+@CommandHandlerMapping(PasswordLoginCommandHandler.class)
 @Builder
 public record PasswordLoginCommand(
         @NotBlank(message = "用户类型不能为空") String userType,
