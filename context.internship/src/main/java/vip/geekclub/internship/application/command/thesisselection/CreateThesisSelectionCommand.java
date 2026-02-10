@@ -24,8 +24,16 @@ public record CreateThesisSelectionCommand(
         TeamApplicationValue teamApplication
 ) implements Command {
     public CreateThesisSelectionCommand {
-        if(selectionType==SelectionType.GROUP && teamApplication==null) {
-            throw new IllegalArgumentException("结组申请不能为空");
+        if (selectionType == SelectionType.GROUP) {
+            if (teamApplication == null) {
+                throw new IllegalArgumentException("结组申请不能为空");
+            }
+            if (teamApplication.members() == null || teamApplication.members().isEmpty()) {
+                throw new IllegalArgumentException("结组申请成员不能为空");
+            }
+            if (teamApplication.members().size() < 2 || teamApplication.members().size() > 5) {
+                throw new IllegalArgumentException("结组申请成员数量必须在2-5人之间");
+            }
         }
     }
 }

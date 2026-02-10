@@ -20,10 +20,10 @@ public interface ThesisRepository extends JpaRepository<@NonNull Thesis, @NonNul
      * 使用乐观锁机制，只有当当前人数小于最大人数时才更新成功
      *
      * @param thesisId 论文ID
-     * @return 更新的行数（0表示更新失败，人数已达上限）
+     * @return 是否更新成功（false表示人数已达上限）
      */
     @Modifying
     @Query("UPDATE Thesis t SET t.currentSelections = t.currentSelections + 1 " +
             "WHERE t.id = :thesisId AND t.currentSelections < t.maxSelections")
-    int incrementSelectionCount(@Param("thesisId") Long thesisId);
+    boolean incrementSelectionCount(@Param("thesisId") Long thesisId);
 }
