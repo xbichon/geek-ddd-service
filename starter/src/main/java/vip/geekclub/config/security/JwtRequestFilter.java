@@ -1,14 +1,11 @@
 package vip.geekclub.config.security;
 
-import lombok.AllArgsConstructor;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 import org.springframework.util.AntPathMatcher;
 import vip.geekclub.framework.security.AuthSessionManager;
 import vip.geekclub.framework.security.UserAuthenticationToken;
 import vip.geekclub.framework.exception.JwtParseException;
-import vip.geekclub.framework.security.AuthSessionManagerImpl;
-import vip.geekclub.security.application.query.PermissionQueryService;
 
 import java.util.Arrays;
 
@@ -41,7 +38,7 @@ public class JwtRequestFilter extends OncePerRequestFilter {
     @Override
     protected boolean shouldNotFilter(@NonNull HttpServletRequest request) {
         // 对于免认证路径，完全跳过此过滤器的执行
-        return isPermitAllPath(request.getRequestURI());
+        return isPermitAllPath(request);
     }
 
     @Override
@@ -69,11 +66,20 @@ public class JwtRequestFilter extends OncePerRequestFilter {
     /**
      * 检查请求路径是否为免认证路径
      *
-     * @param requestUri 请求URI
+     * @param request HTTP请求对象
      * @return 如果是免认证路径返回true，否则返回false
      */
-    public boolean isPermitAllPath(String requestUri) {
+    public boolean isPermitAllPath(HttpServletRequest request) {
+        String requestUri = request.getRequestURI();
+        String contextPath = request.getContextPath();
+
+        // 去除 context-path 前缀
+        if (contextPath != null && !contextPath.isEmpty() && requestUri.startsWith(contextPath)) {
+            requestUri = requestUri.substring(contextPath.length());
+        }
+
+        String finalRequestUri = requestUri;
         return Arrays.stream(PERMIT_PATHS)
-                .anyMatch(pattern -> pathMatcher.match(pattern, requestUri));
+                .anyMatch(pattern -> pathMatcher.match(pattern, finalRequestUri));
     }
 }

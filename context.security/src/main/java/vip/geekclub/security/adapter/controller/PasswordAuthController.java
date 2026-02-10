@@ -32,7 +32,7 @@ public class PasswordAuthController {
 
     private final AuthenticationManager authenticationManager;
     private final AuthSessionManager authSessionManager;
-    private StringRedisTemplate stringRedisTemplate;
+    private final StringRedisTemplate stringRedisTemplate;
 
     /**
      * 用户名密码登录
