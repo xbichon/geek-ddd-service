@@ -25,8 +25,8 @@ public class InternshipInit implements InitTask {
     @Override
     public void initialize() {
         // 初始化5个实习生
-        String advisorName = "张莺";
-        String className = "软件工程2301班";
+        final String advisorName = "张莺";
+        final String className = "软件工程2301班";
 
         // 判断没有学生时才初始化
         if (internRepository.count() == 0) {
@@ -35,7 +35,9 @@ public class InternshipInit implements InitTask {
             Intern intern3 = new Intern("王五", "20230101003", className, advisorName);
             Intern intern4 = new Intern("赵六", "20230101004", className, advisorName);
             Intern intern5 = new Intern("孙七", "20230101005", className, advisorName);
-            List<Intern> savedInterns = internRepository.saveAll(List.of(intern1, intern2, intern3, intern4, intern5));
+            Intern intern6 = new Intern("钱八", "20230101006", className, advisorName);
+            Intern intern7 = new Intern("杜久", "20230101007", className, advisorName);
+            List<Intern> savedInterns = internRepository.saveAll(List.of(intern1, intern2, intern3, intern4, intern5, intern6, intern7));
 
             // 为每个实习生创建 Principal（密码默认为 666666）
             for (Intern intern : savedInterns) {
@@ -50,12 +52,53 @@ public class InternshipInit implements InitTask {
 
         // 判断没有论文时才初始化
         if (thesisRepository.count() == 0) {
-            Thesis thesis1 = new Thesis("基于Spring Boot的微服务架构设计与实现", 5);
-            thesis1.getAchievementTypes().add(new AchievementType("论文"));
-            thesis1.getAchievementTypes().add(new AchievementType("作品"));
-            Thesis thesis2 = new Thesis("基于人工智能的图像识别系统研究", 3);
-            thesis2.getAchievementTypes().add(new AchievementType("论文"));
-            thesisRepository.saveAll(List.of(thesis1, thesis2));
+            // 根据选题方向和成果形式初始化论文
+            List<Thesis> theses = List.of(
+                    createThesis("软件设计", "报告或作品"),
+                    createThesis("软件开发", "报告或作品"),
+                    createThesis("软件测试", "报告"),
+                    createThesis("软件运维", "报告"),
+                    createThesis("网络构建", "报告"),
+                    createThesis("云计算技术应用", "报告"),
+                    createThesis("大数据平台搭建", "报告"),
+                    createThesis("数据库管理", "报告"),
+                    createThesis("自媒体运营", "报告或作品"),
+                    createThesis("计算机相关应用", "报告"),
+                    createThesis("高可靠性园区网", "报告"),
+                    createThesis("广域网搭建", "报告"),
+                    createThesis("软件售前、售后", "报告或产品介绍文档、产品使用文档"),
+                    createThesis("Android手机应用开发", "报告或作品"),
+                    createThesis("网络安全", "报告"),
+                    createThesis("人工智能应用", "报告")
+            );
+            thesisRepository.saveAll(theses);
         }
+    }
+
+    /**
+     * 创建论文
+     *
+     * @param title       论文标题（选题方向）
+     * @param achievement 成果形式（可能包含多个，用"或"分隔）
+     * @return Thesis对象
+     */
+    private Thesis createThesis(String title, String achievement) {
+        // 默认可选上限为5人
+        Thesis thesis = new Thesis(title, 50);
+
+        // 解析成果形式
+        if (achievement.contains("或")) {
+            String[] parts = achievement.split("或");
+            for (String part : parts) {
+                String cleanedPart = part.trim();
+                if (!cleanedPart.isEmpty()) {
+                    thesis.getAchievementTypes().add(new AchievementType(cleanedPart));
+                }
+            }
+        } else {
+            thesis.getAchievementTypes().add(new AchievementType(achievement.trim()));
+        }
+
+        return thesis;
     }
 }
