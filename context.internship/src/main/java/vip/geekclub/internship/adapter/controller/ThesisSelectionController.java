@@ -15,6 +15,11 @@ import vip.geekclub.internship.application.command.thesisselection.CreateThesisS
 import vip.geekclub.internship.application.query.InternQueryService;
 import vip.geekclub.internship.application.query.ThesisSelectionQueryService;
 import vip.geekclub.internship.application.query.dto.ThesisSelectionDetailResult;
+import vip.geekclub.internship.application.query.dto.InternInfoResult;
+
+import java.util.List;
+
+import java.util.List;
 
 /**
  * 论文选题控制器
@@ -72,5 +77,19 @@ public class ThesisSelectionController {
 
         boolean hasSelected = queryService.hasCurrentUserSelected(internId);
         return ApiResponse.success(hasSelected);
+    }
+
+    /**
+     * 获取同指导老师且未选题的学生列表
+     *
+     * @return 未选题的学生列表
+     */
+    @GetMapping("/unselected-students")
+    public ApiResponse<List<InternInfoResult>> getUnselectedStudentsBySameAdvisor(UserPrincipal userPrincipal) {
+        // 从上下文获取当前用户，查询实习生ID
+        var currentInternId = internQueryService.getInternIdByAuthId(userPrincipal.authId());
+
+        List<InternInfoResult> students = internQueryService.getUnselectedStudentsBySameAdvisor(currentInternId);
+        return ApiResponse.success(students);
     }
 }
