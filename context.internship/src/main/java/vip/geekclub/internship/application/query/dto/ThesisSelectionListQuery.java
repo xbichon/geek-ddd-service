@@ -4,20 +4,25 @@ package vip.geekclub.internship.application.query.dto;
  * 论文选择结果列表查询参数
  */
 public record ThesisSelectionListQuery(
-        /**
-         * 班级名称（精确查询）
+        /*
+          班级名称（精确查询）
          */
         String className,
 
-        /**
-         * 指导老师姓名（精确查询）
+        /*
+          指导老师姓名（精确查询）
          */
         String advisorName,
 
-        /**
-         * 学生姓名（模糊查询）
+        /*
+          学生姓名（模糊查询）
          */
-        String studentName
+        String studentName,
+        
+        /*
+          分页参数
+         */
+        PageQuery pageQuery
 ) {
     public ThesisSelectionListQuery {
         // 空值处理，将空字符串转为null

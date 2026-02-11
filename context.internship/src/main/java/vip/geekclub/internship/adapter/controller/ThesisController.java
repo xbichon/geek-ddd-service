@@ -107,8 +107,8 @@ public class ThesisController {
      * @return 论文选择结果列表
      */
     @GetMapping("/selectionList")
-    public ApiResponse<List<ThesisSelectionListResult>> listThesisSelections(ThesisSelectionListQuery query) {
-        List<ThesisSelectionListResult> list = thesisSelectionQueryService.getThesisSelectionList(query);
+    public ApiResponse<PageResult<ThesisSelectionListResult>> listThesisSelections(ThesisSelectionListQuery query) {
+        PageResult<ThesisSelectionListResult> list = thesisSelectionQueryService.getThesisSelectionList(query);
         return ApiResponse.success(list);
     }
 }

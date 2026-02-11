@@ -14,6 +14,11 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
+
 /**
  * 选题查询服务
  */
@@ -151,12 +156,12 @@ public class ThesisSelectionQueryService {
     }
 
     /**
-     * 获取论文选择结果列表
+     * 获取论文选择结果列表（分页）
      *
      * @param query 查询参数
-     * @return 论文选择结果列表
+     * @return 论文选择结果分页列表
      */
-    public List<ThesisSelectionListResult> getThesisSelectionList(ThesisSelectionListQuery query) {
+    public PageResult<ThesisSelectionListResult> getThesisSelectionList(ThesisSelectionListQuery query) {
         // 1. 构建查询条件列表
         List<org.jooq.Condition> conditions = new ArrayList<>();
 
@@ -190,10 +195,19 @@ public class ThesisSelectionQueryService {
                 .join(selectorTable).on(selectorTable.PAPER_SELECTION_ID.eq(thesisSelectionTable.ID))
                 .join(internTable).on(internTable.ID.eq(selectorTable.STUDENT_ID));
 
-        // 4. 应用查询条件
-        var records = conditions.isEmpty()
-                ? selectStep.fetch()
-                : selectStep.where(conditions).fetch();
+        // 4. 应用查询条件并添加分页
+        var selectFinalStep = conditions.isEmpty()
+                ? selectStep
+                : selectStep.where(conditions);
+        
+        // 获取总记录数
+        long total = dslContext.fetchCount(selectFinalStep);
+        
+        // 应用分页
+        var records = selectFinalStep
+                .limit(query.pageQuery().getLimit())
+                .offset(query.pageQuery().getOffset())
+                .fetch();
 
         // 5. 获取所有选题ID（用于批量查询选择者信息）
         List<Long> selectionIds = records.stream()
@@ -212,7 +226,7 @@ public class ThesisSelectionQueryService {
                         (existing, replacement) -> existing
                 ));
 
-        return uniqueSelections.values().stream()
+        List<ThesisSelectionListResult> resultList = uniqueSelections.values().stream()
                 .map(r -> {
                     Long selectionId = r.get(thesisSelectionTable.ID);
                     String selectionType = r.get(thesisSelectionTable.SELECTION_TYPE);
@@ -234,6 +248,14 @@ public class ThesisSelectionQueryService {
                     );
                 })
                 .toList();
+        
+        // 返回分页结果
+        return new PageResult<>(
+                resultList,
+                total,
+                query.pageQuery().pageNum(),
+                query.pageQuery().pageSize()
+        );
     }
 
     /**
