@@ -56,7 +56,7 @@ public class InternQueryService {
      */
     public List<InternInfoResult> getUnselectedStudentsBySameAdvisor(Long currentInternId) {
         // 使用 NOT EXISTS 子查询，单查询实现
-        return dslContext
+        List<InternInfoResult> students = dslContext
                 .select(internTable.ID, internTable.NAME)
                 .from(internTable)
                 .where(internTable.ADVISOR_NAME.eq(
@@ -72,6 +72,23 @@ public class InternQueryService {
                                 .where(selectorTable.STUDENT_ID.eq(internTable.ID))
                 )
                 .fetchInto(InternInfoResult.class);
+        
+        // 使用Stream直接查找当前用户实例
+        InternInfoResult currentUser = students.stream()
+                .filter(student -> student.id().equals(currentInternId))
+                .findFirst()
+                .orElse(null);
+        
+        // 如果找不到当前用户，说明该用户已经选择了论文
+        if (currentUser == null) {
+            throw new BusinessException(400, "当前用户已选择论文，不在未选题学生列表中");
+        }
+        
+        // 将当前用户移到列表第一行
+        students.remove(currentUser);
+        students.addFirst(currentUser);
+        
+        return students;
     }
 
 
