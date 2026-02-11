@@ -1,4 +1,4 @@
-package vip.geekclub.internship.application.init;
+package vip.geekclub.internship.application.initialize;
 
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Component;
@@ -8,6 +8,7 @@ import vip.geekclub.internship.domain.model.Intern;
 import vip.geekclub.internship.domain.model.Thesis;
 import vip.geekclub.internship.domain.repository.InternRepository;
 import vip.geekclub.internship.domain.repository.ThesisRepository;
+import vip.geekclub.internship.domain.value.AchievementType;
 import vip.geekclub.security.application.command.principal.CreatePrincipalCommand;
 import vip.geekclub.security.domain.value.IdentifierValue;
 
@@ -40,7 +41,7 @@ public class InternshipInit implements InitTask {
             for (Intern intern : savedInterns) {
                 CreatePrincipalCommand command = new CreatePrincipalCommand(
                         "STUDENT", intern.getAuthId(),
-                        List.of(new IdentifierValue("STUDENT_NO",intern.getStudentNo())),
+                        List.of(new IdentifierValue("STUDENT_NO", intern.getStudentNo())),
                         "666666"
                 );
                 commandBus.dispatch(command);
@@ -50,7 +51,10 @@ public class InternshipInit implements InitTask {
         // 判断没有论文时才初始化
         if (thesisRepository.count() == 0) {
             Thesis thesis1 = new Thesis("基于Spring Boot的微服务架构设计与实现", 5);
+            thesis1.getAchievementTypes().add(new AchievementType("论文"));
+            thesis1.getAchievementTypes().add(new AchievementType("作品"));
             Thesis thesis2 = new Thesis("基于人工智能的图像识别系统研究", 3);
+            thesis2.getAchievementTypes().add(new AchievementType("论文"));
             thesisRepository.saveAll(List.of(thesis1, thesis2));
         }
     }

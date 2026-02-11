@@ -80,6 +80,9 @@
             <column name="achievement_type" type="VARCHAR(50)" remarks="成果形式">
                 <constraints nullable="false"/>
             </column>
+            <column name="creator_id" type="BIGINT" remarks="创建者ID（选题记录创建人的实习生ID）">
+                <constraints nullable="false"/>
+            </column>
             <column name="selection_type" type="VARCHAR(20)" remarks="选择者类型(INDIVIDUAL/GROUP)">
                 <constraints nullable="false"/>
             </column>
@@ -91,6 +94,11 @@
 
         <createIndex tableName="internship_thesis_selection" indexName="idx_selection_thesis_id">
             <column name="thesis_id"/>
+        </createIndex>
+
+        <!-- 创建索引 -->
+        <createIndex tableName="internship_thesis_selection" indexName="idx_selection_creator_id">
+            <column name="creator_id"/>
         </createIndex>
 
         <!-- 创建选择者表 -->
