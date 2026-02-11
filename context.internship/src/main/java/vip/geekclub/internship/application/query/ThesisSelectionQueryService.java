@@ -9,6 +9,7 @@ import vip.geekclub.internship.generated.tables.SelectorTable;
 import vip.geekclub.internship.generated.tables.TeamApplicationTable;
 import vip.geekclub.internship.generated.tables.TeamMemberTable;
 import vip.geekclub.internship.generated.tables.ThesisSelectionTable;
+import vip.geekclub.internship.generated.tables.ThesisTable;
 import org.springframework.stereotype.Service;
 import vip.geekclub.framework.exception.BusinessException;
 import vip.geekclub.internship.application.query.dto.ThesisSelectionDetailResult;
@@ -24,8 +25,8 @@ public class ThesisSelectionQueryService {
 
     private final DSLContext dslContext;
     private final ThesisSelectionTable thesisSelectionTable = Tables.ThesisSelection;
-    private final SelectorTable selectorTable = Tables.Selector;
     private final InternTable internTable = Tables.Intern;
+    private final ThesisTable thesisTable = Tables.Thesis;
     private final TeamApplicationTable teamApplicationTable = Tables.TeamApplication;
     private final TeamMemberTable teamMemberTable = Tables.TeamMember;
 
@@ -36,17 +37,19 @@ public class ThesisSelectionQueryService {
      * @return 选题详情
      */
     public ThesisSelectionDetailResult getCurrentUserSelectionDetail(Long internId) {
-        // 单次查询：实习生信息 + 选题记录（通过 JOIN 关联）
+        // 单次查询：实习生信息 + 选题记录 + 论文标题（通过 JOIN 关联）
         Record record = dslContext
                 .select(
                         internTable.NAME,
                         internTable.ADVISOR_NAME,
                         thesisSelectionTable.ID,
                         thesisSelectionTable.ACHIEVEMENT_TYPE,
-                        thesisSelectionTable.SELECTION_TYPE
+                        thesisSelectionTable.SELECTION_TYPE,
+                        thesisTable.TITLE
                 )
                 .from(internTable)
                 .join(thesisSelectionTable).on(thesisSelectionTable.CREATOR_ID.eq(internTable.ID))
+                .join(thesisTable).on(thesisTable.ID.eq(thesisSelectionTable.THESIS_ID))
                 .where(internTable.ID.eq(internId))
                 .fetchOne();
 
@@ -59,6 +62,7 @@ public class ThesisSelectionQueryService {
         Long selectionId = record.get(thesisSelectionTable.ID);
         String achievementType = record.get(thesisSelectionTable.ACHIEVEMENT_TYPE);
         String selectionType = record.get(thesisSelectionTable.SELECTION_TYPE);
+        String thesisTitle = record.get(thesisTable.TITLE);
         boolean isGroup = "GROUP".equals(selectionType);
 
         // 如果是组选题，查询结组信息
@@ -72,6 +76,7 @@ public class ThesisSelectionQueryService {
                 isGroup,
                 advisorName,
                 achievementType,
+                thesisTitle,
                 teamInfo
         );
     }

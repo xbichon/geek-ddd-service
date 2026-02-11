@@ -27,6 +27,11 @@ public record ThesisSelectionDetailResult(
         String achievementType,
 
         /**
+         * 论文标题
+         */
+        String thesisTitle,
+
+        /**
          * 结组信息（仅当isGroup为true时有值）
          */
         TeamInfo teamInfo
