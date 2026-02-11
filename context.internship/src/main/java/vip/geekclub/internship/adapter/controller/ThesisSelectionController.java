@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.RestController;
 import vip.geekclub.framework.command.CommandContext;
 import vip.geekclub.framework.controller.ApiResponse;
 import vip.geekclub.framework.controller.WebCommandAdapter;
+import vip.geekclub.framework.security.UserPrincipal;
 import vip.geekclub.internship.application.command.thesisselection.CreateThesisSelectionCommand;
 import vip.geekclub.internship.application.query.InternQueryService;
 import vip.geekclub.internship.application.query.ThesisSelectionQueryService;
@@ -35,10 +36,9 @@ public class ThesisSelectionController {
      * @return 操作结果
      */
     @PostMapping
-    public ApiResponse<Void> createThesisSelection(@Valid @RequestBody CreateThesisSelectionCommand command) {
+    public ApiResponse<Void> createThesisSelection(@Valid @RequestBody CreateThesisSelectionCommand command,UserPrincipal userPrincipal) {
         // 从上下文获取当前用户，查询实习生ID，并设置到命令中
-        var principal = CommandContext.getCurrentPrincipal();
-        var currentId = internQueryService.getInternIdByAuthId(principal.authId());
+        var currentId = internQueryService.getInternIdByAuthId(userPrincipal.authId());
 
         // 使用 withCreatorId 设置创建者ID（无视前端传入的值）
         command.setCreatorId(currentId);
@@ -52,10 +52,9 @@ public class ThesisSelectionController {
      * @return 选题详情
      */
     @GetMapping("/detail")
-    public ApiResponse<ThesisSelectionDetailResult> getSelectionDetail() {
+    public ApiResponse<ThesisSelectionDetailResult> getSelectionDetail(UserPrincipal userPrincipal) {
         // 从上下文获取当前用户，查询实习生ID
-        var principal = CommandContext.getCurrentPrincipal();
-        var internId = internQueryService.getInternIdByAuthId(principal.authId());
+        var internId = internQueryService.getInternIdByAuthId(userPrincipal.authId());
 
         ThesisSelectionDetailResult result = queryService.getCurrentUserSelectionDetail(internId);
         return ApiResponse.success(result);

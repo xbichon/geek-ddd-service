@@ -46,8 +46,7 @@ public class ThesisSelectionQueryService {
                         thesisSelectionTable.SELECTION_TYPE
                 )
                 .from(internTable)
-                .join(selectorTable).on(selectorTable.STUDENT_ID.eq(internTable.ID))
-                .join(thesisSelectionTable).on(thesisSelectionTable.ID.eq(selectorTable.PAPER_SELECTION_ID))
+                .join(thesisSelectionTable).on(thesisSelectionTable.CREATOR_ID.eq(internTable.ID))
                 .where(internTable.ID.eq(internId))
                 .fetchOne();
 
