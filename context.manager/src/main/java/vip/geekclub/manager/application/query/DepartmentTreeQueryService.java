@@ -4,7 +4,7 @@ import lombok.RequiredArgsConstructor;
 import org.jooq.DSLContext;
 import org.jooq.Field;
 import org.jooq.RecordMapper;
-import org.jooq.generated.tables.DepartmentTable;
+import vip.geekclub.manager.generated.tables.DepartmentTable;
 import org.springframework.stereotype.Service;
 import vip.geekclub.manager.domain.model.DepartmentStatus;
 import vip.geekclub.manager.application.query.dto.DepartmentTreeResult;

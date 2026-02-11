@@ -68,6 +68,9 @@
                             <!-- 生成表的过滤 -->
                             <includes>manager_.*</includes>
                         </database>
+                        <target>
+                            <packageName>vip.geekclub.manager.generated</packageName>
+                        </target>
                     </generator>
                 </configuration>
             </plugin>

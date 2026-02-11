@@ -2,10 +2,10 @@ package vip.geekclub.security.application.query;
 
 import lombok.AllArgsConstructor;
 import org.jooq.DSLContext;
-import org.jooq.generated.security.Tables;
-import org.jooq.generated.security.tables.PermissionTable;
-import org.jooq.generated.security.tables.PrincipalRoleTable;
-import org.jooq.generated.security.tables.PrincipalTable;
+import vip.geekclub.security.generated.Tables;
+import vip.geekclub.security.generated.tables.PermissionTable;
+import vip.geekclub.security.generated.tables.PrincipalRoleTable;
+import vip.geekclub.security.generated.tables.PrincipalTable;
 import org.springframework.stereotype.Service;
 import vip.geekclub.framework.exception.BusinessException;
 

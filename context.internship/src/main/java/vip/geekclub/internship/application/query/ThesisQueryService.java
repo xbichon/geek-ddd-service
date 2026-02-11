@@ -2,9 +2,9 @@ package vip.geekclub.internship.application.query;
 
 import lombok.AllArgsConstructor;
 import org.jooq.DSLContext;
-import org.jooq.generated.internship.Tables;
-import org.jooq.generated.internship.tables.ThesisAchievementTypeTable;
-import org.jooq.generated.internship.tables.ThesisTable;
+import vip.geekclub.internship.generated.Tables;
+import vip.geekclub.internship.generated.tables.ThesisAchievementTypeTable;
+import vip.geekclub.internship.generated.tables.ThesisTable;
 import org.springframework.stereotype.Service;
 import vip.geekclub.internship.application.query.dto.ThesisListResult;
 

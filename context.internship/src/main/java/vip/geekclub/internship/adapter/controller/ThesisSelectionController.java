@@ -10,12 +10,10 @@ import org.springframework.web.bind.annotation.RestController;
 import vip.geekclub.framework.command.CommandContext;
 import vip.geekclub.framework.controller.ApiResponse;
 import vip.geekclub.framework.controller.WebCommandAdapter;
-import vip.geekclub.framework.exception.NotFoundException;
 import vip.geekclub.internship.application.command.thesisselection.CreateThesisSelectionCommand;
 import vip.geekclub.internship.application.query.InternQueryService;
 import vip.geekclub.internship.application.query.ThesisSelectionQueryService;
 import vip.geekclub.internship.application.query.dto.ThesisSelectionDetailResult;
-import vip.geekclub.internship.domain.repository.InternRepository;
 
 /**
  * 论文选题控制器
@@ -55,7 +53,11 @@ public class ThesisSelectionController {
      */
     @GetMapping("/detail")
     public ApiResponse<ThesisSelectionDetailResult> getSelectionDetail() {
-        ThesisSelectionDetailResult result = queryService.getCurrentUserSelectionDetail();
+        // 从上下文获取当前用户，查询实习生ID
+        var principal = CommandContext.getCurrentPrincipal();
+        var internId = internQueryService.getInternIdByAuthId(principal.authId());
+
+        ThesisSelectionDetailResult result = queryService.getCurrentUserSelectionDetail(internId);
         return ApiResponse.success(result);
     }
 }

@@ -2,8 +2,8 @@ package vip.geekclub.internship.application.query;
 
 import lombok.AllArgsConstructor;
 import org.jooq.DSLContext;
-import org.jooq.generated.internship.Tables;
-import org.jooq.generated.internship.tables.InternTable;
+import vip.geekclub.internship.generated.Tables;
+import vip.geekclub.internship.generated.tables.InternTable;
 import org.springframework.stereotype.Service;
 import vip.geekclub.framework.exception.BusinessException;
 

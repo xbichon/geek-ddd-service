@@ -54,7 +54,7 @@
                             <includes>internship_.*</includes>
                         </database>
                         <target>
-                            <packageName>org.jooq.generated.internship</packageName>
+                            <packageName>vip.geekclub.internship.generated</packageName>
                         </target>
                     </generator>
                 </configuration>
