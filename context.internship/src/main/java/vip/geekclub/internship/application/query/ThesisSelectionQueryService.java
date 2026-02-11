@@ -4,12 +4,7 @@ import lombok.AllArgsConstructor;
 import org.jooq.DSLContext;
 import org.jooq.Record;
 import vip.geekclub.internship.generated.Tables;
-import vip.geekclub.internship.generated.tables.InternTable;
-import vip.geekclub.internship.generated.tables.SelectorTable;
-import vip.geekclub.internship.generated.tables.TeamApplicationTable;
-import vip.geekclub.internship.generated.tables.TeamMemberTable;
-import vip.geekclub.internship.generated.tables.ThesisSelectionTable;
-import vip.geekclub.internship.generated.tables.ThesisTable;
+import vip.geekclub.internship.generated.tables.*;
 import org.springframework.stereotype.Service;
 import vip.geekclub.framework.exception.BusinessException;
 import vip.geekclub.internship.application.query.dto.ThesisSelectionDetailResult;
@@ -29,6 +24,7 @@ public class ThesisSelectionQueryService {
     private final ThesisTable thesisTable = Tables.Thesis;
     private final TeamApplicationTable teamApplicationTable = Tables.TeamApplication;
     private final TeamMemberTable teamMemberTable = Tables.TeamMember;
+    private final SelectorTable selectorTable = Tables.Selector;
 
     /**
      * 获取当前用户的选题详情
@@ -37,38 +33,52 @@ public class ThesisSelectionQueryService {
      * @return 选题详情
      */
     public ThesisSelectionDetailResult getCurrentUserSelectionDetail(Long internId) {
-        // 单次查询：实习生信息 + 选题记录 + 论文标题（通过 JOIN 关联）
+        // 1. 根据 internId 从 selectorTable 查询对应的论文选题 ID
+        var selectorRecord = dslContext
+                .select(selectorTable.PAPER_SELECTION_ID)
+                .from(selectorTable)
+                .where(selectorTable.STUDENT_ID.eq(internId))
+                .fetchOne();
+
+        if (selectorRecord == null) {
+            throw new BusinessException(404, "当前用户尚未选题");
+        }
+
+        Long selectionId = selectorRecord.get(selectorTable.PAPER_SELECTION_ID);
+
+        // 2. 根据论文选题 ID 查询论文、选题记录及创建者信息（连表查询）
         Record record = dslContext
                 .select(
-                        internTable.NAME,
-                        internTable.ADVISOR_NAME,
                         thesisSelectionTable.ID,
                         thesisSelectionTable.ACHIEVEMENT_TYPE,
                         thesisSelectionTable.SELECTION_TYPE,
-                        thesisTable.TITLE
+                        thesisSelectionTable.CREATOR_ID,
+                        thesisTable.TITLE,
+                        internTable.NAME,
+                        internTable.ADVISOR_NAME
                 )
-                .from(internTable)
-                .join(thesisSelectionTable).on(thesisSelectionTable.CREATOR_ID.eq(internTable.ID))
+                .from(thesisSelectionTable)
                 .join(thesisTable).on(thesisTable.ID.eq(thesisSelectionTable.THESIS_ID))
-                .where(internTable.ID.eq(internId))
+                .join(internTable).on(internTable.ID.eq(thesisSelectionTable.CREATOR_ID))
+                .where(thesisSelectionTable.ID.eq(selectionId))
                 .fetchOne();
 
         if (record == null) {
-            throw new BusinessException(404, "当前用户尚未选题或实习生不存在");
+            throw new BusinessException(404, "选题记录不存在");
         }
 
-        String internName = record.get(internTable.NAME);
-        String advisorName = record.get(internTable.ADVISOR_NAME);
-        Long selectionId = record.get(thesisSelectionTable.ID);
+        Long resultSelectionId = record.get(thesisSelectionTable.ID);
         String achievementType = record.get(thesisSelectionTable.ACHIEVEMENT_TYPE);
         String selectionType = record.get(thesisSelectionTable.SELECTION_TYPE);
         String thesisTitle = record.get(thesisTable.TITLE);
+        String internName = record.get(internTable.NAME);
+        String advisorName = record.get(internTable.ADVISOR_NAME);
         boolean isGroup = "GROUP".equals(selectionType);
 
         // 如果是组选题，查询结组信息
         ThesisSelectionDetailResult.TeamInfo teamInfo = null;
         if (isGroup) {
-            teamInfo = getTeamInfo(selectionId);
+            teamInfo = getTeamInfo(resultSelectionId);
         }
 
         return new ThesisSelectionDetailResult(
@@ -79,6 +89,24 @@ public class ThesisSelectionQueryService {
                 thesisTitle,
                 teamInfo
         );
+    }
+
+    /**
+     * 判断当前用户是否已经选题
+     *
+     * @param internId 当前用户的实习生ID
+     * @return true-已选题，false-未选题
+     */
+    public boolean hasCurrentUserSelected(Long internId) {
+        // 查询该学生是否在selector表中存在记录
+        var record = dslContext
+                .select(selectorTable.ID)
+                .from(selectorTable)
+                .where(selectorTable.STUDENT_ID.eq(internId))
+                .limit(1)
+                .fetchOne();
+        
+        return record != null;
     }
 
     /**

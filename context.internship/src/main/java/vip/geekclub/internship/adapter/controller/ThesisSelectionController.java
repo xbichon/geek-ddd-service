@@ -59,4 +59,18 @@ public class ThesisSelectionController {
         ThesisSelectionDetailResult result = queryService.getCurrentUserSelectionDetail(internId);
         return ApiResponse.success(result);
     }
+
+    /**
+     * 判断当前用户是否已经选题
+     *
+     * @return true-已选题，false-未选题
+     */
+    @GetMapping("/has-selected")
+    public ApiResponse<Boolean> hasCurrentUserSelected(UserPrincipal userPrincipal) {
+        // 从上下文获取当前用户，查询实习生ID
+        var internId = internQueryService.getInternIdByAuthId(userPrincipal.authId());
+
+        boolean hasSelected = queryService.hasCurrentUserSelected(internId);
+        return ApiResponse.success(hasSelected);
+    }
 }
