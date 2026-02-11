@@ -14,9 +14,7 @@ import vip.geekclub.internship.application.command.thesisselection.CreateThesisS
 import vip.geekclub.internship.application.query.InternQueryService;
 import vip.geekclub.internship.application.query.ThesisQueryService;
 import vip.geekclub.internship.application.query.ThesisSelectionQueryService;
-import vip.geekclub.internship.application.query.dto.InternInfoResult;
-import vip.geekclub.internship.application.query.dto.ThesisListResult;
-import vip.geekclub.internship.application.query.dto.ThesisSelectionDetailResult;
+import vip.geekclub.internship.application.query.dto.*;
 
 import java.util.List;
 
@@ -100,5 +98,17 @@ public class ThesisController {
         var currentInternId = internQueryService.getInternIdByAuthId(userPrincipal.authId());
         List<InternInfoResult> students = internQueryService.getUnselectedStudentsBySameAdvisor(currentInternId);
         return ApiResponse.success(students);
+    }
+
+    /**
+     * 获取论文选择结果列表
+     *
+     * @param query 查询参数（班级、指导老师、学生名字）
+     * @return 论文选择结果列表
+     */
+    @GetMapping("/selectionList")
+    public ApiResponse<List<ThesisSelectionListResult>> listThesisSelections(ThesisSelectionListQuery query) {
+        List<ThesisSelectionListResult> list = thesisSelectionQueryService.getThesisSelectionList(query);
+        return ApiResponse.success(list);
     }
 }

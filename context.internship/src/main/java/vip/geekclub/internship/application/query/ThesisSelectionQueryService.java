@@ -7,9 +7,12 @@ import vip.geekclub.internship.generated.Tables;
 import vip.geekclub.internship.generated.tables.*;
 import org.springframework.stereotype.Service;
 import vip.geekclub.framework.exception.BusinessException;
-import vip.geekclub.internship.application.query.dto.ThesisSelectionDetailResult;
+import vip.geekclub.internship.application.query.dto.*;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
 
 /**
  * 选题查询服务
@@ -145,5 +148,132 @@ public class ThesisSelectionQueryService {
                 .toList();
 
         return new ThesisSelectionDetailResult.TeamInfo(reason, members);
+    }
+
+    /**
+     * 获取论文选择结果列表
+     *
+     * @param query 查询参数
+     * @return 论文选择结果列表
+     */
+    public List<ThesisSelectionListResult> getThesisSelectionList(ThesisSelectionListQuery query) {
+        // 1. 构建查询条件列表
+        List<org.jooq.Condition> conditions = new ArrayList<>();
+
+        // 2. 根据查询参数添加条件
+        if (query.className() != null) {
+            conditions.add(internTable.CLASS_NAME.eq(query.className()));
+        }
+        if (query.advisorName() != null) {
+            conditions.add(internTable.ADVISOR_NAME.eq(query.advisorName()));
+        }
+        if (query.studentName() != null) {
+            conditions.add(internTable.NAME.like("%" + query.studentName() + "%"));
+        }
+
+        // 3. 查询所有选题记录及关联信息
+        var selectStep = dslContext
+                .select(
+                        thesisSelectionTable.ID,
+                        thesisSelectionTable.THESIS_ID,
+                        thesisSelectionTable.ACHIEVEMENT_TYPE,
+                        thesisSelectionTable.SELECTION_TYPE,
+                        thesisSelectionTable.CREATOR_ID,
+                        thesisTable.TITLE,
+                        internTable.NAME,
+                        internTable.STUDENT_NO,
+                        internTable.CLASS_NAME,
+                        internTable.ADVISOR_NAME
+                )
+                .from(thesisSelectionTable)
+                .join(thesisTable).on(thesisTable.ID.eq(thesisSelectionTable.THESIS_ID))
+                .join(selectorTable).on(selectorTable.PAPER_SELECTION_ID.eq(thesisSelectionTable.ID))
+                .join(internTable).on(internTable.ID.eq(selectorTable.STUDENT_ID));
+
+        // 4. 应用查询条件
+        var records = conditions.isEmpty()
+                ? selectStep.fetch()
+                : selectStep.where(conditions).fetch();
+
+        // 5. 获取所有选题ID（用于批量查询选择者信息）
+        List<Long> selectionIds = records.stream()
+                .map(r -> r.get(thesisSelectionTable.ID))
+                .distinct()
+                .toList();
+
+        // 6. 批量查询每个选题的选择者信息
+        Map<Long, List<SelectorResult>> selectorsMap = batchGetSelectors(selectionIds);
+
+        // 7. 组装结果（按选题ID分组，每个选题只返回一条记录，包含所有选择者）
+        Map<Long, Record> uniqueSelections = records.stream()
+                .collect(Collectors.toMap(
+                        r -> r.get(thesisSelectionTable.ID),
+                        r -> r,
+                        (existing, replacement) -> existing
+                ));
+
+        return uniqueSelections.values().stream()
+                .map(r -> {
+                    Long selectionId = r.get(thesisSelectionTable.ID);
+                    String selectionType = r.get(thesisSelectionTable.SELECTION_TYPE);
+                    boolean isGroup = "GROUP".equals(selectionType);
+
+                    return new ThesisSelectionListResult(
+                            selectionId,
+                            r.get(thesisSelectionTable.THESIS_ID),
+                            r.get(thesisTable.TITLE),
+                            r.get(thesisSelectionTable.ACHIEVEMENT_TYPE),
+                            selectionType,
+                            isGroup,
+                            r.get(thesisSelectionTable.CREATOR_ID),
+                            r.get(internTable.NAME),
+                            r.get(internTable.STUDENT_NO),
+                            r.get(internTable.CLASS_NAME),
+                            r.get(internTable.ADVISOR_NAME),
+                            selectorsMap.getOrDefault(selectionId, List.of())
+                    );
+                })
+                .toList();
+    }
+
+    /**
+     * 批量获取选择者信息
+     *
+     * @param selectionIds 选题记录ID列表
+     * @return 选题ID到选择者列表的映射
+     */
+    private Map<Long, List<SelectorResult>> batchGetSelectors(List<Long> selectionIds) {
+        if (selectionIds.isEmpty()) {
+            return Map.of();
+        }
+
+        // 查询所有选择者信息
+        var records = dslContext
+                .select(
+                        selectorTable.PAPER_SELECTION_ID,
+                        internTable.ID,
+                        internTable.NAME,
+                        internTable.STUDENT_NO,
+                        internTable.CLASS_NAME
+                )
+                .from(selectorTable)
+                .join(internTable).on(internTable.ID.eq(selectorTable.STUDENT_ID))
+                .where(selectorTable.PAPER_SELECTION_ID.in(selectionIds))
+                .fetch();
+
+        // 按选题ID分组
+        return records.stream()
+                .collect(Collectors.groupingBy(
+                        r -> r.get(selectorTable.PAPER_SELECTION_ID),
+                        Collectors.mapping(
+                                r -> new SelectorResult(
+                                        r.get(internTable.ID),
+                                        r.get(internTable.NAME),
+                                        r.get(internTable.STUDENT_NO),
+                                        r.get(internTable.CLASS_NAME)
+                                ),
+                                Collectors.toList()
+                        )
+                ));
     }
 }
