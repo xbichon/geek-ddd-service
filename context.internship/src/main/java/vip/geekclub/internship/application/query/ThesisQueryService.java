@@ -51,7 +51,7 @@ public class ThesisQueryService {
                         )
                 ));
 
-        // 组装结果
+        // 组装结果并排序
         return thesisRecords.stream()
                 .map(record -> {
                     Long thesisId = record.get(thesisTable.ID);
@@ -63,6 +63,20 @@ public class ThesisQueryService {
                             record.get(thesisTable.CURRENT_SELECTIONS),
                             types
                     );
+                })
+                .sorted((thesis1, thesis2) -> {
+                    // 判断是否已选满：currentSelections >= maxSelections
+                    boolean isFull1 = thesis1.currentSelections() >= thesis1.maxSelections();
+                    boolean isFull2 = thesis2.currentSelections() >= thesis2.maxSelections();
+                    
+                    // 已选满的排在后面
+                    if (isFull1 && !isFull2) {
+                        return 1; // thesis1 排在后面
+                    } else if (!isFull1 && isFull2) {
+                        return -1; // thesis2 排在后面
+                    } else {
+                        return 0; // 两者相同，保持原有顺序
+                    }
                 })
                 .toList();
     }
