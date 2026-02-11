@@ -57,6 +57,13 @@ public class ThesisSelection implements AggregateRoot<Long> {
     private SelectionType selectionType;
 
     /**
+     * 创建者ID（选题记录创建人的实习生ID）
+     */
+    @NotNull(message = "创建者ID不能为空")
+    @Column(name = "creator_id", nullable = false)
+    private Long creatorId;
+
+    /**
      * 选择者集合
      */
     @OneToMany(mappedBy = "thesisSelection", cascade = CascadeType.ALL, orphanRemoval = true)
@@ -68,16 +75,19 @@ public class ThesisSelection implements AggregateRoot<Long> {
      * @param thesisId        论文ID
      * @param achievementType 成果形式
      * @param selectionType   选择者类型
+     * @param creatorId       创建者ID（选题记录创建人的实习生ID）
      * @param studentIds      学生ID列表
      */
-    public ThesisSelection(Long thesisId, String achievementType, SelectionType selectionType, List<SelectorValue> studentIds) {
+    public ThesisSelection(Long thesisId, String achievementType, SelectionType selectionType, Long creatorId, List<SelectorValue> studentIds) {
 
         AssertUtil.notNull(thesisId, () -> "论文不能为空");
         AssertUtil.notNull(selectionType, () -> "选择者类型不能为空");
+        AssertUtil.notNull(creatorId, () -> "创建者ID不能为空");
 
         this.thesisId = thesisId;
         this.achievementType = achievementType;
         this.selectionType = selectionType;
+        this.creatorId = creatorId;
 
         // 验证并创建选择者
         validateSelectorsCount(studentIds);

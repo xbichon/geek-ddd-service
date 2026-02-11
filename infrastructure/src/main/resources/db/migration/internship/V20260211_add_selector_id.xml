@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+         https://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.9.xsd">
+
+    <changeSet id="20250211001-1" author="system">
+        <!-- 在选题记录表中添加创建者ID字段 -->
+        <addColumn tableName="internship_thesis_selection">
+            <column name="creator_id" type="BIGINT" remarks="创建者ID（选题记录创建人的实习生ID）">
+                <constraints nullable="false"/>
+            </column>
+        </addColumn>
+
+        <!-- 创建索引 -->
+        <createIndex tableName="internship_thesis_selection" indexName="idx_selection_creator_id">
+            <column name="creator_id"/>
+        </createIndex>
+
+        <!-- 添加外键约束 -->
+        <addForeignKeyConstraint
+                baseTableName="internship_thesis_selection"
+                baseColumnNames="creator_id"
+                constraintName="fk_selection_creator"
+                referencedTableName="internship_intern"
+                referencedColumnNames="id"/>
+    </changeSet>
+
+</databaseChangeLog>

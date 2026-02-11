@@ -3,11 +3,9 @@ package vip.geekclub.internship.application.command.thesisselection;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import vip.geekclub.framework.command.CommandContext;
 import vip.geekclub.framework.command.CommandHandler;
 import vip.geekclub.framework.command.CommandResult;
-import vip.geekclub.framework.exception.ValidationException;
-import vip.geekclub.internship.domain.model.Intern;
+import vip.geekclub.framework.exception.NotFoundException;
 import vip.geekclub.internship.domain.repository.InternRepository;
 import vip.geekclub.internship.domain.service.TeamMemberValidator;
 import vip.geekclub.internship.domain.service.ThesisSelectionDomainService;
@@ -27,10 +25,9 @@ public class CreateThesisSelectionCommandHandler implements CommandHandler<Creat
     @Override
     @Transactional
     public CommandResult<Void> execute(CreateThesisSelectionCommand command) {
-        // 1. 获取当前的实习生信息
-        var principal = CommandContext.getCurrentPrincipal();
-        var intern = internRepository.findByAuthId(principal.authId())
-                .orElseThrow(() -> new ValidationException("当前用户不是实习生"));
+        // 1. 根据创建者ID获取实习生信息
+        var intern = internRepository.findById(command.creatorId())
+                .orElseThrow(() -> new NotFoundException("创建者不存在"));
 
         // 2. 准备选题者列表，根据选择的是组队还是个人，做不同的处理
         List<SelectorValue> studentIds = switch (command.selectionType()) {
@@ -48,7 +45,7 @@ public class CreateThesisSelectionCommandHandler implements CommandHandler<Creat
 
         // 3. 调用领域服务执行选题
         domainService.selectThesis(command.thesisId(), command.achievementType(), command.selectionType(),
-                studentIds, command.teamApplication());
+                command.creatorId(), studentIds, command.teamApplication());
 
         return CommandResult.ok();
     }

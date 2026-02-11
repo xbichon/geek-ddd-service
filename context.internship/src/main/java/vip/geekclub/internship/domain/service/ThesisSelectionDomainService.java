@@ -32,9 +32,11 @@ public class ThesisSelectionDomainService {
      * @param thesisId        论文ID
      * @param achievementType 成果形式
      * @param selectionType   选择类型（个人/组）
+     * @param creatorId       创建者ID（选题记录创建人的实习生ID）
      * @param studentIds      选题者列表
+     * @param teamApplicationValue 结组申请信息
      */
-    public void selectThesis(Long thesisId, String achievementType, SelectionType selectionType,
+    public void selectThesis(Long thesisId, String achievementType, SelectionType selectionType, Long creatorId,
                              List<SelectorValue> studentIds, TeamApplicationValue teamApplicationValue) {
         // 1. 业务规则：检查论文是否存在
         if (!thesisRepository.existsById(thesisId)) {
@@ -55,16 +57,17 @@ public class ThesisSelectionDomainService {
             throw new ValidationException("论文选择人数已达上限");
         }
 
-        // 3. 创建并保存选题实体
+        // 4. 创建并保存选题实体
         ThesisSelection thesisSelection = new ThesisSelection(
                 thesisId,
                 achievementType,
                 selectionType,
+                creatorId,
                 studentIds
         );
         thesisSelectionRepository.save(thesisSelection);
 
-        // 4. 如果是组形式，保存小组申请
+        // 5. 如果是组形式，保存小组申请
         if (selectionType == SelectionType.GROUP && teamApplicationValue != null) {
             TeamApplication teamApplication = new TeamApplication(
                     thesisSelection.getId(),

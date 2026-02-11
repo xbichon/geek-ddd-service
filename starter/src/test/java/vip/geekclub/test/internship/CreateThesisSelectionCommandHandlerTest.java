@@ -70,6 +70,7 @@ public class CreateThesisSelectionCommandHandlerTest {
                 1L,
                 "论文",
                 SelectionType.GROUP,
+                1L,
                 teamApplication
         );
 
