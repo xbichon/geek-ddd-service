@@ -43,7 +43,7 @@ public class ExceptionAdvice {
      */
     @ExceptionHandler(BusinessException.class)
     public ResponseEntity<@NonNull ApiResponse<?>> handleBusinessException(BusinessException businessException) {
-        log.warn("业务异常: code={}, message={}", businessException.getCode(), businessException.getMessage());
+        log.warn("业务异常",businessException);
         return ResponseEntity.ok(ApiResponse.fail(businessException.getCode(), businessException.getMessage()));
     }
 

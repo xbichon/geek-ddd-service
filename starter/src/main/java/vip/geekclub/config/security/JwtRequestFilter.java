@@ -69,6 +69,4 @@ public class JwtRequestFilter extends OncePerRequestFilter {
     public void setPermitPaths(String[] PERMIT_ALL_PATHS) {
         this.PERMIT_PATHS = PERMIT_ALL_PATHS;
     }
-
-
 }
