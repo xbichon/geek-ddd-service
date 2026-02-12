@@ -1,10 +1,8 @@
 package vip.geekclub.internship.application.query;
 
 import lombok.AllArgsConstructor;
-import org.jooq.Condition;
-import org.jooq.DSLContext;
+import org.jooq.*;
 import org.jooq.Record;
-import org.jooq.RecordMapper;
 import org.jooq.impl.DSL;
 import vip.geekclub.framework.jooq.PageHelper;
 import vip.geekclub.framework.jooq.PageResult;
@@ -33,6 +31,8 @@ public class ThesisSelectionQueryService {
     private final TeamApplicationTable teamApplicationTable = Tables.TeamApplication;
     private final TeamMemberTable teamMemberTable = Tables.TeamMember;
     private final SelectorTable selectorTable = Tables.Selector;
+    private static final Field<Integer> TOTAL_COUNT = count().over().as("total");
+
 
     /**
      * 获取当前用户的选题详情
@@ -171,8 +171,7 @@ public class ThesisSelectionQueryService {
         );
 
         // 2. 构建基础查询
-        var sql = dslContext
-                .select(
+        var list = dslContext.select(
                         thesisSelectionTable.ID,
                         thesisSelectionTable.THESIS_ID,
                         thesisSelectionTable.ACHIEVEMENT_TYPE,
@@ -183,7 +182,7 @@ public class ThesisSelectionQueryService {
                         internTable.STUDENT_NO,
                         internTable.CLASS_NAME,
                         internTable.ADVISOR_NAME,
-                        count().over().as("total")  //窗口函数
+                        TOTAL_COUNT  //窗口函数
                 )
                 .from(thesisSelectionTable)
                 .join(thesisTable).on(thesisTable.ID.eq(thesisSelectionTable.THESIS_ID))
@@ -195,8 +194,8 @@ public class ThesisSelectionQueryService {
                 .fetch();
 
         // 3. 映射结果
-        var total = sql.isEmpty() ? 0L : sql.getFirst().get("total", Long.class);
-        var list = sql.map(r -> new ThesisSelectionListResult(
+        var total = list.isEmpty() ? 0L : list.getFirst().get(TOTAL_COUNT);
+        var result = list.map(r -> new ThesisSelectionListResult(
                 r.get(thesisSelectionTable.ID),
                 r.get(thesisSelectionTable.THESIS_ID),
                 r.get(thesisTable.TITLE),
@@ -210,6 +209,6 @@ public class ThesisSelectionQueryService {
                 List.of())
         );
 
-        return new PageResult<>(list, total, query.pageQuery());
+        return new PageResult<>(result, total, query.pageQuery());
     }
 }
