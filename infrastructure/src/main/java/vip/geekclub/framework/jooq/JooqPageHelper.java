@@ -3,6 +3,7 @@ package vip.geekclub.framework.jooq;
 import org.jooq.*;
 import org.springframework.stereotype.Component;
 
+import java.lang.reflect.Type;
 import java.util.List;
 import java.util.function.Function;
 

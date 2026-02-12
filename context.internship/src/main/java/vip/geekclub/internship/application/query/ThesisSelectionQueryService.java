@@ -4,7 +4,8 @@ import lombok.AllArgsConstructor;
 import org.jooq.Condition;
 import org.jooq.DSLContext;
 import org.jooq.Record;
-import org.jooq.SelectLimitStep;
+import org.jooq.RecordMapper;
+import org.jooq.impl.DSL;
 import vip.geekclub.framework.jooq.JooqPageHelper;
 import vip.geekclub.framework.jooq.PageResult;
 import vip.geekclub.internship.generated.Tables;
@@ -15,6 +16,8 @@ import vip.geekclub.internship.application.query.dto.*;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import static org.jooq.impl.DSL.count;
 
 /**
  * 选题查询服务
@@ -160,59 +163,50 @@ public class ThesisSelectionQueryService {
      * @return 论文选择结果分页列表
      */
     public PageResult<ThesisSelectionListResult> getThesisSelectionList(ThesisSelectionListQuery query) {
-        // 1. 先构建基础查询
-        var baseQuery = dslContext
+
+        // 1. 构建查询条件
+        Condition condition = DSL.and(
+                query.className() != null ? internTable.CLASS_NAME.eq(query.className()) : null,
+                query.advisorName() != null ? internTable.ADVISOR_NAME.eq(query.advisorName()) : null,
+                query.studentName() != null ? internTable.NAME.like("%" + query.studentName() + "%") : null
+        );
+
+        // 2. 构建基础查询
+        var dataQuery = dslContext
                 .select(
                         thesisSelectionTable.ID,
                         thesisSelectionTable.THESIS_ID,
                         thesisSelectionTable.ACHIEVEMENT_TYPE,
                         thesisSelectionTable.SELECTION_TYPE,
                         thesisTable.TITLE,
-                        internTable.ID,
+                        internTable.ID.as("studentId"),
                         internTable.NAME,
                         internTable.STUDENT_NO,
                         internTable.CLASS_NAME,
-                        internTable.ADVISOR_NAME
+                        internTable.ADVISOR_NAME,
+                        count().over().as("total")  //窗口函数
                 )
                 .from(thesisSelectionTable)
                 .join(thesisTable).on(thesisTable.ID.eq(thesisSelectionTable.THESIS_ID))
                 .join(selectorTable).on(selectorTable.PAPER_SELECTION_ID.eq(thesisSelectionTable.ID))
-                .join(internTable).on(internTable.ID.eq(selectorTable.STUDENT_ID));
-
-        // 2. 使用流式API组装条件（更简洁）
-        List<Condition> conditions = new ArrayList<>();
-
-        if (query.className() != null) {
-            conditions.add(internTable.CLASS_NAME.eq(query.className()));
-        }
-        if (query.advisorName() != null) {
-            conditions.add(internTable.ADVISOR_NAME.eq(query.advisorName()));
-        }
-        if (query.studentName() != null) {
-            conditions.add(internTable.NAME.like("%" + query.studentName() + "%"));
-        }
-
-        // 3. 组装条件
-        Condition condition = conditions.stream().reduce(Condition::and).orElse(null);
-        var dataQuery = condition == null ? baseQuery : baseQuery.where(condition);
+                .join(internTable).on(internTable.ID.eq(selectorTable.STUDENT_ID))
+                .where( condition);
 
         // 4. 使用分页工具查询（只负责count和分页）
-        return pageHelper.paginate(
-                dataQuery,
-                query.pageQuery(),
-                r -> new ThesisSelectionListResult(
-                        r.get(thesisSelectionTable.ID),
-                        r.get(thesisSelectionTable.THESIS_ID),
-                        r.get(thesisTable.TITLE),
-                        r.get(thesisSelectionTable.ACHIEVEMENT_TYPE),
-                        r.get(thesisSelectionTable.SELECTION_TYPE),
-                        r.get(internTable.ID),
-                        r.get(internTable.NAME),
-                        r.get(internTable.STUDENT_NO),
-                        r.get(internTable.CLASS_NAME),
-                        r.get(internTable.ADVISOR_NAME),
-                        List.of()
-                )
+        RecordMapper<Record, ThesisSelectionListResult> mapper = r -> new ThesisSelectionListResult(
+                r.get(thesisSelectionTable.ID),
+                r.get(thesisSelectionTable.THESIS_ID),
+                r.get(thesisTable.TITLE),
+                r.get(thesisSelectionTable.ACHIEVEMENT_TYPE),
+                r.get(thesisSelectionTable.SELECTION_TYPE),
+                r.get(internTable.ID),
+                r.get(internTable.NAME),
+                r.get(internTable.STUDENT_NO),
+                r.get(internTable.CLASS_NAME),
+                r.get(internTable.ADVISOR_NAME),
+                List.of()
         );
+        
+        return pageHelper.paginate(dataQuery, query.pageQuery(), mapper);
     }
 }

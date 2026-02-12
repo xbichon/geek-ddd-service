@@ -37,5 +37,6 @@ public record ThesisSelectionListQuery(
         if (studentName != null && studentName.isBlank()) {
             studentName = null;
         }
+        pageQuery = pageQuery != null ? pageQuery : new PageQuery(1, 10);
     }
 }
