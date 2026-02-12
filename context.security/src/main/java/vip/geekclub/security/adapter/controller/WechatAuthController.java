@@ -18,7 +18,7 @@ import vip.geekclub.security.adapter.gateway.WechatService;
  */
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/security/wechat")
+@RequestMapping("/security/auth/wechat")
 public class WechatAuthController {
 
     private final WechatService wechatService;
