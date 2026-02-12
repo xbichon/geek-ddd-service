@@ -24,7 +24,6 @@ import java.util.List;
  */
 @RestController
 @RequestMapping("/manager/department")
-
 @RequiredArgsConstructor
 public class DepartmentController {
 
