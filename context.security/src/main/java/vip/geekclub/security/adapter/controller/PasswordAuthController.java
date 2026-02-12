@@ -49,29 +49,25 @@ public class PasswordAuthController {
      */
     @PostMapping("/login")
     public ApiResponse<?> login(@RequestBody @Valid PasswordLoginRequest request) {
+
         // 非开发环境才验证验证码
         if (!"dev".equals(activeProfile)) {
             // 验证验证码
-            String captchaKey = request.captchaKey();
-            String redisKey = "captcha:" + captchaKey;
+            String redisKey = "captcha:" + request.captchaKey();
 
             // 从Redis中获取验证码
             String storedCaptcha = stringRedisTemplate.opsForValue().get(redisKey);
-
-            // 无论验证成功与否，都删除验证码
-            stringRedisTemplate.delete(redisKey);
-
-            // 检查验证码是否存在
             if (storedCaptcha == null) {
                 return ApiResponse.fail(400, "验证码已过期或不存在");
             }
+
+            // 无论验证成功与否，都删除验证码
+            stringRedisTemplate.delete(redisKey);
 
             // 检查验证码是否正确（忽略大小写）
             if (!storedCaptcha.equalsIgnoreCase(request.captcha())) {
                 return ApiResponse.fail(400, "验证码错误");
             }
-        } else {
-            log.debug("开发环境，跳过验证码验证");
         }
 
         // 验证码验证通过，继续执行登录逻辑
