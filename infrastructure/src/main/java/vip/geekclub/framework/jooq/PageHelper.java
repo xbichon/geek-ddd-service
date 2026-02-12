@@ -3,9 +3,7 @@ package vip.geekclub.framework.jooq;
 import org.jooq.*;
 import org.springframework.stereotype.Component;
 
-import java.lang.reflect.Type;
 import java.util.List;
-import java.util.function.Function;
 
 /**
  * JOOQ 分页查询工具类
@@ -18,11 +16,11 @@ import java.util.function.Function;
  * </ul>
  */
 @Component
-public class JooqPageHelper {
+public class PageHelper {
 
     private final DSLContext dslContext;
 
-    public JooqPageHelper(DSLContext dslContext) {
+    public PageHelper(DSLContext dslContext) {
         this.dslContext = dslContext;
     }
 

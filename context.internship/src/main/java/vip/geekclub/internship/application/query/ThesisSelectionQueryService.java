@@ -6,7 +6,7 @@ import org.jooq.DSLContext;
 import org.jooq.Record;
 import org.jooq.RecordMapper;
 import org.jooq.impl.DSL;
-import vip.geekclub.framework.jooq.JooqPageHelper;
+import vip.geekclub.framework.jooq.PageHelper;
 import vip.geekclub.framework.jooq.PageResult;
 import vip.geekclub.internship.generated.Tables;
 import vip.geekclub.internship.generated.tables.*;
@@ -14,7 +14,6 @@ import org.springframework.stereotype.Service;
 import vip.geekclub.framework.exception.BusinessException;
 import vip.geekclub.internship.application.query.dto.*;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import static org.jooq.impl.DSL.count;
@@ -27,7 +26,7 @@ import static org.jooq.impl.DSL.count;
 public class ThesisSelectionQueryService {
 
     private final DSLContext dslContext;
-    private final JooqPageHelper pageHelper;
+    private final PageHelper pageHelper;
     private final ThesisSelectionTable thesisSelectionTable = Tables.ThesisSelection;
     private final InternTable internTable = Tables.Intern;
     private final ThesisTable thesisTable = Tables.Thesis;

@@ -79,6 +79,14 @@
             <appender-ref ref="CONSOLE"/>
         </logger>
 
+        <logger name="org.jooq.tools.LoggerListener" level="DEBUG" additivity="false">
+            <appender-ref ref="CONSOLE"/>
+        </logger>
+
+        <logger name="org.jooq.impl.DefaultExecuteContext" level="DEBUG" additivity="false">
+            <appender-ref ref="CONSOLE"/>
+        </logger>
+
         <!-- Hibernate SQL日志 -->
         <logger name="org.hibernate.SQL" level="DEBUG" additivity="false">
             <appender-ref ref="CONSOLE"/>
