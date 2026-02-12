@@ -1,5 +1,7 @@
 package vip.geekclub.framework.security;
 
+import org.springframework.core.annotation.AliasFor;
+
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
@@ -27,7 +29,7 @@ import java.lang.annotation.Target;
 public @interface Authorize {
 
     /**
-     * 角色名称（如 TEACHER、STUDENT、ADMIN）
+     * 用户类型（如 TEACHER、STUDENT、ADMIN）
      */
     String userType() default "";
 

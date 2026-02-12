@@ -4,6 +4,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;
+import org.jspecify.annotations.NonNull;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
@@ -16,22 +17,20 @@ import java.util.Set;
  *
  * <p>拦截带有 @RequireAuth 注解的方法，验证用户角色和权限
  */
-@Slf4j @Aspect
+@Slf4j
+@Aspect
 @Component
 public class AuthorizeAspect {
 
     @Around("@annotation(authorize)")
     public Object around(ProceedingJoinPoint pjp, Authorize authorize) throws Throwable {
-        UserAuthentication authentication = (UserAuthentication) SecurityContextHolder.getContext().getAuthentication();
-        if (authentication == null) {
-            throw new AccessDeniedException("用户未登录");
-        }
+        UserAuthentication authentication = getUserAuthentication(authorize);
 
-        if (!Objects.equals(authorize.userType(), "") && !authentication.getUserPrincipal().userType().equals(authorize.userType())) {
+        String userType = authorize.userType();
+        if (!Objects.equals(userType, "") && !authentication.getUserPrincipal().userType().equals(userType)) {
             throw new AccessDeniedException("需要 " + authorize.userType() + " 角色");
         }
 
-        // 验证权限（如果有指定）
         if (authorize.permissions().length > 0) {
             Set<String> userPermissions = authentication.getPermissions();
 
@@ -44,5 +43,14 @@ public class AuthorizeAspect {
 
         // 验证通过，执行原方法
         return pjp.proceed();
+    }
+
+    private static @NonNull UserAuthentication getUserAuthentication(Authorize authorize) {
+        UserAuthentication authentication = (UserAuthentication) SecurityContextHolder.getContext().getAuthentication();
+        if (authentication == null) {
+            throw new AccessDeniedException("用户未登录");
+        }
+
+        return authentication;
     }
 }
