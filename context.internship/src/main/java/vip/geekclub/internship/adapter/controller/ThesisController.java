@@ -27,7 +27,6 @@ import java.util.List;
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/internship/thesis")
-@Authorize(userType = UserType.STUDENT)
 public class ThesisController {
 
     private final WebCommandAdapter commandBus;
@@ -41,6 +40,7 @@ public class ThesisController {
      * 获取论文列表
      */
     @GetMapping("/list")
+    @Authorize(userType = UserType.STUDENT)
     public ApiResponse<List<ThesisListResult>> listThesis() {
         List<ThesisListResult> list = thesisQueryService.getThesisList();
         return ApiResponse.success(list);
@@ -56,6 +56,7 @@ public class ThesisController {
      * @return 操作结果
      */
     @PostMapping("/applySelection")
+    @Authorize(userType = UserType.STUDENT)
     public ApiResponse<Void> applySelection(
             @Valid @RequestBody CreateThesisSelectionCommand command,
             UserPrincipal userPrincipal) {
@@ -71,6 +72,7 @@ public class ThesisController {
      * @return 选题详情
      */
     @GetMapping("/getSelectionDetail")
+    @Authorize(userType = UserType.STUDENT)
     public ApiResponse<ThesisSelectionDetailResult> getSelectionDetail(UserPrincipal userPrincipal) {
         var internId = internQueryService.getInternIdByAuthId(userPrincipal.authId());
         ThesisSelectionDetailResult result = thesisSelectionQueryService.getCurrentUserSelectionDetail(internId);
@@ -84,6 +86,7 @@ public class ThesisController {
      * @return true-已选题，false-未选题
      */
     @GetMapping("/checkSelectionStatus")
+    @Authorize(userType = UserType.STUDENT)
     public ApiResponse<Boolean> checkSelectionStatus(UserPrincipal userPrincipal) {
         var internId = internQueryService.getInternIdByAuthId(userPrincipal.authId());
         boolean hasSelected = thesisSelectionQueryService.hasCurrentUserSelected(internId);
@@ -97,6 +100,7 @@ public class ThesisController {
      * @return 未选题的学生列表
      */
     @GetMapping("/unselectedStudent")
+    @Authorize(userType = UserType.STUDENT)
     public ApiResponse<List<InternInfoResult>> listUnselectedPeers(UserPrincipal userPrincipal) {
         var currentInternId = internQueryService.getInternIdByAuthId(userPrincipal.authId());
         List<InternInfoResult> students = internQueryService.getUnselectedStudentsBySameAdvisor(currentInternId);
@@ -110,6 +114,7 @@ public class ThesisController {
      * @return 论文选择结果列表
      */
     @GetMapping("/selectionList")
+    @Authorize(userType = UserType.TEACHER)
     public ApiResponse<PageResult<ThesisSelectionListResult>> listThesisSelections(ThesisSelectionListQuery query) {
         PageResult<ThesisSelectionListResult> list = thesisSelectionQueryService.getThesisSelectionList(query);
         return ApiResponse.success(list);
