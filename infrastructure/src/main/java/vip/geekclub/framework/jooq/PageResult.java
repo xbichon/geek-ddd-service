@@ -35,6 +35,11 @@ public record PageResult<T>(
         this(records, total, pageNum, pageSize, 
              (int) Math.ceil((double) total / pageSize));
     }
+
+    public PageResult(List<T> records, Long total, PageQuery pageQuery) {
+        this(records, total, pageQuery.pageNum(), pageQuery.pageSize(),
+                (int) Math.ceil((double) total / pageQuery.pageSize()));
+    }
     
     /**
      * 是否有下一页

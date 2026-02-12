@@ -171,7 +171,7 @@ public class ThesisSelectionQueryService {
         );
 
         // 2. 构建基础查询
-        var dataQuery = dslContext
+        var sql = dslContext
                 .select(
                         thesisSelectionTable.ID,
                         thesisSelectionTable.THESIS_ID,
@@ -189,10 +189,14 @@ public class ThesisSelectionQueryService {
                 .join(thesisTable).on(thesisTable.ID.eq(thesisSelectionTable.THESIS_ID))
                 .join(selectorTable).on(selectorTable.PAPER_SELECTION_ID.eq(thesisSelectionTable.ID))
                 .join(internTable).on(internTable.ID.eq(selectorTable.STUDENT_ID))
-                .where( condition);
+                .where(condition)
+                .limit(query.pageQuery().getLimit())
+                .offset(query.pageQuery().getOffset())
+                .fetch();
 
-        // 4. 使用分页工具查询（只负责count和分页）
-        RecordMapper<Record, ThesisSelectionListResult> mapper = r -> new ThesisSelectionListResult(
+        // 3. 映射结果
+        var total = sql.isEmpty() ? 0L : sql.getFirst().get("total", Long.class);
+        var list = sql.map(r -> new ThesisSelectionListResult(
                 r.get(thesisSelectionTable.ID),
                 r.get(thesisSelectionTable.THESIS_ID),
                 r.get(thesisTable.TITLE),
@@ -203,9 +207,9 @@ public class ThesisSelectionQueryService {
                 r.get(internTable.STUDENT_NO),
                 r.get(internTable.CLASS_NAME),
                 r.get(internTable.ADVISOR_NAME),
-                List.of()
+                List.of())
         );
-        
-        return pageHelper.paginate(dataQuery, query.pageQuery(), mapper);
+
+        return new PageResult<>(list, total, query.pageQuery());
     }
 }
