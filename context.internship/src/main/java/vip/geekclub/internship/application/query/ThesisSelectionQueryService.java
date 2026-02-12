@@ -24,7 +24,6 @@ import static org.jooq.impl.DSL.count;
 public class ThesisSelectionQueryService {
 
     private final DSLContext dslContext;
-    private final PageHelper pageHelper;
     private final ThesisSelectionTable thesisSelectionTable = Tables.ThesisSelection;
     private final InternTable internTable = Tables.Intern;
     private final ThesisTable thesisTable = Tables.Thesis;
@@ -32,7 +31,6 @@ public class ThesisSelectionQueryService {
     private final TeamMemberTable teamMemberTable = Tables.TeamMember;
     private final SelectorTable selectorTable = Tables.Selector;
     private static final Field<Integer> TOTAL_COUNT = count().over().as("total");
-
 
     /**
      * 获取当前用户的选题详情
@@ -188,14 +186,9 @@ public class ThesisSelectionQueryService {
                 .join(thesisTable).on(thesisTable.ID.eq(thesisSelectionTable.THESIS_ID))
                 .join(selectorTable).on(selectorTable.PAPER_SELECTION_ID.eq(thesisSelectionTable.ID))
                 .join(internTable).on(internTable.ID.eq(selectorTable.STUDENT_ID))
-                .where(condition)
-                .limit(query.pageQuery().getLimit())
-                .offset(query.pageQuery().getOffset())
-                .fetch();
+                .where(condition);
 
-        // 3. 映射结果
-        var total = list.isEmpty() ? 0L : list.getFirst().get(TOTAL_COUNT);
-        var result = list.map(r -> new ThesisSelectionListResult(
+        return PageHelper.page(list, query.pageQuery(), r -> new ThesisSelectionListResult(
                 r.get(thesisSelectionTable.ID),
                 r.get(thesisSelectionTable.THESIS_ID),
                 r.get(thesisTable.TITLE),
@@ -206,9 +199,6 @@ public class ThesisSelectionQueryService {
                 r.get(internTable.STUDENT_NO),
                 r.get(internTable.CLASS_NAME),
                 r.get(internTable.ADVISOR_NAME),
-                List.of())
-        );
-
-        return new PageResult<>(result, total, query.pageQuery());
+                List.of()));
     }
 }

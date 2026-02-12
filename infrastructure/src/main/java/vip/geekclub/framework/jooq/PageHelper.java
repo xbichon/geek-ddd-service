@@ -1,9 +1,13 @@
 package vip.geekclub.framework.jooq;
 
+import lombok.RequiredArgsConstructor;
 import org.jooq.*;
+import org.jooq.Record;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
+
+import static org.jooq.impl.DSL.count;
 
 /**
  * JOOQ 分页查询工具类
@@ -16,13 +20,10 @@ import java.util.List;
  * </ul>
  */
 @Component
+@RequiredArgsConstructor
 public class PageHelper {
 
-    private final DSLContext dslContext;
-
-    public PageHelper(DSLContext dslContext) {
-        this.dslContext = dslContext;
-    }
+    public static final Field<Integer> TOTAL_COUNT = count().over().as("total");
 
     /**
      * 分页查询
@@ -44,21 +45,14 @@ public class PageHelper {
      * @param <T>       返回数据类型
      * @return 分页结果
      */
-    @SuppressWarnings({"unchecked", "rawtypes"})
-    public <T> PageResult<T> paginate(SelectLimitStep query, PageQuery pageQuery, RecordMapper mapper) {
-
-        // 统计总数（基于已带条件的查询生成子查询）
-        Long total = dslContext.selectCount()
-                .from(query.asTable("t"))
-                .fetchOne(0, Long.class);
-
-        // 执行分页查询
-        List<T> list = (List<T>) query
-                .limit(pageQuery.getLimit())
+    public static  <T> PageResult<T> page(SelectLimitStep<?> query, PageQuery pageQuery, RecordMapper<Record, T> mapper) {
+        var list = query.limit(pageQuery.getLimit())
                 .offset(pageQuery.getOffset())
-                .fetch()
-                .map(mapper);
+                .fetch();
 
-        return new PageResult<>(list, total, pageQuery.pageNum(), pageQuery.pageSize());
+        var total = list.isEmpty() ? 0L : list.getFirst().get(TOTAL_COUNT);
+        var result = list.map(mapper);
+
+        return new PageResult<>(result, total, pageQuery);
     }
 }
