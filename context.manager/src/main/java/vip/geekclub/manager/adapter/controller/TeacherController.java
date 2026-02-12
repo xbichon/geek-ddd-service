@@ -2,9 +2,11 @@ package vip.geekclub.manager.adapter.controller;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
+import vip.geekclub.contract.UserType;
 import vip.geekclub.framework.command.IdResult;
 import vip.geekclub.framework.controller.ApiResponse;
 import vip.geekclub.framework.controller.WebCommandAdapter;
+import vip.geekclub.framework.security.Authorize;
 import vip.geekclub.manager.application.command.dto.CreateTeacherCommand;
 import vip.geekclub.manager.application.command.dto.DeleteTeacherCommand;
 import vip.geekclub.manager.application.command.dto.UpdateTeacherCommand;
@@ -16,6 +18,7 @@ import vip.geekclub.manager.application.command.dto.UpdateTeacherCommand;
 @RestController
 @RequestMapping("/manager/teacher")
 @RequiredArgsConstructor
+@Authorize(userType = UserType.TEACHER)
 public class TeacherController {
 
     private final WebCommandAdapter commandBus;

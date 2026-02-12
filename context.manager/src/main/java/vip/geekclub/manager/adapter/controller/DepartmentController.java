@@ -25,6 +25,7 @@ import java.util.List;
 @RestController
 @RequestMapping("/manager/department")
 @RequiredArgsConstructor
+@Authorize(userType = UserType.TEACHER)
 public class DepartmentController {
 
     private final WebCommandAdapter commandBus;

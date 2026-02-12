@@ -6,7 +6,9 @@ import jakarta.validation.constraints.NotNull;
 import lombok.Data;
 import lombok.Setter;
 import lombok.experimental.Accessors;
+import vip.geekclub.contract.UserType;
 import vip.geekclub.framework.command.Command;
+import vip.geekclub.framework.security.Authorize;
 import vip.geekclub.internship.domain.value.SelectionType;
 import vip.geekclub.internship.domain.value.TeamApplicationValue;
 
