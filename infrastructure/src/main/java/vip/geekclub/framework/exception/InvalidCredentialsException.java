@@ -6,6 +6,6 @@ package vip.geekclub.framework.exception;
 public class InvalidCredentialsException extends BusinessException {
 
     public InvalidCredentialsException(String message) {
-        super(401, message);
+        super(400, message);
     }
 }
