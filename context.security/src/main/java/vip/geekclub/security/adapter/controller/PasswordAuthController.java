@@ -10,9 +10,9 @@ import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.web.bind.annotation.*;
 import vip.geekclub.framework.controller.ApiResponse;
-import vip.geekclub.framework.security.AuthSessionManager;
+import vip.geekclub.framework.security.SessionStore;
 import vip.geekclub.framework.security.PasswordAuthenticationToken;
-import vip.geekclub.framework.security.UserAuthenticationToken;
+import vip.geekclub.framework.security.UserAuthentication;
 import vip.geekclub.security.adapter.controller.dto.CaptchaResponse;
 import vip.geekclub.security.adapter.controller.dto.PasswordLoginRequest;
 
@@ -32,7 +32,7 @@ import java.util.concurrent.TimeUnit;
 public class PasswordAuthController {
 
     private final AuthenticationManager authenticationManager;
-    private final AuthSessionManager authSessionManager;
+    private final SessionStore authSessionManager;
     private final StringRedisTemplate stringRedisTemplate;
 
     @Value("${spring.profiles.active:prod}")
@@ -73,8 +73,8 @@ public class PasswordAuthController {
 
         // 验证码验证通过，继续执行登录逻辑
         PasswordAuthenticationToken passwordAuthenticationToken = new PasswordAuthenticationToken(request.userType(), request.identifier(), request.password(), request.identifierType());
-        UserAuthenticationToken userAuthenticationToken = (UserAuthenticationToken) authenticationManager.authenticate(passwordAuthenticationToken);
-        String jwtToken = authSessionManager.createSession(userAuthenticationToken);
+        UserAuthentication userAuthenticationToken = (UserAuthentication) authenticationManager.authenticate(passwordAuthenticationToken);
+        String jwtToken = authSessionManager.create(userAuthenticationToken);
         return ApiResponse.success(jwtToken);
     }
 

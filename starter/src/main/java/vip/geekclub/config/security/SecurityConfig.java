@@ -1,5 +1,7 @@
 package vip.geekclub.config.security;
 
+import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
+import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import vip.geekclub.framework.controller.ApiResponse;
 import vip.geekclub.framework.utils.HttpUtil;
 import org.springframework.context.annotation.Bean;
@@ -19,6 +21,10 @@ import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 import java.util.List;
 
 @Configuration(proxyBeanMethods = false)
+@EnableMethodSecurity(
+        securedEnabled = true,  // 启用 @Secured
+        jsr250Enabled = true    // 启用 @RolesAllowed (JSR-250)
+)
 public class SecurityConfig {
 
     /**

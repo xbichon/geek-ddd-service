@@ -3,7 +3,7 @@ package vip.geekclub.config.command;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
-import vip.geekclub.framework.security.UserAuthenticationToken;
+import vip.geekclub.framework.security.UserAuthentication;
 import vip.geekclub.framework.command.Command;
 import vip.geekclub.framework.command.CommandContext;
 import vip.geekclub.framework.command.CommandHandlerChain;
@@ -22,7 +22,7 @@ public class CommandContextChain extends CommandHandlerChain {
             // 命令执行前：从 SecurityContext 提取用户信息到 UserContext
             Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
             if (authentication != null && authentication.isAuthenticated()
-                    && authentication instanceof UserAuthenticationToken userAuthenticationToken) {
+                    && authentication instanceof UserAuthentication userAuthenticationToken) {
                 CommandContext.setCurrentUser(userAuthenticationToken.getPrincipal());
             }
             // 继续执行链

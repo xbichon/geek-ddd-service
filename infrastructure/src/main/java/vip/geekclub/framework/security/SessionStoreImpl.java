@@ -13,18 +13,18 @@ import java.util.Set;
  */
 @Component
 @RequiredArgsConstructor
-public class AuthSessionManagerImpl implements AuthSessionManager {
+public class SessionStoreImpl implements SessionStore {
 
     private final JwtUtil jwtUtil;
     private final static long expirationSeconds = 60 * 60 * 14 * 30;
 
-    public String createSession(UserAuthenticationToken authentication) {
+    public String create(UserAuthentication authentication) {
         UserPrincipal userPrincipal = authentication.getUserPrincipal();
         return jwtUtil.generateToken(userPrincipal.authId(), userPrincipal, expirationSeconds);
     }
 
-    public UserAuthenticationToken getSession(String token) {
+    public UserAuthentication load(String token) {
         JwtValue<UserPrincipal> jwtValue = jwtUtil.parseToken(token, UserPrincipal.class);
-        return new UserAuthenticationToken(jwtValue.data(), Set.of());
+        return new UserAuthentication(jwtValue.data(), Set.of());
     }
 }

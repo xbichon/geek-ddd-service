@@ -8,9 +8,8 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-import vip.geekclub.framework.security.AuthSessionManager;
-import vip.geekclub.framework.security.AuthSessionManagerImpl;
-import vip.geekclub.framework.security.UserAuthenticationToken;
+import vip.geekclub.framework.security.SessionStore;
+import vip.geekclub.framework.security.UserAuthentication;
 import vip.geekclub.framework.security.WechatAuthenticationToken;
 import vip.geekclub.framework.controller.ApiResponse;
 import vip.geekclub.security.adapter.controller.dto.WechatBindRequest;
@@ -28,7 +27,7 @@ public class WechatAuthController {
 
     private final AuthenticationManager authenticationManager;
     private final WechatService wechatService;
-    private final AuthSessionManager authSessionManager;
+    private final SessionStore authSessionManager;
 
     /**
      * 微信小程序登录
@@ -41,8 +40,8 @@ public class WechatAuthController {
         // 调用微信接口换取 unionId
         String unionId = wechatService.getUnionId(request.code());
         WechatAuthenticationToken authRequest = new WechatAuthenticationToken(unionId);
-        UserAuthenticationToken userSession = (UserAuthenticationToken) authenticationManager.authenticate(authRequest);
-        String jwtToken = authSessionManager.createSession(userSession);
+        UserAuthentication userSession = (UserAuthentication) authenticationManager.authenticate(authRequest);
+        String jwtToken = authSessionManager.create(userSession);
         return ApiResponse.success(jwtToken);
     }
 
@@ -57,12 +56,12 @@ public class WechatAuthController {
     public ApiResponse<?> bind(@RequestBody @Valid WechatBindRequest request) {
 
         UsernamePasswordAuthenticationToken authRequest = new UsernamePasswordAuthenticationToken(request.identify(), request.code());
-        UserAuthenticationToken userAuthenticationToken = (UserAuthenticationToken) authenticationManager.authenticate(authRequest);
+        UserAuthentication userAuthenticationToken = (UserAuthentication) authenticationManager.authenticate(authRequest);
         String unionId = wechatService.getUnionId(request.code());
 
         // 派发绑定命令
 //        commandBus.dispatch(new CreateCredentialCommand());
-        String jwtToken = authSessionManager.createSession(userAuthenticationToken);
+        String jwtToken = authSessionManager.create(userAuthenticationToken);
         return ApiResponse.success(jwtToken);
     }
 }

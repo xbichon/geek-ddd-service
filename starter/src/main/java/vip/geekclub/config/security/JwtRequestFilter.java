@@ -3,8 +3,8 @@ package vip.geekclub.config.security;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 import org.springframework.util.AntPathMatcher;
-import vip.geekclub.framework.security.AuthSessionManager;
-import vip.geekclub.framework.security.UserAuthenticationToken;
+import vip.geekclub.framework.security.SessionStore;
+import vip.geekclub.framework.security.UserAuthentication;
 import vip.geekclub.framework.exception.JwtParseException;
 
 import java.util.Arrays;
@@ -31,7 +31,7 @@ public class JwtRequestFilter extends OncePerRequestFilter {
 
     private final HttpUtil httpUtil;
     private final AntPathMatcher pathMatcher = new AntPathMatcher();
-    private final AuthSessionManager authSessionManager;
+    private final SessionStore authSessionManager;
     private String[] PERMIT_PATHS = {};
 
 
@@ -52,7 +52,7 @@ public class JwtRequestFilter extends OncePerRequestFilter {
     protected void doFilterInternal(@NonNull HttpServletRequest request, @NonNull HttpServletResponse response, @NonNull FilterChain filterChain) throws ServletException, IOException {
         try {
             httpUtil.getJwtFromRequest(request).ifPresent(tokenValue -> {
-                UserAuthenticationToken userAuthenticationToken = authSessionManager.getSession(tokenValue);
+                UserAuthentication userAuthenticationToken = authSessionManager.load(tokenValue);
                 SecurityContextHolder.getContext().setAuthentication(userAuthenticationToken);
             });
             filterChain.doFilter(request, response);

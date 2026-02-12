@@ -1,6 +1,7 @@
 package vip.geekclub.manager.adapter.controller;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import vip.geekclub.framework.controller.ApiResponse;
 import vip.geekclub.framework.controller.WebCommandAdapter;
@@ -21,6 +22,7 @@ import java.util.List;
  */
 @RestController
 @RequestMapping("/manager/department")
+
 @RequiredArgsConstructor
 public class DepartmentController {
 
@@ -68,6 +70,7 @@ public class DepartmentController {
      * @return 部门信息
      */
     @GetMapping("/{id}")
+    @PreAuthorize("hasRole('TEACHER')")
     public ApiResponse<DepartmentInfoResult> getDepartmentById(@PathVariable Long id) {
         return departmentInfoQueryService.getDepartmentById(id)
                 .map(ApiResponse::success)

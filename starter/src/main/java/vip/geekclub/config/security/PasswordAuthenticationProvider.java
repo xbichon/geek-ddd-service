@@ -3,7 +3,7 @@ package vip.geekclub.config.security;
 import lombok.NonNull;
 import org.springframework.security.authentication.AuthenticationProvider;
 import vip.geekclub.framework.security.PasswordAuthenticationToken;
-import vip.geekclub.framework.security.UserAuthenticationToken;
+import vip.geekclub.framework.security.UserAuthentication;
 import vip.geekclub.framework.security.UserPrincipal;
 import vip.geekclub.framework.command.CommandDispatcher;
 import vip.geekclub.framework.command.CommandResult;
@@ -42,7 +42,7 @@ public class PasswordAuthenticationProvider implements AuthenticationProvider {
             PasswordLoginCommand command = new PasswordLoginCommand(token.getUserType(), token.getIdentifier(), token.getPassword());
             CommandResult<UserPrincipal> commandResult = CommandDispatcher.dispatch(command);
             UserPrincipal userPrincipal = commandResult.data();
-            return new UserAuthenticationToken(userPrincipal, Set.of());
+            return new UserAuthentication(userPrincipal, Set.of());
         } catch (Exception e) {
             throw new BadCredentialsException(e.getMessage());
         }

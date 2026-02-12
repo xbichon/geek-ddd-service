@@ -9,7 +9,7 @@ import org.springframework.web.bind.support.WebDataBinderFactory;
 import org.springframework.web.context.request.NativeWebRequest;
 import org.springframework.web.method.support.HandlerMethodArgumentResolver;
 import org.springframework.web.method.support.ModelAndViewContainer;
-import vip.geekclub.framework.security.UserAuthenticationToken;
+import vip.geekclub.framework.security.UserAuthentication;
 import vip.geekclub.framework.security.UserPrincipal;
 
 /**
@@ -29,8 +29,8 @@ public class UserPrincipalArgumentResolver implements HandlerMethodArgumentResol
                                   @NonNull NativeWebRequest webRequest, WebDataBinderFactory binderFactory) {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 
-        if (authentication instanceof UserAuthenticationToken) {
-            return ((UserAuthenticationToken) authentication).getPrincipal();
+        if (authentication instanceof UserAuthentication) {
+            return ((UserAuthentication) authentication).getPrincipal();
         }
 
         return null;

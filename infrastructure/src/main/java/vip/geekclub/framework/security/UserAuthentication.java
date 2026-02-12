@@ -19,7 +19,7 @@ import java.util.stream.Collectors;
  * established after a successful login attempt. It extends {@link AbstractAuthenticationToken}
  */
 @Getter
-public class UserAuthenticationToken implements Authentication {
+public class UserAuthentication implements Authentication {
 
     private final UserPrincipal userPrincipal;
     private final Object credentials = null;
@@ -29,7 +29,7 @@ public class UserAuthenticationToken implements Authentication {
     private final Collection<? extends GrantedAuthority> authorities;
     private final Set<String> permissions;
 
-    public UserAuthenticationToken(UserPrincipal principal, Set<String> permissions) {
+    public UserAuthentication(UserPrincipal principal, Set<String> permissions) {
         List<GrantedAuthority> authorities = permissions.stream()
                 .map(SimpleGrantedAuthority::new)
                 .collect(Collectors.toList());
