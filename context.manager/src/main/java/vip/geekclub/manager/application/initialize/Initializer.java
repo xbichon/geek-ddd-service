@@ -4,6 +4,7 @@ import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import vip.geekclub.contract.UserType;
 import vip.geekclub.framework.command.CommandDispatcher;
 import vip.geekclub.manager.domain.model.Teacher;
 import vip.geekclub.manager.domain.repository.TeacherRepository;
@@ -40,7 +41,7 @@ public class Initializer implements vip.geekclub.framework.initialize.Initialize
                 List.of(IdentifierValue.ofUsername("admin"), IdentifierValue.ofEmail("admin@example.com")),
                 "888888",
                 teacher.getAuthId(),
-                "teacher"
+                UserType.TEACHER
         );
         CommandDispatcher.dispatch(command);
     }

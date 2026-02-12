@@ -3,6 +3,7 @@ package vip.geekclub.manager.adapter.controller;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
+import vip.geekclub.contract.UserType;
 import vip.geekclub.framework.controller.ApiResponse;
 import vip.geekclub.framework.controller.WebCommandAdapter;
 import vip.geekclub.framework.exception.NotFoundException;
@@ -28,7 +29,7 @@ public class DepartmentController {
 
     private final WebCommandAdapter commandBus;
     private final DepartmentInfoQueryService departmentInfoQueryService;
-    private final DepartmentTreeQueryService  departmentTreeQueryService;
+    private final DepartmentTreeQueryService departmentTreeQueryService;
 
     /**
      * 创建部门
@@ -70,7 +71,7 @@ public class DepartmentController {
      * @return 部门信息
      */
     @GetMapping("/{id}")
-    @PreAuthorize("hasRole('teacher')")
+    @PreAuthorize("hasRole('" + UserType.TEACHER + "')")
     public ApiResponse<DepartmentInfoResult> getDepartmentById(@PathVariable Long id) {
         return departmentInfoQueryService.getDepartmentById(id)
                 .map(ApiResponse::success)

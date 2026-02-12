@@ -2,6 +2,7 @@ package vip.geekclub.internship.application.initialize;
 
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Component;
+import vip.geekclub.contract.UserType;
 import vip.geekclub.framework.command.CommandBus;
 import vip.geekclub.framework.initialize.Initializer;
 import vip.geekclub.internship.domain.model.Intern;
@@ -42,7 +43,7 @@ public class InternshipInitializer implements Initializer {
             // 为每个实习生创建 Principal（密码默认为 666666）
             for (Intern intern : savedInterns) {
                 CreatePrincipalCommand command = new CreatePrincipalCommand(
-                        "STUDENT", intern.getAuthId(),
+                        UserType.STUDENT, intern.getAuthId(),
                         List.of(new IdentifierValue("STUDENT_NO", intern.getStudentNo())),
                         "666666"
                 );
