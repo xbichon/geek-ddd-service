@@ -9,15 +9,19 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.web.bind.annotation.*;
+import vip.geekclub.framework.command.CommandDispatcher;
+import vip.geekclub.framework.command.CommandResult;
 import vip.geekclub.framework.controller.ApiResponse;
 import vip.geekclub.framework.security.SessionStore;
-import vip.geekclub.framework.security.PasswordAuthenticationToken;
 import vip.geekclub.framework.security.UserAuthentication;
+import vip.geekclub.framework.security.UserPrincipal;
 import vip.geekclub.security.adapter.controller.dto.CaptchaResponse;
 import vip.geekclub.security.adapter.controller.dto.PasswordLoginRequest;
+import vip.geekclub.security.application.command.credential.PasswordLoginCommand;
 
 import java.io.ByteArrayOutputStream;
 import java.util.Base64;
+import java.util.Set;
 import java.util.UUID;
 import java.util.concurrent.TimeUnit;
 
@@ -72,9 +76,12 @@ public class PasswordAuthController {
         }
 
         // 验证码验证通过，继续执行登录逻辑
-        PasswordAuthenticationToken passwordAuthenticationToken = new PasswordAuthenticationToken(request.userType(), request.identifier(), request.password(), request.identifierType());
-        UserAuthentication userAuthenticationToken = (UserAuthentication) authenticationManager.authenticate(passwordAuthenticationToken);
-        String jwtToken = authSessionManager.create(userAuthenticationToken);
+        PasswordLoginCommand command = new PasswordLoginCommand(request.userType(), request.identifier(), request.password());
+        CommandResult<UserPrincipal> commandResult = CommandDispatcher.dispatch(command);
+        UserPrincipal userPrincipal = commandResult.data();
+        UserAuthentication userAuthentication = new UserAuthentication(userPrincipal, Set.of());
+        String jwtToken = authSessionManager.create(userAuthentication);
+
         return ApiResponse.success(jwtToken);
     }
 

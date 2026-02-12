@@ -1,13 +1,11 @@
 package vip.geekclub.config.security;
 
-import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import vip.geekclub.framework.controller.ApiResponse;
 import vip.geekclub.framework.utils.HttpUtil;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.authentication.ProviderManager;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.config.http.SessionCreationPolicy;
@@ -50,20 +48,16 @@ public class SecurityConfig {
         return new BCryptPasswordEncoder();
     }
 
-    /**
-     * 配置认证管理器
-     */
-    @Bean
-    public AuthenticationManager authenticationManager(
-            WechatAuthenticationProvider wechatAuthenticationProvider,
-            PasswordAuthenticationProvider userNameAuthenticationProvider) {
-
-        // 直接创建ProviderManager，不使用默认AuthenticationManager作为父级
-        // 这样避免了可能的循环引用导致堆栈溢出
-        return new ProviderManager(List.of(
-                wechatAuthenticationProvider,
-                userNameAuthenticationProvider));
-    }
+//    /**
+//     * 配置认证管理器
+//     */
+//    @Bean
+//    public AuthenticationManager authenticationManager() {
+//
+//        // 直接创建ProviderManager，不使用默认AuthenticationManager作为父级
+//        // 这样避免了可能的循环引用导致堆栈溢出
+//        return new ProviderManager();
+//    }
 
     /**
      * 配置安全过滤器链
@@ -140,5 +134,4 @@ public class SecurityConfig {
                 .authenticationEntryPoint((request, response, exception) -> httpUtil.setResponse(response,
                         ApiResponse.fail(401, exception.getMessage()))));
     }
-
 }

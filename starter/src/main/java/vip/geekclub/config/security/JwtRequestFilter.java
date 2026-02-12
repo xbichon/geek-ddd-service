@@ -52,8 +52,8 @@ public class JwtRequestFilter extends OncePerRequestFilter {
     protected void doFilterInternal(@NonNull HttpServletRequest request, @NonNull HttpServletResponse response, @NonNull FilterChain filterChain) throws ServletException, IOException {
         try {
             httpUtil.getJwtFromRequest(request).ifPresent(tokenValue -> {
-                UserAuthentication userAuthenticationToken = authSessionManager.load(tokenValue);
-                SecurityContextHolder.getContext().setAuthentication(userAuthenticationToken);
+                UserAuthentication userAuthentication = authSessionManager.load(tokenValue);
+                SecurityContextHolder.getContext().setAuthentication(userAuthentication);
             });
             filterChain.doFilter(request, response);
         } catch (JwtParseException e) {
