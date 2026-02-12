@@ -1,6 +1,5 @@
-package vip.geekclub.config.security;
+package vip.geekclub.config.web;
 
-import jakarta.validation.constraints.NotNull;
 import lombok.NonNull;
 import org.springframework.core.MethodParameter;
 import org.springframework.security.core.Authentication;
