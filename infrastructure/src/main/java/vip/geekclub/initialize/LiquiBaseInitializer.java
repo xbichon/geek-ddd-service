@@ -11,7 +11,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.core.annotation.Order;
 import org.springframework.stereotype.Component;
-import vip.geekclub.framework.initialize.InitTask;
+import vip.geekclub.framework.initialize.Initializer;
 
 import javax.sql.DataSource;
 
@@ -20,7 +20,7 @@ import javax.sql.DataSource;
 @ConditionalOnProperty(name = "spring.liquibase.enabled", havingValue = "false", matchIfMissing = true)
 @AllArgsConstructor
 @Order(Integer.MIN_VALUE)
-public class LiquibaseInitTask implements InitTask {
+public class LiquiBaseInitializer implements Initializer {
 
     private DataSource dataSource;
 

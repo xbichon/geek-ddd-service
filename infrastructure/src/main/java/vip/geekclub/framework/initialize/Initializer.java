@@ -4,7 +4,7 @@ package vip.geekclub.framework.initialize;
  * 框架初始化接口
  * 用于在框架启动时执行初始化操作
  */
-public interface InitTask {
+public interface Initializer {
 
     /**
      * 执行初始化操作

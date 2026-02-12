@@ -13,13 +13,13 @@ import java.util.List;
 @Component
 @AllArgsConstructor
 public class LazyInitRunner implements ApplicationRunner {
-    private final List<InitTask> initTasks;
+    private final List<Initializer> initTasks;
 
     @Async
     @Override
     public void run(ApplicationArguments args) throws Exception {
 
-        for (InitTask initTask : initTasks) {
+        for (Initializer initTask : initTasks) {
             initTask.initialize();
         }
     }

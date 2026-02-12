@@ -3,7 +3,7 @@ package vip.geekclub.internship.application.initialize;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Component;
 import vip.geekclub.framework.command.CommandBus;
-import vip.geekclub.framework.initialize.InitTask;
+import vip.geekclub.framework.initialize.Initializer;
 import vip.geekclub.internship.domain.model.Intern;
 import vip.geekclub.internship.domain.model.Thesis;
 import vip.geekclub.internship.domain.repository.InternRepository;
@@ -16,7 +16,7 @@ import java.util.List;
 
 @Component
 @AllArgsConstructor
-public class InternshipInit implements InitTask {
+public class InternshipInitializer implements Initializer {
 
     private final InternRepository internRepository;
     private final ThesisRepository thesisRepository;

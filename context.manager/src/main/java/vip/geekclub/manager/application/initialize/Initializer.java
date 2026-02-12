@@ -5,7 +5,6 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import vip.geekclub.framework.command.CommandDispatcher;
-import vip.geekclub.framework.initialize.InitTask;
 import vip.geekclub.manager.domain.model.Teacher;
 import vip.geekclub.manager.domain.repository.TeacherRepository;
 import vip.geekclub.security.application.command.principal.CreateAdminCommand;
@@ -16,7 +15,7 @@ import java.util.List;
 @Slf4j
 @Service
 @AllArgsConstructor
-public class InitAdminTask implements InitTask {
+public class Initializer implements vip.geekclub.framework.initialize.Initializer {
     private final TeacherRepository teacherRepository;
 
     @Transactional
