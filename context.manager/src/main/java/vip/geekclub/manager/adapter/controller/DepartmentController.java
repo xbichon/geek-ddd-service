@@ -70,7 +70,7 @@ public class DepartmentController {
      * @return 部门信息
      */
     @GetMapping("/{id}")
-    @PreAuthorize("hasRole('TEACHER')")
+    @PreAuthorize("hasRole('teacher')")
     public ApiResponse<DepartmentInfoResult> getDepartmentById(@PathVariable Long id) {
         return departmentInfoQueryService.getDepartmentById(id)
                 .map(ApiResponse::success)

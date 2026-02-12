@@ -35,7 +35,6 @@ import java.util.concurrent.TimeUnit;
 @RequestMapping("/security/auth")
 public class PasswordAuthController {
 
-    private final AuthenticationManager authenticationManager;
     private final SessionStore authSessionManager;
     private final StringRedisTemplate stringRedisTemplate;
 
