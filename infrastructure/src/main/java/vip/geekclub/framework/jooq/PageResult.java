@@ -1,4 +1,4 @@
-package vip.geekclub.internship.application.query.dto;
+package vip.geekclub.framework.jooq;
 
 import java.util.List;
 
@@ -31,7 +31,7 @@ public record PageResult<T>(
          */
         int totalPages
 ) {
-    public PageResult(List<T> records, long total, int pageNum, int pageSize) {
+    public PageResult(List<T> records, Long total, int pageNum, int pageSize) {
         this(records, total, pageNum, pageSize, 
              (int) Math.ceil((double) total / pageSize));
     }

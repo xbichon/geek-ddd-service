@@ -1,4 +1,4 @@
-package vip.geekclub.internship.application.query.dto;
+package vip.geekclub.framework.jooq;
 
 /**
  * 分页查询参数基类

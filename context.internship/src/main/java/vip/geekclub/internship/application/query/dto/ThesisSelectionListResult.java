@@ -32,11 +32,6 @@ public record ThesisSelectionListResult(
         String selectionType,
 
         /*
-          是否结组
-         */
-        Boolean isGroup,
-
-        /*
           学生ID
          */
         Long studentId,

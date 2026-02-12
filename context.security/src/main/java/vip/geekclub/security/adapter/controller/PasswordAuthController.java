@@ -18,6 +18,7 @@ import vip.geekclub.framework.security.UserPrincipal;
 import vip.geekclub.security.adapter.controller.dto.CaptchaResponse;
 import vip.geekclub.security.adapter.controller.dto.PasswordLoginRequest;
 import vip.geekclub.security.application.command.credential.PasswordLoginCommand;
+import vip.geekclub.security.application.service.SimplifiedAuthService;
 
 import java.io.ByteArrayOutputStream;
 import java.util.Base64;
@@ -37,6 +38,7 @@ public class PasswordAuthController {
 
     private final SessionStore authSessionManager;
     private final StringRedisTemplate stringRedisTemplate;
+    private final SimplifiedAuthService simplifiedAuthService;
 
     @Value("${spring.profiles.active:prod}")
     private String activeProfile;
@@ -71,9 +73,13 @@ public class PasswordAuthController {
         }
 
         // 验证码验证通过，继续执行登录逻辑
-        PasswordLoginCommand command = new PasswordLoginCommand(request.userType(), request.identifier(), request.password());
-        CommandResult<UserPrincipal> commandResult = CommandDispatcher.dispatch(command);
-        UserPrincipal userPrincipal = commandResult.data();
+        // 简化写法1：使用简化服务
+        UserPrincipal userPrincipal = simplifiedAuthService.localAuth(
+            request.userType(), request.identifier(), request.password());
+        
+        // 简化写法2：也可以使用工具类（需要注入后）
+        // UserPrincipal userPrincipal = AuthUtil.localLogin(request.userType(), request.identifier(), request.password());
+        
         UserAuthentication userAuthentication = new UserAuthentication(userPrincipal, Set.of());
         String jwtToken = authSessionManager.create(userAuthentication);
 

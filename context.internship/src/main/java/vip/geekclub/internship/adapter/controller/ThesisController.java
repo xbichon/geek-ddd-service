@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.RestController;
 import vip.geekclub.contract.UserType;
 import vip.geekclub.framework.controller.ApiResponse;
 import vip.geekclub.framework.controller.WebCommandAdapter;
+import vip.geekclub.framework.jooq.PageResult;
 import vip.geekclub.framework.security.Authorize;
 import vip.geekclub.framework.security.UserPrincipal;
 import vip.geekclub.internship.application.command.thesisselection.CreateThesisSelectionCommand;
