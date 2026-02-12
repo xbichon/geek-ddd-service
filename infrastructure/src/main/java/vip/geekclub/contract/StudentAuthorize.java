@@ -23,6 +23,5 @@ public @interface StudentAuthorize {
      * <p>为空时只验证学生角色
      * <p>多个权限之间是"并且"关系，必须同时满足
      */
-    @AliasFor(annotation = Authorize.class, attribute = "permissions")
     String[] value() default {};
 }
