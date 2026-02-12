@@ -12,7 +12,7 @@ import java.util.List;
 @Slf4j
 @Component
 @AllArgsConstructor
-public class LazyInitRunner implements ApplicationRunner {
+public class LazyRunner implements ApplicationRunner {
     private final List<Initializer> initTasks;
 
     @Async
