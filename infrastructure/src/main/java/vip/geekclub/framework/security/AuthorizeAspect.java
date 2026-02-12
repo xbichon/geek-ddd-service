@@ -20,22 +20,22 @@ import java.util.Set;
 @Component
 public class AuthorizeAspect {
 
-    @Around("@annotation(requireAuth)")
-    public Object around(ProceedingJoinPoint pjp, Authorize requireAuth) throws Throwable {
+    @Around("@annotation(authorize)")
+    public Object around(ProceedingJoinPoint pjp, Authorize authorize) throws Throwable {
         UserAuthentication authentication = (UserAuthentication) SecurityContextHolder.getContext().getAuthentication();
         if (authentication == null) {
             throw new AccessDeniedException("用户未登录");
         }
 
-        if (!Objects.equals(requireAuth.userType(), "") && !authentication.getUserPrincipal().userType().equals(requireAuth.userType())) {
-            throw new AccessDeniedException("需要 " + requireAuth.userType() + " 角色");
+        if (!Objects.equals(authorize.userType(), "") && !authentication.getUserPrincipal().userType().equals(authorize.userType())) {
+            throw new AccessDeniedException("需要 " + authorize.userType() + " 角色");
         }
 
         // 验证权限（如果有指定）
-        if (requireAuth.permissions().length > 0) {
+        if (authorize.permissions().length > 0) {
             Set<String> userPermissions = authentication.getPermissions();
 
-            for (String permission : requireAuth.permissions()) {
+            for (String permission : authorize.permissions()) {
                 if (!userPermissions.contains(permission)) {
                     throw new AccessDeniedException("缺少权限: " + permission);
                 }
