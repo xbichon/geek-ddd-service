@@ -14,7 +14,7 @@ import java.lang.annotation.Target;
  * <p>用于方法级别的学生角色和权限验证
  * <p>自动设置用户类型为 STUDENT
  */
-@Target(ElementType.METHOD)
+@Target({ElementType.METHOD, ElementType.TYPE})
 @Retention(RetentionPolicy.RUNTIME)
 public @interface StudentAuthorize {
 

@@ -17,14 +17,14 @@ import vip.geekclub.framework.security.AuthorizationChecker;
 @Component
 public class UserTypeAuthorizeAspect extends AuthorizationChecker {
 
-    @Around("@annotation(studentAuthorize)")
-    public Object around(ProceedingJoinPoint joinPoint, StudentAuthorize studentAuthorize) throws Throwable {
+    @Around("@within(studentAuthorize) || @annotation(studentAuthorize)")
+    public Object aroundStudent(ProceedingJoinPoint joinPoint, StudentAuthorize studentAuthorize) throws Throwable {
         check(UserType.STUDENT, studentAuthorize.value());
         return joinPoint.proceed();
     }
 
-    @Around("@annotation(teacherAuthorize)")
-    public Object around(ProceedingJoinPoint joinPoint, TeacherAuthorize teacherAuthorize) throws Throwable {
+    @Around("@within(teacherAuthorize) || @annotation(teacherAuthorize)")
+    public Object aroundTeacher(ProceedingJoinPoint joinPoint, TeacherAuthorize teacherAuthorize) throws Throwable {
         check(UserType.TEACHER, teacherAuthorize.value());
         return joinPoint.proceed();
     }

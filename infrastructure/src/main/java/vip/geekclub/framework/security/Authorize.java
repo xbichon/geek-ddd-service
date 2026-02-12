@@ -24,7 +24,7 @@ import java.lang.annotation.Target;
  * &#064;RequireAuth(role  = "TEACHER", permissions = {"dept:create", "dept:delete"})
  * </pre>
  */
-@Target(ElementType.METHOD)
+@Target({ElementType.METHOD, ElementType.TYPE})
 @Retention(RetentionPolicy.RUNTIME)
 public @interface Authorize {
 
