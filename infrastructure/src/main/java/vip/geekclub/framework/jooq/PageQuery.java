@@ -4,12 +4,12 @@ package vip.geekclub.framework.jooq;
  * 分页查询参数基类
  */
 public record PageQuery(
-        /**
+        /*
          * 页码（从1开始）
          */
         Integer pageNum,
         
-        /**
+        /*
          * 每页大小
          */
         Integer pageSize

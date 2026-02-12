@@ -24,7 +24,7 @@ public record ThesisSelectionListQuery(
         /*
          * 分页参数
          */
-        PageQuery pageQuery
+        PageQuery page
 ) {
     public ThesisSelectionListQuery {
         // 空值处理，将空字符串转为null
@@ -37,6 +37,6 @@ public record ThesisSelectionListQuery(
         if (studentName != null && studentName.isBlank()) {
             studentName = null;
         }
-        pageQuery = pageQuery != null ? pageQuery : new PageQuery(1, 10);
+        page = page != null ? page : new PageQuery(1, 10);
     }
 }

@@ -160,15 +160,7 @@ public class ThesisSelectionQueryService {
      * @return 论文选择结果分页列表
      */
     public PageResult<ThesisSelectionListResult> getThesisSelectionList(ThesisSelectionListQuery query) {
-
-        // 1. 构建查询条件
-        Condition condition = DSL.and(
-                query.className() != null ? internTable.CLASS_NAME.eq(query.className()) : null,
-                query.advisorName() != null ? internTable.ADVISOR_NAME.eq(query.advisorName()) : null,
-                query.studentName() != null ? internTable.NAME.like("%" + query.studentName() + "%") : null
-        );
-
-        // 2. 构建基础查询
+        // 构建查询条件
         var list = dslContext.select(
                         thesisSelectionTable.ID,
                         thesisSelectionTable.THESIS_ID,
@@ -186,9 +178,14 @@ public class ThesisSelectionQueryService {
                 .join(thesisTable).on(thesisTable.ID.eq(thesisSelectionTable.THESIS_ID))
                 .join(selectorTable).on(selectorTable.PAPER_SELECTION_ID.eq(thesisSelectionTable.ID))
                 .join(internTable).on(internTable.ID.eq(selectorTable.STUDENT_ID))
-                .where(condition);
+                .where(DSL.and(
+                        query.className() != null ? internTable.CLASS_NAME.eq(query.className()) : null,
+                        query.advisorName() != null ? internTable.ADVISOR_NAME.eq(query.advisorName()) : null,
+                        query.studentName() != null ? internTable.NAME.like("%" + query.studentName() + "%") : null
+                ));
 
-        return PageHelper.page(list, query.pageQuery(), r -> new ThesisSelectionListResult(
+
+        return PageHelper.page(list, query.page(), r -> new ThesisSelectionListResult(
                 r.get(thesisSelectionTable.ID),
                 r.get(thesisSelectionTable.THESIS_ID),
                 r.get(thesisTable.TITLE),
