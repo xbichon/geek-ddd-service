@@ -2,6 +2,7 @@ package vip.geekclub.manager.adapter.controller;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
+import vip.geekclub.contract.TeacherAuthorize;
 import vip.geekclub.contract.UserType;
 import vip.geekclub.framework.controller.ApiResponse;
 import vip.geekclub.framework.controller.WebCommandAdapter;
@@ -71,7 +72,7 @@ public class DepartmentController {
      * @return 部门信息
      */
     @GetMapping("/{id}")
-    @Authorize(userType = UserType.TEACHER)
+    @TeacherAuthorize
     public ApiResponse<DepartmentInfoResult> getDepartmentById(@PathVariable Long id) {
         return departmentInfoQueryService.getDepartmentById(id)
                 .map(ApiResponse::success)

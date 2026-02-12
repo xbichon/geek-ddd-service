@@ -16,7 +16,7 @@ import org.springframework.stereotype.Component;
 @Component
 public class AuthorizeAspect extends AuthorizationChecker {
 
-    @Around("@annotation(authorize)")
+    @Around("@within(authorize) || @annotation(authorize)")
     public Object around(ProceedingJoinPoint joinPoint, Authorize authorize) throws Throwable {
         check(authorize.userType(), authorize.permissions());
         return joinPoint.proceed();
