@@ -5,6 +5,7 @@ import vip.geekclub.framework.controller.ApiResponse;
 import vip.geekclub.framework.utils.HttpUtil;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.security.access.expression.method.MethodSecurityExpressionHandler;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.config.http.SessionCreationPolicy;
@@ -18,10 +19,7 @@ import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 import java.util.List;
 
 @Configuration(proxyBeanMethods = false)
-@EnableMethodSecurity(
-        securedEnabled = true,  // 启用 @Secured
-        jsr250Enabled = true    // 启用 @RolesAllowed (JSR-250)
-)
+//@EnableMethodSecurity()
 public class SecurityConfig {
 
     /**
