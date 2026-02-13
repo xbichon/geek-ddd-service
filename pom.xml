@@ -89,19 +89,19 @@
                     <configuration>
                         <jdbc>
                             <!--suppress UnresolvedMavenProperty -->
-                            <driver>${config.database.driver-name}</driver>
+                            <driver>${spring.datasource.driver-class-name}</driver>
                             <!--suppress UnresolvedMavenProperty -->
-                            <url>${config.database.url}</url>
+                            <url>${spring.datasource.url}</url>
                             <!--suppress UnresolvedMavenProperty -->
-                            <user>${config.database.username}</user>
+                            <user>${spring.datasource.username}</user>
                             <!--suppress UnresolvedMavenProperty -->
-                            <password>${config.database.password}</password>
+                            <password>${spring.datasource.password}</password>
                         </jdbc>
                         <generator>
                             <database>
                                 <name>org.jooq.meta.mysql.MySQLDatabase</name>
                                 <!--suppress UnresolvedMavenProperty -->
-                                <inputSchema>${config.database.name}</inputSchema>
+                                <inputSchema>${spring.datasource.name}</inputSchema>
                             </database>
                             <generate>
                                 <records>false</records>

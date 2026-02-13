@@ -122,13 +122,13 @@
                 </executions>
                 <configuration>
                     <!--suppress UnresolvedMavenProperty -->
-                    <driver>${config.database.driver-name}</driver>
+                    <driver>${spring.datasource.driver-class-name}</driver>
                     <!--suppress UnresolvedMavenProperty -->
-                    <url>${config.database.url}</url>
+                    <url>${spring.datasource.url}</url>
                     <!--suppress UnresolvedMavenProperty -->
-                    <username>${config.database.username}</username>
+                    <username>${spring.datasource.username}</username>
                     <!--suppress UnresolvedMavenProperty -->
-                    <password>${config.database.password}</password>
+                    <password>${spring.datasource.password}</password>
                     <changeLogFile>src/main/resources/db/migration/master.xml</changeLogFile>
                 </configuration>
             </plugin>

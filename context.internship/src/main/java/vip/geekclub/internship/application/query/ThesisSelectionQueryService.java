@@ -156,6 +156,8 @@ public class ThesisSelectionQueryService {
     /**
      * 获取论文选择结果列表（分页）
      *
+     * <p>按论文分组，使用 GROUP_CONCAT 聚合选择者信息</p>
+     *
      * @param query 查询参数
      * @return 论文选择结果分页列表
      */
@@ -167,23 +169,37 @@ public class ThesisSelectionQueryService {
                         thesisSelectionTable.ACHIEVEMENT_TYPE,
                         thesisSelectionTable.SELECTION_TYPE,
                         thesisTable.TITLE,
-                        internTable.ID.as("studentId"),
-                        internTable.NAME,
-                        internTable.STUDENT_NO,
-                        internTable.CLASS_NAME,
-                        internTable.ADVISOR_NAME,
-                        TOTAL_COUNT  //窗口函数
+                        internTable.as("creator").NAME,
+                        internTable.as("creator").STUDENT_NO,
+                        internTable.as("creator").ADVISOR_NAME,
+                        DSL.field("group_concat({0})", String.class, internTable.NAME).as("GroupMember"),
+                        TOTAL_COUNT
                 )
                 .from(thesisSelectionTable)
+                .join(internTable.as("creator")).on(thesisSelectionTable.CREATOR_ID.eq(internTable.as("creator").ID))
                 .join(thesisTable).on(thesisTable.ID.eq(thesisSelectionTable.THESIS_ID))
-                .join(selectorTable).on(selectorTable.PAPER_SELECTION_ID.eq(thesisSelectionTable.ID))
-                .join(internTable).on(internTable.ID.eq(selectorTable.STUDENT_ID))
+                .leftJoin(selectorTable).on(selectorTable.PAPER_SELECTION_ID.eq(thesisSelectionTable.ID))
+                .leftJoin(internTable).on(internTable.ID.eq(selectorTable.STUDENT_ID))
                 .where(DSL.and(
                         query.className() != null ? internTable.CLASS_NAME.eq(query.className()) : null,
-                        query.advisorName() != null ? internTable.ADVISOR_NAME.eq(query.advisorName()) : null,
-                        query.studentName() != null ? internTable.NAME.like("%" + query.studentName() + "%") : null
-                ));
-
+                        query.advisorName() != null ? internTable.as("creator").ADVISOR_NAME.eq(query.advisorName()) : null,
+                        query.studentName() != null ? thesisSelectionTable.ID.in(
+                                DSL.selectDistinct(selectorTable.PAPER_SELECTION_ID)
+                                        .from(selectorTable)
+                                        .join(internTable).on(internTable.ID.eq(selectorTable.STUDENT_ID))
+                                        .where(internTable.NAME.like("%" + query.studentName() + "%"))
+                        ) : null
+                ))
+                .groupBy(
+                        thesisSelectionTable.ID,
+                        thesisSelectionTable.THESIS_ID,
+                        thesisSelectionTable.ACHIEVEMENT_TYPE,
+                        thesisSelectionTable.SELECTION_TYPE,
+                        thesisTable.TITLE,
+                        internTable.as("creator").ADVISOR_NAME,
+                        internTable.as("creator").NAME,
+                        internTable.as("creator").STUDENT_NO
+                );
 
         return PageHelper.page(list, query.page(), r -> new ThesisSelectionListResult(
                 r.get(thesisSelectionTable.ID),
@@ -191,11 +207,10 @@ public class ThesisSelectionQueryService {
                 r.get(thesisTable.TITLE),
                 r.get(thesisSelectionTable.ACHIEVEMENT_TYPE),
                 r.get(thesisSelectionTable.SELECTION_TYPE),
-                r.get(internTable.ID),
-                r.get(internTable.NAME),
-                r.get(internTable.STUDENT_NO),
-                r.get(internTable.CLASS_NAME),
-                r.get(internTable.ADVISOR_NAME),
-                List.of()));
+                r.get(internTable.as("creator").NAME),
+                r.get(internTable.as("creator").STUDENT_NO),
+                r.get(internTable.as("creator").ADVISOR_NAME),
+                r.get("GroupMember", String.class)
+        ));
     }
 }

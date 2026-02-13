@@ -5,44 +5,39 @@ spring:
     name: arc
   profiles:
     active: ${SPRING_PROFILES_ACTIVE:dev}
-  datasource:
-    type: com.alibaba.druid.pool.DruidDataSource
-    druid:
-      initial-size: 5
-      min-idle: 5
-      max-active: 20
-      max-wait: 60000
-      validation-query: SELECT 1
-      test-while-idle: true
-      test-on-borrow: false
-      test-on-return: false
-      filters: stat,wall
-      web-stat-filter:
-        enabled: true
-        url-pattern: /*
-        exclusions: "*.js,*.gif,*.jpg,*.png,*.css,*.ico,/druid/*"
-      stat-view-servlet:
-        enabled: true
-        url-pattern: /druid/*
-        login-username: admin
-        login-password: admin
+
   jpa:
+#    database-platform: org.hibernate.dialect.MySQLDialect
     open-in-view: false
     hibernate:
       ddl-auto: none
     properties:
+      Jakarta:
+        persistence:
+          validation:
+            mode: none
       hibernate:
+        generate_statistics: false
+        boot:
+#          allow_jdbc_metadata_access: false
+        validator:
+          autoregister_listeners: false
         jdbc:
           batch_size: 20
         format_sql: true
+        hbm2ddl:
+          auto: none
+
   data:
     redis:
       repositories:
         enabled: false
-
-logging:
-  level:
-    sun.rmi.transport.tcp: ERROR
+    jpa:
+      repositories:
+        enabled: true
+    jdbc:
+      repositories:
+        enabled: false
 
 server:
   servlet:

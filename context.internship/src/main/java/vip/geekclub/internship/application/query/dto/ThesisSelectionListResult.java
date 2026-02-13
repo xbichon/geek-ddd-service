@@ -32,33 +32,20 @@ public record ThesisSelectionListResult(
         String selectionType,
 
         /*
-          学生ID
-         */
-        Long studentId,
-
-        /*
           学生姓名
          */
         String studentName,
 
-        /*
+                /*
           学生学号
          */
-        String studentNo,
+        String studentNumber,
 
-        /*
-          班级名称
-         */
-        String className,
-
-        /*
-          指导老师姓名
-         */
         String advisorName,
 
         /*
-          选择该论文的所有学生列表
+          组员
          */
-        List<SelectorResult> selectors
+        String groupMembers
 ) {
 }
