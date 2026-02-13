@@ -14,9 +14,7 @@ import vip.geekclub.framework.jooq.PageResult;
 import vip.geekclub.framework.security.Authorize;
 import vip.geekclub.framework.security.UserPrincipal;
 import vip.geekclub.internship.application.command.thesisselection.CreateThesisSelectionCommand;
-import vip.geekclub.internship.application.query.InternQueryService;
-import vip.geekclub.internship.application.query.ThesisQueryService;
-import vip.geekclub.internship.application.query.ThesisSelectionQueryService;
+import vip.geekclub.internship.application.query.*;
 import vip.geekclub.internship.application.query.dto.*;
 
 import java.util.List;
@@ -33,6 +31,9 @@ public class ThesisController {
     private final WebCommandAdapter commandBus;
     private final ThesisQueryService thesisQueryService;
     private final ThesisSelectionQueryService thesisSelectionQueryService;
+    private final ThesisSelectionListQueryService thesisSelectionListQueryService;
+    private final AdvisorQueryService advisorQueryService;
+    private final ClassNameQueryService classNameQueryService;
     private final InternQueryService internQueryService;
 
     // ==================== 论文相关 ====================
@@ -116,7 +117,19 @@ public class ThesisController {
     @GetMapping("/selectionList")
     @Authorize(userType = UserType.TEACHER)
     public ApiResponse<PageResult<ThesisSelectionListResult>> listThesisSelections(ThesisSelectionListQuery query) {
-        PageResult<ThesisSelectionListResult> list = thesisSelectionQueryService.getThesisSelectionList(query);
+        PageResult<ThesisSelectionListResult> list = thesisSelectionListQueryService.getThesisSelectionList(query);
+        return ApiResponse.success(list);
+    }
+
+    /**
+     * 获取所有论文选择结果列表（不分页，无条件）
+     *
+     * @return 所有论文选择结果列表
+     */
+    @GetMapping("/allSelectionList")
+    @Authorize(userType = UserType.TEACHER)
+    public ApiResponse<List<ThesisSelectionListResult>> listAllThesisSelections() {
+        List<ThesisSelectionListResult> list = thesisSelectionListQueryService.getAllThesisSelectionList();
         return ApiResponse.success(list);
     }
 
@@ -128,7 +141,7 @@ public class ThesisController {
     @GetMapping("/advisorNames")
     @Authorize(userType = UserType.TEACHER)
     public ApiResponse<List<String>> getAllAdvisorNames() {
-        List<String> advisorNames = thesisSelectionQueryService.getAllAdvisorNames();
+        List<String> advisorNames = advisorQueryService.getAllAdvisorNames();
         return ApiResponse.success(advisorNames);
     }
 
@@ -140,7 +153,7 @@ public class ThesisController {
     @GetMapping("/classNames")
     @Authorize(userType = UserType.TEACHER)
     public ApiResponse<List<String>> getAllClassNames() {
-        List<String> classNames = thesisSelectionQueryService.getAllClassNames();
+        List<String> classNames = classNameQueryService.getAllClassNames();
         return ApiResponse.success(classNames);
     }
 }

@@ -24,6 +24,9 @@ import static org.jooq.impl.DSL.count;
 public class ThesisSelectionQueryService {
 
     private final DSLContext dslContext;
+    private final AdvisorQueryService advisorQueryService;
+    private final ClassNameQueryService classNameQueryService;
+    private final ThesisSelectionListQueryService thesisSelectionListQueryService;
     private final ThesisSelectionTable thesisSelectionTable = Tables.ThesisSelection;
     private final InternTable internTable = Tables.Intern;
     private final ThesisTable thesisTable = Tables.Thesis;
@@ -153,91 +156,4 @@ public class ThesisSelectionQueryService {
         return new ThesisSelectionDetailResult.TeamInfo(reason, members);
     }
 
-    /**
-     * 获取论文选择结果列表（分页）
-     */
-    public PageResult<ThesisSelectionListResult> getThesisSelectionList(ThesisSelectionListQuery query) {
-        // 构建查询条件
-        var list = dslContext.select(
-                        thesisSelectionTable.ID,
-                        thesisSelectionTable.THESIS_ID,
-                        thesisSelectionTable.ACHIEVEMENT_TYPE,
-                        thesisSelectionTable.SELECTION_TYPE,
-                        thesisTable.TITLE,
-                        internTable.as("creator").NAME,
-                        internTable.as("creator").CLASS_NAME,
-                        internTable.as("creator").STUDENT_NO,
-                        internTable.as("creator").ADVISOR_NAME,
-                        DSL.field("group_concat({0})", String.class, internTable.NAME).as("GroupMember"),
-                        TOTAL_COUNT
-                )
-                .from(thesisSelectionTable)
-                .join(internTable.as("creator")).on(thesisSelectionTable.CREATOR_ID.eq(internTable.as("creator").ID))
-                .join(thesisTable).on(thesisTable.ID.eq(thesisSelectionTable.THESIS_ID))
-                .leftJoin(selectorTable).on(selectorTable.PAPER_SELECTION_ID.eq(thesisSelectionTable.ID))
-                .leftJoin(internTable).on(internTable.ID.eq(selectorTable.STUDENT_ID))
-                .where(DSL.and(
-                        query.thesisId() != null ? thesisSelectionTable.THESIS_ID.eq(query.thesisId()) : null,
-                        query.className() != null ? internTable.CLASS_NAME.eq(query.className()) : null,
-                        query.advisorName() != null ? internTable.as("creator").ADVISOR_NAME.eq(query.advisorName()) : null,
-                        query.studentName() != null ? thesisSelectionTable.ID.in(
-                                DSL.selectDistinct(selectorTable.PAPER_SELECTION_ID)
-                                        .from(selectorTable)
-                                        .join(internTable).on(internTable.ID.eq(selectorTable.STUDENT_ID))
-                                        .where(internTable.NAME.like("%" + query.studentName() + "%"))
-                        ) : null
-                ))
-                .groupBy(
-                        thesisSelectionTable.ID,
-                        thesisSelectionTable.THESIS_ID,
-                        thesisSelectionTable.ACHIEVEMENT_TYPE,
-                        thesisSelectionTable.SELECTION_TYPE,
-                        thesisTable.TITLE,
-                        internTable.as("creator").CLASS_NAME,
-                        internTable.as("creator").ADVISOR_NAME,
-                        internTable.as("creator").NAME,
-                        internTable.as("creator").STUDENT_NO
-                );
-
-        return PageHelper.page(list, query.page(), r -> new ThesisSelectionListResult(
-                r.get(thesisSelectionTable.ID),
-                r.get(thesisSelectionTable.THESIS_ID),
-                r.get(thesisTable.TITLE),
-                r.get(thesisSelectionTable.ACHIEVEMENT_TYPE),
-                r.get(thesisSelectionTable.SELECTION_TYPE),
-                r.get(internTable.as("creator").NAME),
-                r.get(internTable.as("creator").STUDENT_NO),
-                r.get(internTable.as("creator").CLASS_NAME),
-                r.get(internTable.as("creator").ADVISOR_NAME),
-                r.get("GroupMember", String.class)
-        ));
-    }
-
-    /**
-     * 获取所有指导老师姓名集合（去重）
-     *
-     * @return 指导老师姓名列表
-     */
-    public List<String> getAllAdvisorNames() {
-        return dslContext
-                .selectDistinct(internTable.ADVISOR_NAME)
-                .from(internTable)
-                .where(internTable.ADVISOR_NAME.isNotNull())
-                .orderBy(internTable.ADVISOR_NAME)
-                .fetch(internTable.ADVISOR_NAME);
-    }
-
-    /**
-     * 获取所有班级名称集合（去重）
-     *
-     * @return 班级名称列表
-     */
-    public List<String> getAllClassNames() {
-        return dslContext
-                .selectDistinct(internTable.CLASS_NAME)
-                .from(internTable)
-                .where(internTable.CLASS_NAME.isNotNull())
-                .orderBy(internTable.CLASS_NAME)
-                .fetch(internTable.CLASS_NAME);
-    }
 }
