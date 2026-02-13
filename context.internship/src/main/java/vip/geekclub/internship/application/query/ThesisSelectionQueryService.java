@@ -177,6 +177,7 @@ public class ThesisSelectionQueryService {
                 .leftJoin(selectorTable).on(selectorTable.PAPER_SELECTION_ID.eq(thesisSelectionTable.ID))
                 .leftJoin(internTable).on(internTable.ID.eq(selectorTable.STUDENT_ID))
                 .where(DSL.and(
+                        query.thesisId() != null ? thesisSelectionTable.THESIS_ID.eq(query.thesisId()) : null,
                         query.className() != null ? internTable.CLASS_NAME.eq(query.className()) : null,
                         query.advisorName() != null ? internTable.as("creator").ADVISOR_NAME.eq(query.advisorName()) : null,
                         query.studentName() != null ? thesisSelectionTable.ID.in(

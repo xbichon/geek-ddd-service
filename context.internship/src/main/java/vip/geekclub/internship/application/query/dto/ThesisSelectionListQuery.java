@@ -6,6 +6,12 @@ import vip.geekclub.framework.jooq.PageQuery;
  * 论文选择结果列表查询参数
  */
 public record ThesisSelectionListQuery(
+
+        /*
+         * 论文ID（精确查询）
+         */
+        Long thesisId,
+
         /*
          * 班级名称（精确查询）
          */
