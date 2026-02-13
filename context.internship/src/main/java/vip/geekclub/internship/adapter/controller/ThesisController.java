@@ -41,7 +41,6 @@ public class ThesisController {
      * 获取论文列表
      */
     @GetMapping("/list")
-    @Authorize(userType = UserType.STUDENT)
     public ApiResponse<List<ThesisListResult>> listThesis() {
         List<ThesisListResult> list = thesisQueryService.getThesisList();
         return ApiResponse.success(list);
@@ -119,5 +118,29 @@ public class ThesisController {
     public ApiResponse<PageResult<ThesisSelectionListResult>> listThesisSelections(ThesisSelectionListQuery query) {
         PageResult<ThesisSelectionListResult> list = thesisSelectionQueryService.getThesisSelectionList(query);
         return ApiResponse.success(list);
+    }
+
+    /**
+     * 获取所有指导老师姓名集合（去重）
+     *
+     * @return 指导老师姓名列表
+     */
+    @GetMapping("/advisorNames")
+    @Authorize(userType = UserType.TEACHER)
+    public ApiResponse<List<String>> getAllAdvisorNames() {
+        List<String> advisorNames = thesisSelectionQueryService.getAllAdvisorNames();
+        return ApiResponse.success(advisorNames);
+    }
+
+    /**
+     * 获取所有班级名称集合（去重）
+     *
+     * @return 班级名称列表
+     */
+    @GetMapping("/classNames")
+    @Authorize(userType = UserType.TEACHER)
+    public ApiResponse<List<String>> getAllClassNames() {
+        List<String> classNames = thesisSelectionQueryService.getAllClassNames();
+        return ApiResponse.success(classNames);
     }
 }
