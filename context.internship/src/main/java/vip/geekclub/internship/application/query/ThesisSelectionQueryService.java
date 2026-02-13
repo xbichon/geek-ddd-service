@@ -155,11 +155,6 @@ public class ThesisSelectionQueryService {
 
     /**
      * 获取论文选择结果列表（分页）
-     *
-     * <p>按论文分组，使用 GROUP_CONCAT 聚合选择者信息</p>
-     *
-     * @param query 查询参数
-     * @return 论文选择结果分页列表
      */
     public PageResult<ThesisSelectionListResult> getThesisSelectionList(ThesisSelectionListQuery query) {
         // 构建查询条件
@@ -170,6 +165,7 @@ public class ThesisSelectionQueryService {
                         thesisSelectionTable.SELECTION_TYPE,
                         thesisTable.TITLE,
                         internTable.as("creator").NAME,
+                        internTable.as("creator").CLASS_NAME,
                         internTable.as("creator").STUDENT_NO,
                         internTable.as("creator").ADVISOR_NAME,
                         DSL.field("group_concat({0})", String.class, internTable.NAME).as("GroupMember"),
@@ -196,6 +192,7 @@ public class ThesisSelectionQueryService {
                         thesisSelectionTable.ACHIEVEMENT_TYPE,
                         thesisSelectionTable.SELECTION_TYPE,
                         thesisTable.TITLE,
+                        internTable.as("creator").CLASS_NAME,
                         internTable.as("creator").ADVISOR_NAME,
                         internTable.as("creator").NAME,
                         internTable.as("creator").STUDENT_NO
@@ -209,8 +206,37 @@ public class ThesisSelectionQueryService {
                 r.get(thesisSelectionTable.SELECTION_TYPE),
                 r.get(internTable.as("creator").NAME),
                 r.get(internTable.as("creator").STUDENT_NO),
+                r.get(internTable.as("creator").CLASS_NAME),
                 r.get(internTable.as("creator").ADVISOR_NAME),
                 r.get("GroupMember", String.class)
         ));
+    }
+
+    /**
+     * 获取所有指导老师姓名集合（去重）
+     *
+     * @return 指导老师姓名列表
+     */
+    public List<String> getAllAdvisorNames() {
+        return dslContext
+                .selectDistinct(internTable.ADVISOR_NAME)
+                .from(internTable)
+                .where(internTable.ADVISOR_NAME.isNotNull())
+                .orderBy(internTable.ADVISOR_NAME)
+                .fetch(internTable.ADVISOR_NAME);
+    }
+
+    /**
+     * 获取所有班级名称集合（去重）
+     *
+     * @return 班级名称列表
+     */
+    public List<String> getAllClassNames() {
+        return dslContext
+                .selectDistinct(internTable.CLASS_NAME)
+                .from(internTable)
+                .where(internTable.CLASS_NAME.isNotNull())
+                .orderBy(internTable.CLASS_NAME)
+                .fetch(internTable.CLASS_NAME);
     }
 }

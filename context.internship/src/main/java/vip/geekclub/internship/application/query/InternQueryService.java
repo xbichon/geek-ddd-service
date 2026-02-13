@@ -42,7 +42,6 @@ public class InternQueryService {
 
         return record.get(internTable.ID);
     }
-
     /**
      * 获取同指导老师且未选题的学生列表
      * <p>
