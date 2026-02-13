@@ -1,6 +1,7 @@
 package vip.geekclub.internship.application.query;
 
 import lombok.AllArgsConstructor;
+import lombok.RequiredArgsConstructor;
 import org.jooq.DSLContext;
 import org.jooq.Field;
 import org.jooq.Record;
@@ -22,7 +23,7 @@ import static org.jooq.impl.DSL.count;
  * 专门处理论文选题列表相关的查询
  */
 @Service
-@AllArgsConstructor
+@RequiredArgsConstructor
 public class ThesisSelectionListQueryService {
 
     private final DSLContext dslContext;
@@ -30,7 +31,19 @@ public class ThesisSelectionListQueryService {
     private final InternTable internTable = Tables.Intern;
     private final ThesisTable thesisTable = Tables.Thesis;
     private final SelectorTable selectorTable = Tables.Selector;
-    private static final Field<Integer> TOTAL_COUNT = count().over().as("total");
+    private final Field<?>[] commonSelectFields= new Field<?>[] {
+            thesisSelectionTable.ID,
+            thesisSelectionTable.THESIS_ID,
+            thesisSelectionTable.ACHIEVEMENT_TYPE,
+            thesisSelectionTable.SELECTION_TYPE,
+            thesisTable.TITLE,
+            internTable.as("creator").NAME,
+            internTable.as("creator").CLASS_NAME,
+            internTable.as("creator").STUDENT_NO,
+            internTable.as("creator").ADVISOR_NAME,
+            DSL.field("group_concat({0})", String.class, internTable.NAME).as("GroupMember")
+    };;
+
 
     /**
      * 获取所有论文选择结果列表（不分页，无条件）
@@ -39,18 +52,7 @@ public class ThesisSelectionListQueryService {
      */
     public List<ThesisSelectionListResult> getAllThesisSelectionList() {
         // 构建查询，不带任何条件和分页
-        var list = dslContext.select(
-                        thesisSelectionTable.ID,
-                        thesisSelectionTable.THESIS_ID,
-                        thesisSelectionTable.ACHIEVEMENT_TYPE,
-                        thesisSelectionTable.SELECTION_TYPE,
-                        thesisTable.TITLE,
-                        internTable.as("creator").NAME,
-                        internTable.as("creator").CLASS_NAME,
-                        internTable.as("creator").STUDENT_NO,
-                        internTable.as("creator").ADVISOR_NAME,
-                        DSL.field("group_concat({0})", String.class, internTable.NAME).as("GroupMember")
-                )
+        var list = dslContext.select(commonSelectFields)
                 .from(thesisSelectionTable)
                 .join(internTable.as("creator")).on(thesisSelectionTable.CREATOR_ID.eq(internTable.as("creator").ID))
                 .join(thesisTable).on(thesisTable.ID.eq(thesisSelectionTable.THESIS_ID))
@@ -69,18 +71,7 @@ public class ThesisSelectionListQueryService {
                 )
                 .orderBy(thesisSelectionTable.ID.asc());
 
-        return list.fetch(r -> new ThesisSelectionListResult(
-                r.get(thesisSelectionTable.ID),
-                r.get(thesisSelectionTable.THESIS_ID),
-                r.get(thesisTable.TITLE),
-                r.get(thesisSelectionTable.ACHIEVEMENT_TYPE),
-                r.get(thesisSelectionTable.SELECTION_TYPE),
-                r.get(internTable.as("creator").NAME),
-                r.get(internTable.as("creator").STUDENT_NO),
-                r.get(internTable.as("creator").CLASS_NAME),
-                r.get(internTable.as("creator").ADVISOR_NAME),
-                r.get("GroupMember", String.class)
-        ));
+        return list.fetch(this::mapToThesisSelectionListResult);
     }
 
     /**
@@ -88,19 +79,8 @@ public class ThesisSelectionListQueryService {
      */
     public PageResult<ThesisSelectionListResult> getThesisSelectionList(ThesisSelectionListQuery query) {
         // 构建查询条件
-        var list = dslContext.select(
-                        thesisSelectionTable.ID,
-                        thesisSelectionTable.THESIS_ID,
-                        thesisSelectionTable.ACHIEVEMENT_TYPE,
-                        thesisSelectionTable.SELECTION_TYPE,
-                        thesisTable.TITLE,
-                        internTable.as("creator").NAME,
-                        internTable.as("creator").CLASS_NAME,
-                        internTable.as("creator").STUDENT_NO,
-                        internTable.as("creator").ADVISOR_NAME,
-                        DSL.field("group_concat({0})", String.class, internTable.NAME).as("GroupMember"),
-                        TOTAL_COUNT
-                )
+        var list = dslContext.select(commonSelectFields)
+                .select(PageHelper.TOTAL_COUNT)
                 .from(thesisSelectionTable)
                 .join(internTable.as("creator")).on(thesisSelectionTable.CREATOR_ID.eq(internTable.as("creator").ID))
                 .join(thesisTable).on(thesisTable.ID.eq(thesisSelectionTable.THESIS_ID))
@@ -129,7 +109,17 @@ public class ThesisSelectionListQueryService {
                         internTable.as("creator").STUDENT_NO
                 );
 
-        return PageHelper.page(list, query.page(), r -> new ThesisSelectionListResult(
+        return PageHelper.page(list, query.page(), this::mapToThesisSelectionListResult);
+    }
+
+    /**
+     * 将数据库记录映射为 ThesisSelectionListResult 对象
+     *
+     * @param r 数据库记录
+     * @return ThesisSelectionListResult 对象
+     */
+    private ThesisSelectionListResult mapToThesisSelectionListResult(Record r) {
+        return new ThesisSelectionListResult(
                 r.get(thesisSelectionTable.ID),
                 r.get(thesisSelectionTable.THESIS_ID),
                 r.get(thesisTable.TITLE),
@@ -140,6 +130,6 @@ public class ThesisSelectionListQueryService {
                 r.get(internTable.as("creator").CLASS_NAME),
                 r.get(internTable.as("creator").ADVISOR_NAME),
                 r.get("GroupMember", String.class)
-        ));
+        );
     }
 }
