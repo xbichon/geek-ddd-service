@@ -1,6 +1,5 @@
 package vip.geekclub.internship.adapter.controller;
 
-import com.alibaba.excel.EasyExcel;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -20,14 +19,10 @@ import vip.geekclub.internship.application.command.thesisselection.CreateThesisS
 import vip.geekclub.internship.application.query.*;
 import vip.geekclub.internship.application.query.dto.*;
 
+import vip.geekclub.framework.utils.ExcelExportUtil;
+
 import java.io.IOException;
-import java.io.OutputStream;
-import java.net.URLEncoder;
-import java.nio.charset.StandardCharsets;
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
 import java.util.List;
-import java.util.stream.Collectors;
 
 /**
  * 论文管理控制器
@@ -145,70 +140,15 @@ public class ThesisController {
     }
 
     /**
-     * 导出所有论文选择结果为Excel文件（优化版本）
+     * 导出所有论文选择结果为Excel文件
      *
      * @param response HTTP响应对象
      */
     @GetMapping("/allSelectionList/excel")
     @Authorize(userType = UserType.TEACHER)
     public void exportAllThesisSelectionsToExcel(HttpServletResponse response) throws IOException {
-        OutputStream outputStream = null;
-        try {
-            // 获取所有数据
-            List<ThesisSelectionListResult> dataList = thesisSelectionListQueryService.getAllThesisSelectionList();
-            
-            // 生成文件名
-            String fileName = "论文选题列表_" + LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyyMMdd_HHmmss")) + ".xlsx";
-            
-            // 设置响应头 - 支持多种浏览器的文件名编码
-            response.setContentType("application/vnd.openxmlformats-officedocument.spreadsheetml.sheet");
-            response.setCharacterEncoding("UTF-8");
-            
-            // 同时设置两种格式的文件名，确保兼容性
-            String encodedFileName = URLEncoder.encode(fileName, StandardCharsets.UTF_8)
-                .replaceAll("\\+", "%20");
-            
-            // 设置Content-Disposition头，包含两种格式以支持不同浏览器
-            response.setHeader("Content-Disposition", 
-                "attachment; filename=\"" + encodedFileName + "\"; filename*=UTF-8''" + encodedFileName);
-            
-            response.setHeader("Access-Control-Expose-Headers", "Content-Disposition");
-            response.setHeader("Cache-Control", "no-cache, no-store, must-revalidate");
-            response.setHeader("Pragma", "no-cache");
-            response.setHeader("Expires", "0");
-            
-            // 获取输出流
-            outputStream = response.getOutputStream();
-            
-            // 转换数据并写入
-            List<ThesisSelectionExcelDTO> excelDataList = dataList.stream()
-                    .map(ThesisSelectionExcelDTO::from)
-                    .collect(Collectors.toList());
-            
-            // 使用EasyExcel写入数据
-            EasyExcel.write(outputStream, ThesisSelectionExcelDTO.class)
-                    .sheet("论文选题列表")
-                    .doWrite(excelDataList);
-            
-            // 强制刷新缓冲区
-            outputStream.flush();
-            
-        } catch (Exception e) {
-            // 记录错误日志
-            log.error("Excel导出失败: ", e);
-            response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
-            response.setContentType("text/plain;charset=UTF-8");
-            response.getWriter().write("Excel导出失败: " + e.getMessage());
-        } finally {
-            // 确保资源正确关闭
-            if (outputStream != null) {
-                try {
-                    outputStream.close();
-                } catch (IOException e) {
-                    log.error("Excel导出资源关闭失败: ", e);
-                }
-            }
-        }
+        List<ThesisSelectionListResult> dataList = thesisSelectionListQueryService.getAllThesisSelectionList();
+        ExcelExportUtil.export(response, dataList, "论文选题列表", "论文选题列表");
     }
 
     /**
