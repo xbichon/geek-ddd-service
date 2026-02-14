@@ -30,23 +30,8 @@ import java.io.IOException;
 public class JwtRequestFilter extends OncePerRequestFilter {
 
     private final HttpUtil httpUtil;
-    private final AntPathMatcher pathMatcher = new AntPathMatcher();
     private final SessionStore authSessionManager;
-    private String[] PERMIT_PATHS = {};
 
-
-    @Override
-    protected boolean shouldNotFilter(@NonNull HttpServletRequest request) {
-        // 对于免认证路径，完全跳过此过滤器的执行
-
-        // 去除 context-path 前缀
-        String contextPath = request.getContextPath();
-        String requestURI = request.getRequestURI();
-        final String path = contextPath.isEmpty() ? requestURI : requestURI.substring(contextPath.length());
-
-        return Arrays.stream(PERMIT_PATHS)
-                .anyMatch(pattern -> pathMatcher.match(pattern, path));
-    }
 
     @Override
     protected void doFilterInternal(@NonNull HttpServletRequest request, @NonNull HttpServletResponse response, @NonNull FilterChain filterChain) throws ServletException, IOException {
@@ -59,14 +44,5 @@ public class JwtRequestFilter extends OncePerRequestFilter {
         } catch (JwtParseException e) {
             httpUtil.setResponse(response, ApiResponse.fail(401, e.getMessage()));
         }
-    }
-
-    /**
-     * 设置免认证路径
-     *
-     * @param PERMIT_ALL_PATHS 免认证路径数组
-     */
-    public void setPermitPaths(String[] PERMIT_ALL_PATHS) {
-        this.PERMIT_PATHS = PERMIT_ALL_PATHS;
     }
 }

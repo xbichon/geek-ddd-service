@@ -1,7 +1,10 @@
 package vip.geekclub.config.security;
 
+import lombok.RequiredArgsConstructor;
+import org.springframework.boot.web.servlet.FilterRegistrationBean;
 import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import vip.geekclub.framework.controller.ApiResponse;
+import vip.geekclub.framework.security.SessionStore;
 import vip.geekclub.framework.utils.HttpUtil;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -18,6 +21,7 @@ import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
 import java.util.List;
 
+@RequiredArgsConstructor
 @Configuration(proxyBeanMethods = false)
 //@EnableMethodSecurity()
 public class SecurityConfig {
@@ -25,20 +29,22 @@ public class SecurityConfig {
     /**
      * 免认证路径
      */
-    public static final String[] PERMIT_PATHS = {"/security/auth/**","/test/**"};
+    public static final String[] PERMIT_PATHS = {"/security/auth/**", "/test/**"};
     private static final String SECURITY_PATH = "/**";
     private static final String[] ALLOWED_METHODS = {"GET", "POST", "PUT", "DELETE", "OPTIONS"};
     private static final String[] ALLOWED_HEADERS = {"*"};
     private static final long CORS_MAX_AGE = 3600L;
 
-    private final JwtRequestFilter jwtRequestFilter;
     private final HttpUtil httpUtil;
+    private final JwtRequestFilter jwtRequestFilter;
 
-    public SecurityConfig(JwtRequestFilter jwtRequestFilter, HttpUtil httpUtil) {
-        jwtRequestFilter.setPermitPaths(PERMIT_PATHS);
-        this.jwtRequestFilter = jwtRequestFilter;
-        this.httpUtil = httpUtil;
+    @Bean
+    public FilterRegistrationBean<JwtRequestFilter> jwtRequestFilterRegistration(JwtRequestFilter filter) {
+        FilterRegistrationBean<JwtRequestFilter> registration = new FilterRegistrationBean<>(filter);
+        registration.setEnabled(false);
+        return registration;
     }
+
 
     @Bean
     public PasswordEncoder passwordEncoder() {

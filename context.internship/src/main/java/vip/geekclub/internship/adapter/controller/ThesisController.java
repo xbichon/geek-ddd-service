@@ -121,7 +121,7 @@ public class ThesisController {
      * @return 论文选择结果列表
      */
     @GetMapping("/selectionList")
-    @Authorize(userType = UserType.TEACHER)
+//    @Authorize(userType = UserType.TEACHER)
     public ApiResponse<PageResult<ThesisSelectionListResult>> listThesisSelections(ThesisSelectionListQuery query) {
         PageResult<ThesisSelectionListResult> list = thesisSelectionListQueryService.getThesisSelectionList(query);
         return ApiResponse.success(list);
