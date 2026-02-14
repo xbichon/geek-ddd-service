@@ -73,7 +73,7 @@ public class PasswordAuthController {
         PasswordLoginCommand command = new PasswordLoginCommand(request.userType(), request.identifier(), request.password());
         CommandResult<UserPrincipal> commandResult = CommandDispatcher.dispatch(command);
         UserPrincipal userPrincipal = commandResult.data();
-        UserAuthentication userAuthentication = new UserAuthentication(userPrincipal, Set.of());
+        UserAuthentication userAuthentication = new UserAuthentication(userPrincipal);
         String jwtToken = authSessionManager.create(userAuthentication);
 
         return ApiResponse.success(jwtToken);

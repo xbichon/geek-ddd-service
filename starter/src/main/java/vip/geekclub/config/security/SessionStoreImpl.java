@@ -28,6 +28,6 @@ public class SessionStoreImpl implements SessionStore {
 
     public UserAuthentication load(String token) {
         JwtValue<UserPrincipal> jwtValue = jwtUtil.parseToken(token, UserPrincipal.class);
-        return new UserAuthentication(jwtValue.data(), Set.of());
+        return new UserAuthentication(jwtValue.data());
     }
 }

@@ -14,6 +14,12 @@ import java.util.Set;
  */
 public class AuthorizationChecker {
 
+    protected final PermissionStore permissionStore;
+
+    public AuthorizationChecker(PermissionStore permissionStore) {
+        this.permissionStore = permissionStore;
+    }
+
     /**
      * 执行授权验证
      *
@@ -49,11 +55,11 @@ public class AuthorizationChecker {
             return;
         }
 
-        Set<String> userPermissions = authentication.getPermissions();
+        Set<String> userPermissions = permissionStore.getPermissions(authentication.getUserPrincipal());
 
         for (String permission : permissions) {
             if (!userPermissions.contains(permission)) {
-                throw new BusinessException(403,"缺少权限: " + permission);
+                throw new BusinessException(403, "缺少权限: " + permission);
             }
         }
     }
@@ -64,7 +70,7 @@ public class AuthorizationChecker {
     protected UserAuthentication getCurrentAuthentication() {
         UserAuthentication authentication = (UserAuthentication) SecurityContextHolder.getContext().getAuthentication();
         if (authentication == null) {
-            throw new BusinessException(401,"用户未登录");
+            throw new BusinessException(401, "用户未登录");
         }
         return authentication;
     }

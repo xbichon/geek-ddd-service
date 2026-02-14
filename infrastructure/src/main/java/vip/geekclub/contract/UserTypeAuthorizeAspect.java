@@ -6,6 +6,7 @@ import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;
 import org.springframework.stereotype.Component;
 import vip.geekclub.framework.security.AuthorizationChecker;
+import vip.geekclub.framework.security.PermissionStore;
 
 /**
  * StudentAuthorize 注解的 AOP 拦截器
@@ -16,6 +17,10 @@ import vip.geekclub.framework.security.AuthorizationChecker;
 @Aspect
 @Component
 public class UserTypeAuthorizeAspect extends AuthorizationChecker {
+
+    public UserTypeAuthorizeAspect(PermissionStore permissionStore) {
+        super(permissionStore);
+    }
 
     @Around("@within(studentAuthorize) || @annotation(studentAuthorize)")
     public Object aroundStudent(ProceedingJoinPoint joinPoint, StudentAuthorize studentAuthorize) throws Throwable {

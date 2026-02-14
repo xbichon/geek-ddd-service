@@ -23,7 +23,7 @@ import java.util.List;
 
 @RequiredArgsConstructor
 @Configuration(proxyBeanMethods = false)
-//@EnableMethodSecurity()
+@EnableMethodSecurity()
 public class SecurityConfig {
 
     /**
@@ -84,6 +84,7 @@ public class SecurityConfig {
     private void configureUrl(HttpSecurity http) {
         http.securityMatcher(SECURITY_PATH);
         http.authorizeHttpRequests(authorize -> authorize.requestMatchers(PERMIT_PATHS).permitAll()
+                .requestMatchers("/front/**").hasRole("STUDENT")
                 .anyRequest().authenticated());
     }
 

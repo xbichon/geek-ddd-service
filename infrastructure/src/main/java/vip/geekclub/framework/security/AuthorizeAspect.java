@@ -1,5 +1,6 @@
 package vip.geekclub.framework.security;
 
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.Around;
@@ -15,6 +16,10 @@ import org.springframework.stereotype.Component;
 @Aspect
 @Component
 public class AuthorizeAspect extends AuthorizationChecker {
+
+    public AuthorizeAspect(PermissionStore permissionStore) {
+        super(permissionStore);
+    }
 
     @Around("@within(authorize) || @annotation(authorize)")
     public Object around(ProceedingJoinPoint joinPoint, Authorize authorize) throws Throwable {

@@ -4,6 +4,7 @@ import jakarta.servlet.http.HttpServletResponse;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -31,7 +32,7 @@ import java.util.List;
 @Slf4j
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/internship/thesis")
+@RequestMapping("/front/internship/thesis")
 public class ThesisController {
 
     private final WebCommandAdapter commandBus;
@@ -58,7 +59,7 @@ public class ThesisController {
     /**
      * 申请选题
      *
-     * @param command 选题命令
+     * @param command       选题命令
      * @param userPrincipal 当前用户
      * @return 操作结果
      */
@@ -121,7 +122,6 @@ public class ThesisController {
      * @return 论文选择结果列表
      */
     @GetMapping("/selectionList")
-//    @Authorize(userType = UserType.TEACHER)
     public ApiResponse<PageResult<ThesisSelectionListResult>> listThesisSelections(ThesisSelectionListQuery query) {
         PageResult<ThesisSelectionListResult> list = thesisSelectionListQueryService.getThesisSelectionList(query);
         return ApiResponse.success(list);

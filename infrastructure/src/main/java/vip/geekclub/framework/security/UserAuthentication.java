@@ -7,6 +7,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import java.util.Set;
@@ -26,18 +27,11 @@ public class UserAuthentication implements Authentication {
     private final Object details = null;
     @Setter
     private boolean authenticated = true;
-    private final Collection<? extends GrantedAuthority> authorities;
-    private final Set<String> permissions;
+    private final Collection<? extends GrantedAuthority> authorities ;
 
-    public UserAuthentication(UserPrincipal principal, Set<String> permissions) {
-        List<GrantedAuthority> authorities = permissions.stream()
-                .map(SimpleGrantedAuthority::new)
-                .collect(Collectors.toList());
-        authorities.add(new SimpleGrantedAuthority("ROLE_" + principal.userType()));
-
+    public UserAuthentication(UserPrincipal principal) {
+        this.authorities =List.of(new SimpleGrantedAuthority("ROLE_" + principal.userType()));
         this.userPrincipal = principal;
-        this.permissions = permissions;
-        this.authorities = authorities;
     }
 
     @Override
