@@ -4,6 +4,7 @@ import com.alibaba.excel.EasyExcel;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -32,6 +33,7 @@ import java.util.stream.Collectors;
  * 论文管理控制器
  * 提供论文及选题相关接口（JSON-RPC 风格命名）
  */
+@Slf4j
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/internship/thesis")
@@ -163,7 +165,7 @@ public class ThesisController {
             response.setCharacterEncoding("UTF-8");
             
             // 同时设置两种格式的文件名，确保兼容性
-            String encodedFileName = URLEncoder.encode(fileName, StandardCharsets.UTF_8.toString())
+            String encodedFileName = URLEncoder.encode(fileName, StandardCharsets.UTF_8)
                 .replaceAll("\\+", "%20");
             
             // 设置Content-Disposition头，包含两种格式以支持不同浏览器
@@ -193,7 +195,7 @@ public class ThesisController {
             
         } catch (Exception e) {
             // 记录错误日志
-            e.printStackTrace();
+            log.error("Excel导出失败: ", e);
             response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
             response.setContentType("text/plain;charset=UTF-8");
             response.getWriter().write("Excel导出失败: " + e.getMessage());
@@ -203,7 +205,7 @@ public class ThesisController {
                 try {
                     outputStream.close();
                 } catch (IOException e) {
-                    e.printStackTrace();
+                    log.error("Excel导出资源关闭失败: ", e);
                 }
             }
         }
