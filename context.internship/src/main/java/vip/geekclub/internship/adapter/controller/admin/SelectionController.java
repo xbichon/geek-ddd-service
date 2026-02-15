@@ -44,7 +44,4 @@ public class SelectionController {
         List<ThesisSelectionListResult> dataList = thesisSelectionListQueryService.getAllThesisSelectionList();
         ExcelExportUtil.export(response, dataList, "论文选题列表", "论文选题列表");
     }
-
-
-
 }

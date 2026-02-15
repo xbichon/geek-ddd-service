@@ -21,7 +21,7 @@ public class ClassController {
      *
      * @return 班级名称列表
      */
-    @GetMapping("/classNames")
+    @GetMapping("/list")
     public ApiResponse<List<String>> getAllClassNames() {
         List<String> classNames = classNameQueryService.getAllClassNames();
         return ApiResponse.success(classNames);
