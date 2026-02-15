@@ -9,8 +9,6 @@ import vip.geekclub.framework.command.CommandContext;
 import vip.geekclub.framework.security.UserPrincipal;
 import vip.geekclub.internship.application.command.thesisselection.CreateThesisSelectionCommand;
 import vip.geekclub.internship.application.command.thesisselection.CreateThesisSelectionCommandHandler;
-import vip.geekclub.internship.domain.repository.ThesisRepository;
-import vip.geekclub.internship.domain.repository.ThesisSelectionRepository;
 import vip.geekclub.internship.domain.value.SelectionType;
 import vip.geekclub.internship.domain.value.TeamApplicationValue;
 import vip.geekclub.internship.domain.value.TeamMemberValue;
@@ -26,12 +24,6 @@ public class CreateSelectionControllerCommandHandlerTest {
 
     @Autowired
     private CreateThesisSelectionCommandHandler commandHandler;
-
-    @Autowired
-    private ThesisRepository thesisRepository;
-
-    @Autowired
-    private ThesisSelectionRepository thesisSelectionRepository;
 
     /**
      * 测试小组形式创建选题成功
