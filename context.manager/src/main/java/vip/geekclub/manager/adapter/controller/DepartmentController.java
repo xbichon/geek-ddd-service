@@ -2,7 +2,6 @@ package vip.geekclub.manager.adapter.controller;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
-import vip.geekclub.contract.TeacherAuthorize;
 import vip.geekclub.contract.UserType;
 import vip.geekclub.framework.controller.ApiResponse;
 import vip.geekclub.framework.controller.WebCommandAdapter;
@@ -23,7 +22,7 @@ import java.util.List;
  * 提供部门的增删改查操作
  */
 @RestController
-@RequestMapping("/manager/department")
+@RequestMapping("/admin/manager/department")
 @RequiredArgsConstructor
 @Authorize(userType = UserType.TEACHER)
 public class DepartmentController {

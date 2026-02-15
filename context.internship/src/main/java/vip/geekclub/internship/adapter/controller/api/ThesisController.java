@@ -1,28 +1,20 @@
-package vip.geekclub.internship.adapter.controller;
+package vip.geekclub.internship.adapter.controller.api;
 
-import jakarta.servlet.http.HttpServletResponse;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-import vip.geekclub.contract.UserType;
 import vip.geekclub.framework.controller.ApiResponse;
 import vip.geekclub.framework.controller.WebCommandAdapter;
-import vip.geekclub.framework.jooq.PageResult;
-import vip.geekclub.framework.security.Authorize;
 import vip.geekclub.framework.security.UserPrincipal;
 import vip.geekclub.internship.application.command.thesisselection.CreateThesisSelectionCommand;
 import vip.geekclub.internship.application.query.*;
 import vip.geekclub.internship.application.query.dto.*;
 
-import vip.geekclub.framework.utils.ExcelExportUtil;
-
-import java.io.IOException;
 import java.util.List;
 
 /**
@@ -30,17 +22,14 @@ import java.util.List;
  * 提供论文及选题相关接口（JSON-RPC 风格命名）
  */
 @Slf4j
-@RestController
+@RestController("API_ThesisController")
 @RequiredArgsConstructor
-@RequestMapping("/front/internship/thesis")
+@RequestMapping("/api/internship/thesis")
 public class ThesisController {
 
     private final WebCommandAdapter commandBus;
     private final ThesisQueryService thesisQueryService;
     private final ThesisSelectionQueryService thesisSelectionQueryService;
-    private final ThesisSelectionListQueryService thesisSelectionListQueryService;
-    private final AdvisorQueryService advisorQueryService;
-    private final ClassNameQueryService classNameQueryService;
     private final InternQueryService internQueryService;
 
     // ==================== 论文相关 ====================
@@ -54,8 +43,6 @@ public class ThesisController {
         return ApiResponse.success(list);
     }
 
-    // ==================== 选题相关 ====================
-
     /**
      * 申请选题
      *
@@ -64,7 +51,6 @@ public class ThesisController {
      * @return 操作结果
      */
     @PostMapping("/applySelection")
-    @Authorize(userType = UserType.STUDENT)
     public ApiResponse<Void> applySelection(
             @Valid @RequestBody CreateThesisSelectionCommand command,
             UserPrincipal userPrincipal) {
@@ -80,7 +66,6 @@ public class ThesisController {
      * @return 选题详情
      */
     @GetMapping("/getSelectionDetail")
-    @Authorize(userType = UserType.STUDENT)
     public ApiResponse<ThesisSelectionDetailResult> getSelectionDetail(UserPrincipal userPrincipal) {
         var internId = internQueryService.getInternIdByAuthId(userPrincipal.authId());
         ThesisSelectionDetailResult result = thesisSelectionQueryService.getCurrentUserSelectionDetail(internId);
@@ -94,7 +79,6 @@ public class ThesisController {
      * @return true-已选题，false-未选题
      */
     @GetMapping("/checkSelectionStatus")
-    @Authorize(userType = UserType.STUDENT)
     public ApiResponse<Boolean> checkSelectionStatus(UserPrincipal userPrincipal) {
         var internId = internQueryService.getInternIdByAuthId(userPrincipal.authId());
         boolean hasSelected = thesisSelectionQueryService.hasCurrentUserSelected(internId);
@@ -108,70 +92,11 @@ public class ThesisController {
      * @return 未选题的学生列表
      */
     @GetMapping("/unselectedStudent")
-    @Authorize(userType = UserType.STUDENT)
     public ApiResponse<List<InternInfoResult>> listUnselectedPeers(UserPrincipal userPrincipal) {
         var currentInternId = internQueryService.getInternIdByAuthId(userPrincipal.authId());
         List<InternInfoResult> students = internQueryService.getUnselectedStudentsBySameAdvisor(currentInternId);
         return ApiResponse.success(students);
     }
 
-    /**
-     * 获取论文选择结果列表
-     *
-     * @param query 查询参数（班级、指导老师、学生名字）
-     * @return 论文选择结果列表
-     */
-    @GetMapping("/selectionList")
-    public ApiResponse<PageResult<ThesisSelectionListResult>> listThesisSelections(ThesisSelectionListQuery query) {
-        PageResult<ThesisSelectionListResult> list = thesisSelectionListQueryService.getThesisSelectionList(query);
-        return ApiResponse.success(list);
-    }
 
-    /**
-     * 获取所有论文选择结果列表（不分页，无条件）
-     *
-     * @return 所有论文选择结果列表
-     */
-    @GetMapping("/allSelectionList")
-    @Authorize(userType = UserType.TEACHER)
-    public ApiResponse<List<ThesisSelectionListResult>> listAllThesisSelections() {
-        List<ThesisSelectionListResult> list = thesisSelectionListQueryService.getAllThesisSelectionList();
-        return ApiResponse.success(list);
-    }
-
-    /**
-     * 导出所有论文选择结果为Excel文件
-     *
-     * @param response HTTP响应对象
-     */
-    @GetMapping("/allSelectionList/excel")
-    @Authorize(userType = UserType.TEACHER)
-    public void exportAllThesisSelectionsToExcel(HttpServletResponse response) throws IOException {
-        List<ThesisSelectionListResult> dataList = thesisSelectionListQueryService.getAllThesisSelectionList();
-        ExcelExportUtil.export(response, dataList, "论文选题列表", "论文选题列表");
-    }
-
-    /**
-     * 获取所有指导老师姓名集合（去重）
-     *
-     * @return 指导老师姓名列表
-     */
-    @GetMapping("/advisorNames")
-    @Authorize(userType = UserType.TEACHER)
-    public ApiResponse<List<String>> getAllAdvisorNames() {
-        List<String> advisorNames = advisorQueryService.getAllAdvisorNames();
-        return ApiResponse.success(advisorNames);
-    }
-
-    /**
-     * 获取所有班级名称集合（去重）
-     *
-     * @return 班级名称列表
-     */
-    @GetMapping("/classNames")
-    @Authorize(userType = UserType.TEACHER)
-    public ApiResponse<List<String>> getAllClassNames() {
-        List<String> classNames = classNameQueryService.getAllClassNames();
-        return ApiResponse.success(classNames);
-    }
 }

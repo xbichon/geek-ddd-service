@@ -39,10 +39,3 @@ spring:
       repositories:
         enabled: false
 
-server:
-  servlet:
-    context-path: /api
-
-security:
-  permit-paths:
-    - /api/**

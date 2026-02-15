@@ -3,6 +3,7 @@ package vip.geekclub.config.security;
 import lombok.RequiredArgsConstructor;
 import org.springframework.boot.web.servlet.FilterRegistrationBean;
 import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
+import vip.geekclub.contract.UserType;
 import vip.geekclub.framework.controller.ApiResponse;
 import vip.geekclub.framework.security.SessionStore;
 import vip.geekclub.framework.utils.HttpUtil;
@@ -84,7 +85,8 @@ public class SecurityConfig {
     private void configureUrl(HttpSecurity http) {
         http.securityMatcher(SECURITY_PATH);
         http.authorizeHttpRequests(authorize -> authorize.requestMatchers(PERMIT_PATHS).permitAll()
-                .requestMatchers("/front/**").hasRole("STUDENT")
+                .requestMatchers("/front/**").hasRole(UserType.STUDENT)
+                .requestMatchers("/admin/**").hasRole(UserType.TEACHER)
                 .anyRequest().authenticated());
     }
 

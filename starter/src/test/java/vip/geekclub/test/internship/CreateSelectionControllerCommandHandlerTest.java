@@ -30,7 +30,7 @@ import static org.junit.jupiter.api.Assertions.*;
  * 主要测试按组生成时的逻辑
  */
 @SpringBootTest
-public class CreateThesisSelectionCommandHandlerTest {
+public class CreateSelectionControllerCommandHandlerTest {
 
     @Autowired
     private CreateThesisSelectionCommandHandler commandHandler;
