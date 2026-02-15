@@ -6,14 +6,9 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.annotation.Rollback;
 import org.springframework.transaction.annotation.Transactional;
 import vip.geekclub.framework.command.CommandContext;
-import vip.geekclub.framework.command.CommandResult;
-import vip.geekclub.framework.command.IdResult;
-import vip.geekclub.framework.exception.BusinessLogicException;
 import vip.geekclub.framework.security.UserPrincipal;
 import vip.geekclub.internship.application.command.thesisselection.CreateThesisSelectionCommand;
 import vip.geekclub.internship.application.command.thesisselection.CreateThesisSelectionCommandHandler;
-import vip.geekclub.internship.domain.model.Thesis;
-import vip.geekclub.internship.domain.model.ThesisSelection;
 import vip.geekclub.internship.domain.repository.ThesisRepository;
 import vip.geekclub.internship.domain.repository.ThesisSelectionRepository;
 import vip.geekclub.internship.domain.value.SelectionType;
@@ -21,9 +16,6 @@ import vip.geekclub.internship.domain.value.TeamApplicationValue;
 import vip.geekclub.internship.domain.value.TeamMemberValue;
 
 import java.util.List;
-import java.util.Optional;
-
-import static org.junit.jupiter.api.Assertions.*;
 
 /**
  * 创建选题命令处理器单元测试
