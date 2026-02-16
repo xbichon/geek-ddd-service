@@ -101,6 +101,7 @@
                                 <name>org.jooq.meta.mysql.MySQLDatabase</name>
                                 <!--suppress UnresolvedMavenProperty -->
                                 <inputSchema>${spring.datasource.name}</inputSchema>
+                                <outputSchemaToDefault>true</outputSchemaToDefault>
                             </database>
                             <generate>
                                 <records>false</records>
