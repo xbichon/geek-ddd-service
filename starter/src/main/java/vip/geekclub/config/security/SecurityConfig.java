@@ -83,8 +83,8 @@ public class SecurityConfig {
     private void configureUrl(HttpSecurity http) {
         http.securityMatcher(SECURITY_PATH);
         http.authorizeHttpRequests(authorize -> authorize.requestMatchers(PERMIT_PATHS).permitAll()
-                .requestMatchers("/front/**").hasRole(UserType.STUDENT)
-                .requestMatchers("/admin/**").hasRole(UserType.TEACHER)
+                .requestMatchers("/student/**").hasRole(UserType.STUDENT)
+                .requestMatchers("/teacher/**").hasRole(UserType.TEACHER)
                 .anyRequest().authenticated());
     }
 
