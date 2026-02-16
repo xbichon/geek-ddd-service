@@ -5,7 +5,7 @@ import java.util.List;
 /**
  * 选题详情查询结果
  */
-public record ThesisSelectionDetailResult(
+public record SelectionDetailResult(
         /*
          * 学生姓名
          */

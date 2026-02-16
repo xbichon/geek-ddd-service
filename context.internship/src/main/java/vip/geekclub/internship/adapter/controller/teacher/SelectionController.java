@@ -8,9 +8,9 @@ import org.springframework.web.bind.annotation.RestController;
 import vip.geekclub.framework.controller.ApiResponse;
 import vip.geekclub.framework.jooq.PageResult;
 import vip.geekclub.framework.utils.ExcelExportUtil;
-import vip.geekclub.internship.application.query.ThesisSelectionListQueryService;
-import vip.geekclub.internship.application.query.dto.ThesisSelectionPageQuery;
-import vip.geekclub.internship.application.query.dto.ThesisSelectionListResult;
+import vip.geekclub.internship.application.query.SelectionListQueryService;
+import vip.geekclub.internship.application.query.dto.SelectionPageQuery;
+import vip.geekclub.internship.application.query.dto.SelectionItemResult;
 
 import java.io.IOException;
 import java.util.List;
@@ -20,7 +20,7 @@ import java.util.List;
 @RequiredArgsConstructor
 public class SelectionController {
 
-    private final ThesisSelectionListQueryService thesisSelectionListQueryService;
+    private final SelectionListQueryService thesisSelectionListQueryService;
 
     /**
      * 获取论文选择结果列表
@@ -29,8 +29,8 @@ public class SelectionController {
      * @return 论文选择结果列表
      */
     @GetMapping("/list")
-    public ApiResponse<PageResult<ThesisSelectionListResult>> listThesisSelections(ThesisSelectionPageQuery query) {
-        PageResult<ThesisSelectionListResult> list = thesisSelectionListQueryService.getThesisSelectionList(query);
+    public ApiResponse<PageResult<SelectionItemResult>> listThesisSelections(SelectionPageQuery query) {
+        PageResult<SelectionItemResult> list = thesisSelectionListQueryService.findPage(query);
         return ApiResponse.success(list);
     }
 
@@ -41,7 +41,7 @@ public class SelectionController {
      */
     @GetMapping("/excel")
     public void exportAllThesisSelectionsToExcel(HttpServletResponse response) throws IOException {
-        List<ThesisSelectionListResult> dataList = thesisSelectionListQueryService.getAllThesisSelectionList();
+        List<SelectionItemResult> dataList = thesisSelectionListQueryService.findAll();
         ExcelExportUtil.export(response, dataList, "论文选题列表", "论文选题列表");
     }
 }

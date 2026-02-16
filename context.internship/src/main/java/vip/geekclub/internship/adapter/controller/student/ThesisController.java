@@ -29,7 +29,7 @@ public class ThesisController {
 
     private final WebCommandAdapter commandBus;
     private final ThesisQueryService thesisQueryService;
-    private final ThesisSelectionQueryService thesisSelectionQueryService;
+    private final SelectionQueryService thesisSelectionQueryService;
     private final InternQueryService internQueryService;
 
     // ==================== 论文相关 ====================
@@ -66,9 +66,9 @@ public class ThesisController {
      * @return 选题详情
      */
     @GetMapping("/getSelectionDetail")
-    public ApiResponse<ThesisSelectionDetailResult> getSelectionDetail(UserPrincipal userPrincipal) {
+    public ApiResponse<SelectionDetailResult> getSelectionDetail(UserPrincipal userPrincipal) {
         var internId = internQueryService.getInternIdByAuthId(userPrincipal.authId());
-        ThesisSelectionDetailResult result = thesisSelectionQueryService.getCurrentUserSelectionDetail(internId);
+        SelectionDetailResult result = thesisSelectionQueryService.getDetail(internId);
         return ApiResponse.success(result);
     }
 
@@ -81,7 +81,7 @@ public class ThesisController {
     @GetMapping("/checkSelectionStatus")
     public ApiResponse<Boolean> checkSelectionStatus(UserPrincipal userPrincipal) {
         var internId = internQueryService.getInternIdByAuthId(userPrincipal.authId());
-        boolean hasSelected = thesisSelectionQueryService.hasCurrentUserSelected(internId);
+        boolean hasSelected = thesisSelectionQueryService.hasSelected(internId);
         return ApiResponse.success(hasSelected);
     }
 

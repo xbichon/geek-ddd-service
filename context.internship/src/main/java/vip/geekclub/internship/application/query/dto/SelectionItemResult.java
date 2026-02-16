@@ -12,7 +12,7 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class ThesisSelectionListResult {
+public class SelectionItemResult {
 
     @ExcelProperty("选题ID")
     private Long selectionId;

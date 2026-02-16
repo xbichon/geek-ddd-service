@@ -3,9 +3,6 @@ package vip.geekclub.internship.application.query;
 import lombok.AllArgsConstructor;
 import org.jooq.*;
 import org.jooq.Record;
-import org.jooq.impl.DSL;
-import vip.geekclub.framework.jooq.PageHelper;
-import vip.geekclub.framework.jooq.PageResult;
 import vip.geekclub.internship.generated.Tables;
 import vip.geekclub.internship.generated.tables.*;
 import org.springframework.stereotype.Service;
@@ -21,12 +18,12 @@ import static org.jooq.impl.DSL.count;
  */
 @Service
 @AllArgsConstructor
-public class ThesisSelectionQueryService {
+public class SelectionQueryService {
 
     private final DSLContext dslContext;
     private final AdvisorQueryService advisorQueryService;
     private final ClassNameQueryService classNameQueryService;
-    private final ThesisSelectionListQueryService thesisSelectionListQueryService;
+    private final SelectionListQueryService thesisSelectionListQueryService;
     private final ThesisSelectionTable thesisSelectionTable = Tables.ThesisSelection;
     private final InternTable internTable = Tables.Intern;
     private final ThesisTable thesisTable = Tables.Thesis;
@@ -41,7 +38,7 @@ public class ThesisSelectionQueryService {
      * @param internId 当前用户的实习生ID
      * @return 选题详情
      */
-    public ThesisSelectionDetailResult getCurrentUserSelectionDetail(Long internId) {
+    public SelectionDetailResult getDetail(Long internId) {
         // 1. 根据 internId 从 selectorTable 查询对应的论文选题 ID
         var selectorRecord = dslContext
                 .select(selectorTable.PAPER_SELECTION_ID)
@@ -85,12 +82,12 @@ public class ThesisSelectionQueryService {
         boolean isGroup = "GROUP".equals(selectionType);
 
         // 如果是组选题，查询结组信息
-        ThesisSelectionDetailResult.TeamInfo teamInfo = null;
+        SelectionDetailResult.TeamInfo teamInfo = null;
         if (isGroup) {
             teamInfo = getTeamInfo(resultSelectionId);
         }
 
-        return new ThesisSelectionDetailResult(
+        return new SelectionDetailResult(
                 internName,
                 isGroup,
                 advisorName,
@@ -106,7 +103,7 @@ public class ThesisSelectionQueryService {
      * @param internId 当前用户的实习生ID
      * @return true-已选题，false-未选题
      */
-    public boolean hasCurrentUserSelected(Long internId) {
+    public boolean hasSelected(Long internId) {
         // 查询该学生是否在selector表中存在记录
         var record = dslContext
                 .select(selectorTable.ID)
@@ -124,7 +121,7 @@ public class ThesisSelectionQueryService {
      * @param selectionId 选题记录ID
      * @return 结组信息
      */
-    private ThesisSelectionDetailResult.TeamInfo getTeamInfo(Long selectionId) {
+    private SelectionDetailResult.TeamInfo getTeamInfo(Long selectionId) {
         // 单次查询：结组申请 + 组员信息 + 实习生姓名
         var records = dslContext
                 .select(
@@ -146,14 +143,14 @@ public class ThesisSelectionQueryService {
         String reason = records.getFirst().get(teamApplicationTable.REASON);
 
         // 构建组员信息列表
-        List<ThesisSelectionDetailResult.TeamMemberInfo> members = records.stream()
-                .map(r -> new ThesisSelectionDetailResult.TeamMemberInfo(
+        List<SelectionDetailResult.TeamMemberInfo> members = records.stream()
+                .map(r -> new SelectionDetailResult.TeamMemberInfo(
                         r.get(internTable.NAME),
                         r.get(teamMemberTable.RESPONSIBILITY)
                 ))
                 .toList();
 
-        return new ThesisSelectionDetailResult.TeamInfo(reason, members);
+        return new SelectionDetailResult.TeamInfo(reason, members);
     }
 
 }

@@ -10,8 +10,8 @@ import vip.geekclub.framework.jooq.PageResult;
 import vip.geekclub.internship.generated.Tables;
 import vip.geekclub.internship.generated.tables.*;
 import org.springframework.stereotype.Service;
-import vip.geekclub.internship.application.query.dto.ThesisSelectionPageQuery;
-import vip.geekclub.internship.application.query.dto.ThesisSelectionListResult;
+import vip.geekclub.internship.application.query.dto.SelectionPageQuery;
+import vip.geekclub.internship.application.query.dto.SelectionItemResult;
 
 import java.util.List;
 
@@ -23,7 +23,7 @@ import static org.jooq.impl.DSL.count;
  */
 @Service
 @RequiredArgsConstructor
-public class ThesisSelectionListQueryService {
+public class SelectionListQueryService {
 
     private final DSLContext dslContext;
     private final ThesisSelectionTable thesisSelectionTable = Tables.ThesisSelection;
@@ -49,7 +49,7 @@ public class ThesisSelectionListQueryService {
      *
      * @return 所有论文选择结果列表
      */
-    public List<ThesisSelectionListResult> getAllThesisSelectionList() {
+    public List<SelectionItemResult> findAll() {
         // 构建查询，不带任何条件和分页
         var list = dslContext.select(commonSelectFields)
                 .from(thesisSelectionTable)
@@ -70,13 +70,13 @@ public class ThesisSelectionListQueryService {
                 )
                 .orderBy(thesisSelectionTable.ID.asc());
 
-        return list.fetch(this::mapToThesisSelectionListResult);
+        return list.fetch(this::mapToSelectionItem);
     }
 
     /**
      * 获取论文选择结果列表（分页）
      */
-    public PageResult<ThesisSelectionListResult> getThesisSelectionList(ThesisSelectionPageQuery query) {
+    public PageResult<SelectionItemResult> findPage(SelectionPageQuery query) {
         // 构建查询条件
         var list = dslContext.select(commonSelectFields)
                 .select(PageHelper.TOTAL_COUNT)
@@ -108,7 +108,7 @@ public class ThesisSelectionListQueryService {
                         internTable.as("creator").STUDENT_NO
                 );
 
-        return PageHelper.page(list, query, this::mapToThesisSelectionListResult);
+        return PageHelper.page(list, query, this::mapToSelectionItem);
     }
 
     /**
@@ -117,8 +117,8 @@ public class ThesisSelectionListQueryService {
      * @param r 数据库记录
      * @return ThesisSelectionListResult 对象
      */
-    private ThesisSelectionListResult mapToThesisSelectionListResult(Record r) {
-        return new ThesisSelectionListResult(
+    private SelectionItemResult mapToSelectionItem(Record r) {
+        return new SelectionItemResult(
                 r.get(thesisSelectionTable.ID),
                 r.get(thesisSelectionTable.THESIS_ID),
                 r.get(thesisTable.TITLE),
