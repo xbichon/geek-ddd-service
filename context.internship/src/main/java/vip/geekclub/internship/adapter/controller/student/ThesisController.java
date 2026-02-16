@@ -38,8 +38,8 @@ public class ThesisController {
      * 获取论文列表
      */
     @GetMapping("/list")
-    public ApiResponse<List<ThesisListResult>> listThesis() {
-        List<ThesisListResult> list = thesisQueryService.getThesisList();
+    public ApiResponse<List<ThesisItemResult>> listThesis() {
+        List<ThesisItemResult> list = thesisQueryService.getThesisList();
         return ApiResponse.success(list);
     }
 

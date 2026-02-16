@@ -6,7 +6,7 @@ import java.util.List;
  * 论文列表查询结果
  * 包含论文基本信息及成果形式集合
  */
-public record ThesisListResult(
+public record ThesisItemResult(
         Long id,
         String title,
         Integer maxSelections,

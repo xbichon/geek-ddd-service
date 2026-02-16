@@ -6,7 +6,7 @@ import vip.geekclub.internship.generated.Tables;
 import vip.geekclub.internship.generated.tables.ThesisAchievementTypeTable;
 import vip.geekclub.internship.generated.tables.ThesisTable;
 import org.springframework.stereotype.Service;
-import vip.geekclub.internship.application.query.dto.ThesisListResult;
+import vip.geekclub.internship.application.query.dto.ThesisItemResult;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -28,7 +28,7 @@ public class ThesisQueryService {
      *
      * @return 论文列表
      */
-    public List<ThesisListResult> getThesisList() {
+    public List<ThesisItemResult> getThesisList() {
         // 查询所有论文
         var thesisRecords = dslContext
                 .select(thesisTable.ID, thesisTable.TITLE, thesisTable.MAX_SELECTIONS, thesisTable.CURRENT_SELECTIONS)
@@ -56,7 +56,7 @@ public class ThesisQueryService {
                 .map(record -> {
                     Long thesisId = record.get(thesisTable.ID);
                     List<String> types = achievementMap.getOrDefault(thesisId, List.of());
-                    return new ThesisListResult(
+                    return new ThesisItemResult(
                             thesisId,
                             record.get(thesisTable.TITLE),
                             record.get(thesisTable.MAX_SELECTIONS),

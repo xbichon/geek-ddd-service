@@ -6,6 +6,7 @@
 - 类名使用 `{业务}Result` 或 `{业务}Query` 命名：
   - 查询结果：`DepartmentInfoResult`、`UserListResult`
   - 查询参数：`UserListQuery`、`OrderPageQuery`
+  - **列表单项**：返回列表时，单项命名用 `{实体}ItemResult`，如 `ThesisItemResult`
 - 使用 Java Record 定义，确保不可变性；
 - 针对读操作进行优化设计，只包含查询所需字段；
 - 可使用 JOOQ 生成的枚举类型作为字段类型。
