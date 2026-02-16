@@ -6,6 +6,7 @@
 - 使用 `@RestController` + `@RequestMapping` + `@RequiredArgsConstructor`；
 - 方法参数使用 DTO + `@Valid` 校验；
 - 返回类型统一使用 `ApiResponse<T>` 包装；
+- **优先复用应用层 DTO**：Controller 直接使用 QueryService/CommandHandler 的 DTO；只有无法复用（如字段差异大）时才重新定义；
 - **URL 四级结构**：`/{userType}/{boundedContext}/{resource}/{action}`
   - `userType`：用户角色，如 `teacher`、`student`、`admin`。**注意：新增角色需在 `SecurityConfig.configureUrl()` 中添加对应的路径权限配置，如 `.requestMatchers("/teacher/**").hasRole(UserType.TEACHER)`**
   - `boundedContext`：界限上下文，如 `internship`、`auth`
