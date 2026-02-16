@@ -38,4 +38,8 @@ public class SelectionController {
 - 异常由全局异常处理器处理，**不在控制器中捕获**；
 - **禁止添加不需要的方法**，根据实际需求添加；
 - 默认使用 `@PostMapping`，查询可用 `@GetMapping`；
-- **单一资源原则**：按资源拆分控制器，每个控制器只负责一个资源的操作（如 `SelectionController` 只处理选题相关，`ApplicationController` 只处理申请相关）。
+- **单一资源原则**：按资源拆分控制器，每个控制器只负责一个资源的操作（如 `SelectionController` 只处理选题相关，`ApplicationController` 只处理申请相关）；
+- **Action 命名规范**：
+  - 分页查询用 `/list`（如 `GET /list?page=1&size=20`）
+  - 导出用 `/export`（如 `GET /export`）
+  - 单个查询用 `/detail`（如 `POST /detail`）。

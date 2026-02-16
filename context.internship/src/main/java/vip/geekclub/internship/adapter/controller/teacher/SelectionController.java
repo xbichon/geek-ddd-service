@@ -29,7 +29,7 @@ public class SelectionController {
      * @return 论文选择结果列表
      */
     @GetMapping("/list")
-    public ApiResponse<PageResult<SelectionItemResult>> listThesisSelections(SelectionPageQuery query) {
+    public ApiResponse<PageResult<SelectionItemResult>> findPage(SelectionPageQuery query) {
         PageResult<SelectionItemResult> list = thesisSelectionListQueryService.findPage(query);
         return ApiResponse.success(list);
     }
@@ -39,7 +39,7 @@ public class SelectionController {
      *
      * @param response HTTP响应对象
      */
-    @GetMapping("/excel")
+    @GetMapping("/export")
     public void exportAllThesisSelectionsToExcel(HttpServletResponse response) throws IOException {
         List<SelectionItemResult> dataList = thesisSelectionListQueryService.findAll();
         ExcelExportUtil.export(response, dataList, "论文选题列表", "论文选题列表");
