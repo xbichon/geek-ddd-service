@@ -1,4 +1,4 @@
-package vip.geekclub.internship.adapter.controller.admin;
+package vip.geekclub.internship.adapter.controller.teacher;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -9,8 +9,8 @@ import vip.geekclub.internship.application.query.ClassNameQueryService;
 
 import java.util.List;
 
-@RestController
-@RequestMapping("admin/internship/class")
+@RestController("Teacher_ClassController")
+@RequestMapping("teacher/internship/class")
 @RequiredArgsConstructor
 public class ClassController {
     private final ClassNameQueryService classNameQueryService;

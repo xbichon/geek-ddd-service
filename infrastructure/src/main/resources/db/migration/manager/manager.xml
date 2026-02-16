@@ -33,15 +33,15 @@
             <column name="status"/>
         </createIndex>
         <sql>
-            INSERT INTO test.manager_department (id, name, sort_order, manager, parent_id, phone, status, level,
+            INSERT INTO manager_department (id, name, sort_order, manager, parent_id, phone, status, level,
                                                  description, create_time, update_time, version)
             VALUES (1, '极客学院', 1, 'leo', null, '18800000000', 'ENABLED', 1, null, '2025-06-22 20:24:48',
                     '2025-06-22 20:24:48', 0);
-            INSERT INTO test.manager_department (id, name, sort_order, manager, parent_id, phone, status, level,
+            INSERT INTO manager_department (id, name, sort_order, manager, parent_id, phone, status, level,
                                                  description, create_time, update_time, version)
             VALUES (2, '计算机系', 1, 'jim', 1, null, 'ENABLED', 2, null, '2025-08-20 15:18:46', '2025-08-20 15:18:46',
                     0);
-            INSERT INTO test.manager_department (id, name, sort_order, manager, parent_id, phone, status, level,
+            INSERT INTO manager_department (id, name, sort_order, manager, parent_id, phone, status, level,
                                                  description, create_time, update_time, version)
             VALUES (3, '财经系', 2, 'susan', 1, null, 'ENABLED', 2, null, '2025-08-20 15:19:24', '2025-08-20 15:19:24',
                     0);

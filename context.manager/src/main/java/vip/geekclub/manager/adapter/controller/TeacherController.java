@@ -16,7 +16,7 @@ import vip.geekclub.manager.application.command.dto.UpdateTeacherCommand;
  * 提供教师的增删改查操作
  */
 @RestController
-@RequestMapping("/admin/manager/teacher")
+@RequestMapping("/teacher/manager/teacher")
 @RequiredArgsConstructor
 @Authorize(userType = UserType.TEACHER)
 public class TeacherController {

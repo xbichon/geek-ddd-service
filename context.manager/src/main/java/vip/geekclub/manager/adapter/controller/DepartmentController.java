@@ -22,7 +22,7 @@ import java.util.List;
  * 提供部门的增删改查操作
  */
 @RestController
-@RequestMapping("/admin/manager/department")
+@RequestMapping("/teacher/manager/department")
 @RequiredArgsConstructor
 @Authorize(userType = UserType.TEACHER)
 public class DepartmentController {

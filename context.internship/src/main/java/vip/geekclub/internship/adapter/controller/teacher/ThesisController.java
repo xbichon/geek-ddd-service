@@ -1,4 +1,4 @@
-package vip.geekclub.internship.adapter.controller.admin;
+package vip.geekclub.internship.adapter.controller.teacher;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -14,9 +14,9 @@ import java.util.List;
  * 提供论文及选题相关接口（JSON-RPC 风格命名）
  */
 @Slf4j
-@RestController("ADMIN_ThesisController")
+@RestController("Teacher_ThesisController")
 @RequiredArgsConstructor
-@RequestMapping("/admin/internship/thesis")
+@RequestMapping("/teacher/internship/thesis")
 public class ThesisController {
     private final ThesisQueryService thesisQueryService;
 

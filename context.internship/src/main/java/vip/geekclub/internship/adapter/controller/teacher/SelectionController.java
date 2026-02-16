@@ -1,4 +1,4 @@
-package vip.geekclub.internship.adapter.controller.admin;
+package vip.geekclub.internship.adapter.controller.teacher;
 
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
@@ -15,8 +15,8 @@ import vip.geekclub.internship.application.query.dto.ThesisSelectionListResult;
 import java.io.IOException;
 import java.util.List;
 
-@RestController
-@RequestMapping("/admin/internship/selection/")
+@RestController("Teacher_SelectionController")
+@RequestMapping("/teacher/internship/selection/")
 @RequiredArgsConstructor
 public class SelectionController {
 

@@ -1,4 +1,4 @@
-package vip.geekclub.internship.adapter.controller.api;
+package vip.geekclub.internship.adapter.controller.student;
 
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -22,9 +22,9 @@ import java.util.List;
  * 提供论文及选题相关接口（JSON-RPC 风格命名）
  */
 @Slf4j
-@RestController("API_ThesisController")
+@RestController("STUDENT_ThesisController")
 @RequiredArgsConstructor
-@RequestMapping("/api/internship/thesis")
+@RequestMapping("/student/internship/thesis")
 public class ThesisController {
 
     private final WebCommandAdapter commandBus;
