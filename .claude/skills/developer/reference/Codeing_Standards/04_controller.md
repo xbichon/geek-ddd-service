@@ -2,12 +2,12 @@
 
 ## 1、规范
 
-- 文件放置在 `vip.geekclub.{业务领域}.adapter.controller` 包下；
+- 文件放置在 `vip.geekclub.{业务领域}.adapter.controller.{角色}` 包下，按角色划分子包，如 `controller.teacher`、`controller.student`；
 - 使用 `@RestController` + `@RequestMapping` + `@RequiredArgsConstructor`；
 - 方法参数使用 DTO + `@Valid` 校验；
 - 返回类型统一使用 `ApiResponse<T>` 包装；
 - **URL 四级结构**：`/{userType}/{boundedContext}/{resource}/{action}`
-  - `userType`：用户角色，如 `teacher`、`student`、`admin`
+  - `userType`：用户角色，如 `teacher`、`student`、`admin`。**注意：新增角色需在 `SecurityConfig.configureUrl()` 中添加对应的路径权限配置，如 `.requestMatchers("/teacher/**").hasRole(UserType.TEACHER)`**
   - `boundedContext`：界限上下文，如 `internship`、`auth`
   - `resource`：资源/聚合根，如 `selection`、`application`
   - `action`：业务操作，如 `list`、`submit`、`update`
