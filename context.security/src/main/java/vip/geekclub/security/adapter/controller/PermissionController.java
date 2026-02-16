@@ -12,12 +12,12 @@ import java.util.Set;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/security")
+@RequestMapping("/security/permission")
 public class PermissionController {
 
     private final PermissionQueryService permissionQueryService;
 
-    @GetMapping("/permission")
+    @GetMapping("/getCurrent")
     public ApiResponse<Set<String>> getPermissionByUserId(UserPrincipal userPrincipal) {
 
         Set<String> permissions = permissionQueryService.getPermissionByAuthId(userPrincipal.authId());
