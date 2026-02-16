@@ -9,7 +9,7 @@ import vip.geekclub.framework.controller.ApiResponse;
 import vip.geekclub.framework.jooq.PageResult;
 import vip.geekclub.framework.utils.ExcelExportUtil;
 import vip.geekclub.internship.application.query.ThesisSelectionListQueryService;
-import vip.geekclub.internship.application.query.dto.ThesisSelectionListQuery;
+import vip.geekclub.internship.application.query.dto.ThesisSelectionPageQuery;
 import vip.geekclub.internship.application.query.dto.ThesisSelectionListResult;
 
 import java.io.IOException;
@@ -29,7 +29,7 @@ public class SelectionController {
      * @return 论文选择结果列表
      */
     @GetMapping("/list")
-    public ApiResponse<PageResult<ThesisSelectionListResult>> listThesisSelections(ThesisSelectionListQuery query) {
+    public ApiResponse<PageResult<ThesisSelectionListResult>> listThesisSelections(ThesisSelectionPageQuery query) {
         PageResult<ThesisSelectionListResult> list = thesisSelectionListQueryService.getThesisSelectionList(query);
         return ApiResponse.success(list);
     }

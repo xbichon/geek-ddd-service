@@ -24,34 +24,10 @@ public record PageResult<T>(
         /*
           每页大小
          */
-        int pageSize,
-        
-        /*
-          总页数
-         */
-        int totalPages
+        int pageSize
 ) {
-    public PageResult(List<T> records, Long total, int pageNum, int pageSize) {
-        this(records, total, pageNum, pageSize, 
-             (int) Math.ceil((double) total / pageSize));
-    }
 
     public PageResult(List<T> records, Long total, PageQuery pageQuery) {
-        this(records, total, pageQuery.pageNum(), pageQuery.pageSize(),
-                (int) Math.ceil((double) total / pageQuery.pageSize()));
-    }
-    
-    /**
-     * 是否有下一页
-     */
-    public boolean hasNext() {
-        return pageNum < totalPages;
-    }
-    
-    /**
-     * 是否有上一页
-     */
-    public boolean hasPrevious() {
-        return pageNum > 1;
+        this(records, total, pageQuery.getPageNum(), pageQuery.getPageSize());
     }
 }

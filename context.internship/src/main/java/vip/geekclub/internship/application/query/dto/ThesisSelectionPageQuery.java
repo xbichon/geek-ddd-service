@@ -5,7 +5,7 @@ import vip.geekclub.framework.jooq.PageQuery;
 /**
  * 论文选择结果列表查询参数
  */
-public record ThesisSelectionListQuery(
+public record ThesisSelectionPageQuery(
 
         /*
          * 论文ID（精确查询）
@@ -28,11 +28,18 @@ public record ThesisSelectionListQuery(
         String studentName,
 
         /*
-         * 分页参数
+         * 页码（从1开始）
          */
-        PageQuery page
-) {
-    public ThesisSelectionListQuery {
+        Integer pageNum,
+
+        /*
+         * 每页大小
+         */
+        Integer pageSize
+
+) implements PageQuery {
+    public ThesisSelectionPageQuery {
+
         // 空值处理，将空字符串转为null
         if (className != null && className.isBlank()) {
             className = null;
@@ -43,6 +50,5 @@ public record ThesisSelectionListQuery(
         if (studentName != null && studentName.isBlank()) {
             studentName = null;
         }
-        page = page != null ? page : new PageQuery(1, 10);
     }
 }

@@ -1,6 +1,5 @@
 package vip.geekclub.internship.application.query;
 
-import lombok.AllArgsConstructor;
 import lombok.RequiredArgsConstructor;
 import org.jooq.DSLContext;
 import org.jooq.Field;
@@ -11,7 +10,7 @@ import vip.geekclub.framework.jooq.PageResult;
 import vip.geekclub.internship.generated.Tables;
 import vip.geekclub.internship.generated.tables.*;
 import org.springframework.stereotype.Service;
-import vip.geekclub.internship.application.query.dto.ThesisSelectionListQuery;
+import vip.geekclub.internship.application.query.dto.ThesisSelectionPageQuery;
 import vip.geekclub.internship.application.query.dto.ThesisSelectionListResult;
 
 import java.util.List;
@@ -77,7 +76,7 @@ public class ThesisSelectionListQueryService {
     /**
      * 获取论文选择结果列表（分页）
      */
-    public PageResult<ThesisSelectionListResult> getThesisSelectionList(ThesisSelectionListQuery query) {
+    public PageResult<ThesisSelectionListResult> getThesisSelectionList(ThesisSelectionPageQuery query) {
         // 构建查询条件
         var list = dslContext.select(commonSelectFields)
                 .select(PageHelper.TOTAL_COUNT)
@@ -109,7 +108,7 @@ public class ThesisSelectionListQueryService {
                         internTable.as("creator").STUDENT_NO
                 );
 
-        return PageHelper.page(list, query.page(), this::mapToThesisSelectionListResult);
+        return PageHelper.page(list, query, this::mapToThesisSelectionListResult);
     }
 
     /**
