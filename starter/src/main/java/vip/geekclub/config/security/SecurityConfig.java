@@ -2,6 +2,7 @@ package vip.geekclub.config.security;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.boot.web.servlet.FilterRegistrationBean;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import vip.geekclub.contract.UserType;
 import vip.geekclub.framework.controller.ApiResponse;

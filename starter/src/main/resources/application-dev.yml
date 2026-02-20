@@ -1,6 +1,11 @@
 spring:
   main:
     lazy-initialization: true
+  autoconfigure:
+    exclude:
+      - org.springframework.boot.actuate.autoconfigure.endpoint.EndpointAutoConfiguration
+      - org.springframework.boot.actuate.autoconfigure.endpoint.web.WebEndpointAutoConfiguration
+      - org.springframework.boot.actuate.autoconfigure.info.InfoContributorAutoConfiguration
   datasource:
     url: jdbc:mysql://localhost:3306/${spring.datasource.name}?useSSL=true&serverTimezone=Asia/Shanghai&useUnicode=true&characterEncoding=utf-8&allowPublicKeyRetrieval=true&useConfigs=maxPerformance
     username: root
@@ -52,6 +57,18 @@ logging:
   level:
     vip.geekclub: DEBUG
     sun.rmi.transport.tcp: ERROR
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: ""  # 空字符串 = 不暴露任何端点
+      base-path: /actuator
+  # 禁用所有端点的缓存（减少启动时初始化）
+  endpoint:
+    health:
+      cache:
+        time-to-live: 0ms  # 禁用缓存
 
 config:
   # JWT配置
