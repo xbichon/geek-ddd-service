@@ -2,10 +2,7 @@ package vip.geekclub.manager.application.command;
 
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import vip.geekclub.framework.command.CommandDispatcher;
-import vip.geekclub.framework.command.CommandHandler;
-import vip.geekclub.framework.command.CommandResult;
-import vip.geekclub.framework.command.IdResult;
+import vip.geekclub.framework.command.*;
 import vip.geekclub.manager.application.command.dto.CreateTeacherCommand;
 import vip.geekclub.manager.domain.model.Teacher;
 import vip.geekclub.manager.domain.repository.TeacherRepository;
@@ -27,6 +24,7 @@ public class CreateTeacherCommandHandler implements CommandHandler<CreateTeacher
 
     private final TeacherRepository teacherRepository;
     private final TeacherCreationUpdateValidator teacherCreationUpdateValidator;
+    private final CommandBus commandBus;
 
     @Override
     public CommandResult<IdResult> execute(CreateTeacherCommand command) {
@@ -44,7 +42,7 @@ public class CreateTeacherCommandHandler implements CommandHandler<CreateTeacher
         teacherRepository.save(teacher);
 
         // 3. 创建用户的凭证
-        CommandDispatcher.dispatch(new CreatePrincipalCommand(
+        commandBus.dispatch(new CreatePrincipalCommand(
                 "teacher", teacher.getAuthId(),
                 List.of(new IdentifierValue(IdentifierValue.EMAIL, teacher.getEmail())
                         , new IdentifierValue(IdentifierValue.PHONE, teacher.getPhone())),

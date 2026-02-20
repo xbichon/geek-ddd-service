@@ -8,7 +8,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.web.bind.annotation.*;
-import vip.geekclub.framework.command.CommandDispatcher;
+import vip.geekclub.framework.command.CommandBus;
 import vip.geekclub.framework.command.CommandResult;
 import vip.geekclub.framework.controller.ApiResponse;
 import vip.geekclub.framework.security.SessionStore;
@@ -39,6 +39,7 @@ public class PasswordAuthController {
 
     @Value("${spring.profiles.active:prod}")
     private String activeProfile;
+    private final CommandBus commandBus;
 
     /**
      * 用户名密码登录
@@ -71,7 +72,7 @@ public class PasswordAuthController {
 
         // 验证码验证通过，继续执行登录逻辑
         PasswordLoginCommand command = new PasswordLoginCommand(request.userType(), request.identifier(), request.password());
-        CommandResult<UserPrincipal> commandResult = CommandDispatcher.dispatch(command);
+        CommandResult<UserPrincipal> commandResult = commandBus.dispatch(command);
         UserPrincipal userPrincipal = commandResult.data();
         UserAuthentication userAuthentication = new UserAuthentication(userPrincipal);
         String jwtToken = authSessionManager.create(userAuthentication);

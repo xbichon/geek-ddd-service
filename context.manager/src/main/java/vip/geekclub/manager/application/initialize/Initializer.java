@@ -5,7 +5,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import vip.geekclub.contract.UserType;
-import vip.geekclub.framework.command.CommandDispatcher;
+import vip.geekclub.framework.command.CommandBus;
 import vip.geekclub.manager.domain.model.Teacher;
 import vip.geekclub.manager.domain.repository.TeacherRepository;
 import vip.geekclub.security.application.command.principal.CreateAdminCommand;
@@ -18,6 +18,7 @@ import java.util.List;
 @AllArgsConstructor
 public class Initializer implements vip.geekclub.framework.initialize.Initializer {
     private final TeacherRepository teacherRepository;
+    private final CommandBus commandBus;
 
     @Transactional
     @Override
@@ -43,6 +44,6 @@ public class Initializer implements vip.geekclub.framework.initialize.Initialize
                 teacher.getAuthId(),
                 UserType.TEACHER
         );
-        CommandDispatcher.dispatch(command);
+        commandBus.dispatch(command);
     }
 }

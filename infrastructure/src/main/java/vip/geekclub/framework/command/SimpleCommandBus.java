@@ -1,5 +1,6 @@
 package vip.geekclub.framework.command;
 
+import vip.geekclub.framework.utils.ApplicationUtil;
 import vip.geekclub.framework.utils.AssertUtil;
 
 import java.util.HashMap;
@@ -37,6 +38,11 @@ public class SimpleCommandBus implements CommandBus {
     private final Map<Class<? extends Command>, CommandHandler<?, ?>> commandHandlers;
 
     /**
+     * 初始化状态标记（用于线程安全的延迟加载）
+     */
+    private volatile boolean initialized = false;
+
+    /**
      * 责任链头节点，默认包含命令处理器执行逻辑
      */
     private CommandHandlerChain chain;
@@ -58,16 +64,40 @@ public class SimpleCommandBus implements CommandBus {
     }
 
     /**
-     * 批量添加命令处理器
+     * 批量添加命令处理器（私有方法，延迟加载时调用）
      */
-    public void addHandlers(List<CommandHandler<?, ?>> handlers) {
-
+    private void addHandlers(List<CommandHandler<?, ?>> handlers) {
         if (handlers == null || handlers.isEmpty()) return;
 
         for (CommandHandler<?, ?> handler : handlers) {
             Class<? extends Command> commandType = handler.getCommandType();
             CommandHandler<?, ?> existing = this.commandHandlers.put(commandType, handler);
             AssertUtil.isNull(existing, () -> "检测到重复的 CommandHandler 注册: " + commandType.getName());
+        }
+    }
+
+    /**
+     * 延迟初始化命令处理器（线程安全，使用 DCL 双重检查锁定）
+     * 第一次调用时从 Spring 容器中获取所有 CommandHandler
+     */
+    @SuppressWarnings({"unchecked", "rawtypes"})
+    private void lazyInitHandlers() {
+        // 第一次检查（无锁）：已初始化则直接返回
+        if (this.initialized) {
+            return;
+        }
+
+        // 同步块：确保只有一个线程执行初始化，其他线程阻塞等待
+        synchronized (this.commandHandlers) {
+            // 第二次检查：防止等待锁的线程重复初始化
+            if (this.initialized) {
+                return;
+            }
+
+            // 执行初始化
+            List handlers = ApplicationUtil.getBeansOfType(CommandHandler.class);
+            addHandlers(handlers);
+            this.initialized = true;
         }
     }
 
@@ -84,8 +114,8 @@ public class SimpleCommandBus implements CommandBus {
      */
     @Override
     public <C extends Command, R> CommandResult<R> dispatch(C command) {
-
-
+        // 0. 延迟初始化处理器（第一次调用时）
+        lazyInitHandlers();
 
         // 1. 命令非空验证
         AssertUtil.notNull(command, () -> "命令不能为空(" + command.getClass().getName() + ")");

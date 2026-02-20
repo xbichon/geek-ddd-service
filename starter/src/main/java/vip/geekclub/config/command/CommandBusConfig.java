@@ -6,21 +6,14 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Lazy;
 import vip.geekclub.framework.command.*;
 
-import java.util.List;
-
 @Slf4j
 @Configuration
 public class  CommandBusConfig {
 
     @Lazy
     @Bean
-    public CommandBus commandBus(List<CommandHandler<?,?>> commandHandlers, CommandContextChain commandContextChain, CommandValidatorHandleChain commandValidatorHandleChain) {
+    public CommandBus commandBus(CommandValidatorHandleChain commandValidatorHandleChain) {
         SimpleCommandBus commandBus = new SimpleCommandBus();
-        commandBus.addHandlers(commandHandlers);
-        // 注意：后添加的链先执行
-        // 1. 先提取用户上下文
-        commandBus.addChain(commandContextChain);
-        // 2. 再验证命令
         commandBus.addChain(commandValidatorHandleChain);
         return commandBus;
     }
