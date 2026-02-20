@@ -26,7 +26,7 @@ spring:
     properties:
       hibernate:
 #        format_sql: true
-        # 禁用字节码增强（节省 0.3-0.5s）
+        # 禁用字节码增强
         bytecode:
           provider: none
         enhancer:
