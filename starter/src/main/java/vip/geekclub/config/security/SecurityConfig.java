@@ -2,13 +2,10 @@ package vip.geekclub.config.security;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.boot.web.servlet.FilterRegistrationBean;
-import org.springframework.context.annotation.Lazy;
-import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
-import vip.geekclub.contract.UserType;
-import vip.geekclub.framework.controller.ApiResponse;
-import vip.geekclub.framework.utils.HttpUtil;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.core.annotation.Order;
+import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.config.http.SessionCreationPolicy;
@@ -18,6 +15,10 @@ import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
+
+import vip.geekclub.contract.UserType;
+import vip.geekclub.framework.controller.ApiResponse;
+import vip.geekclub.framework.utils.HttpUtil;
 
 import java.util.List;
 
@@ -52,78 +53,68 @@ public class SecurityConfig {
     }
 
     /**
-     * 配置安全过滤器链
+     * 白名单链：免认证路径，无JWT过滤器
      */
     @Bean
-    public SecurityFilterChain filterChain(HttpSecurity http) {
-        configureUrl(http);
-        configureCross(http);
-        configureFilter(http);
-        configureExceptionHandling(http);
-        disableUnnecessaryFilters(http);
+    @Order(1)
+    public SecurityFilterChain whiteListChain(HttpSecurity http) {
+        http.securityMatcher(PERMIT_PATHS)
+                .authorizeHttpRequests(auth -> auth.anyRequest().permitAll());
+        configureCommon(http);
         return http.build();
     }
 
     /**
-     * 禁用不必要的过滤器，优化性能
+     * 安全链：需认证路径，有JWT过滤器
      */
-    private void disableUnnecessaryFilters(HttpSecurity http) {
-        http.sessionManagement(config -> config.sessionCreationPolicy(SessionCreationPolicy.STATELESS));
-        http.httpBasic(AbstractHttpConfigurer::disable);
-        http.csrf(AbstractHttpConfigurer::disable);
-        http.formLogin(AbstractHttpConfigurer::disable);
-        http.rememberMe(AbstractHttpConfigurer::disable);
-        http.anonymous(AbstractHttpConfigurer::disable); // 禁用匿名认证
-        http.logout(AbstractHttpConfigurer::disable); // 禁用注销功能
-        http.requestCache(AbstractHttpConfigurer::disable); // 禁用请求缓存
+    @Bean
+    @Order(2)
+    public SecurityFilterChain securedChain(HttpSecurity http) {
+        http.securityMatcher(SECURITY_PATH)
+                .addFilterBefore(jwtRequestFilter, UsernamePasswordAuthenticationFilter.class)
+                .authorizeHttpRequests(auth -> auth
+                        .requestMatchers("/student/**").hasRole(UserType.STUDENT)
+                        .requestMatchers("/teacher/**").hasRole(UserType.TEACHER)
+                        .anyRequest().authenticated());
+        configureCommon(http);
+        configureExceptionHandling(http);
+        return http.build();
     }
 
     /**
-     * 配置URL拦截规则
+     * 公共配置：禁用不必要的过滤器、CORS、Session策略
      */
-    private void configureUrl(HttpSecurity http) {
-        http.securityMatcher(SECURITY_PATH);
-        http.authorizeHttpRequests(authorize -> authorize.requestMatchers(PERMIT_PATHS).permitAll()
-                .requestMatchers("/student/**").hasRole(UserType.STUDENT)
-                .requestMatchers("/teacher/**").hasRole(UserType.TEACHER)
-                .anyRequest().authenticated());
-    }
+    private void configureCommon(HttpSecurity http) {
+        http.csrf(AbstractHttpConfigurer::disable)
+                .httpBasic(AbstractHttpConfigurer::disable)
+                .formLogin(AbstractHttpConfigurer::disable)
+                .rememberMe(AbstractHttpConfigurer::disable)
+                .anonymous(AbstractHttpConfigurer::disable)
+                .logout(AbstractHttpConfigurer::disable)
+                .requestCache(AbstractHttpConfigurer::disable)
+                .sessionManagement(config -> config.sessionCreationPolicy(SessionCreationPolicy.STATELESS));
 
-    /**
-     * 配置CORS
-     */
-    public void configureCross(HttpSecurity http) {
+        // 跨域配置
         CorsConfiguration corsConfiguration = new CorsConfiguration();
-        corsConfiguration.setAllowedOriginPatterns(List.of("*")); // 允许所有域名（生产环境应指定具体域名）
+        corsConfiguration.setAllowedOriginPatterns(List.of("*"));
         corsConfiguration.setAllowedMethods(List.of(ALLOWED_METHODS));
         corsConfiguration.setAllowedHeaders(List.of(ALLOWED_HEADERS));
-        corsConfiguration.setAllowCredentials(true); // 允许携带 Cookie
-        corsConfiguration.setMaxAge(CORS_MAX_AGE); // 预检请求缓存时间（秒）
-
+        corsConfiguration.setAllowCredentials(true);
+        corsConfiguration.setMaxAge(CORS_MAX_AGE);
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
-        source.registerCorsConfiguration(SECURITY_PATH, corsConfiguration); // 全局生效
+        source.registerCorsConfiguration(SECURITY_PATH, corsConfiguration);
 
         http.cors(config -> config.configurationSource(source));
     }
 
-    /**
-     * 配置过滤器
-     */
-    private void configureFilter(HttpSecurity http) {
-        // 添加JWT请求过滤器，在用户名密码认证过滤器之前执行
-        http.addFilterBefore(jwtRequestFilter, UsernamePasswordAuthenticationFilter.class);
-    }
 
     /**
      * 配置异常处理
      */
     private void configureExceptionHandling(HttpSecurity http) {
         http.exceptionHandling(config -> config
-                // 请求未授权接口处理
                 .accessDeniedHandler((request, response, exception) -> httpUtil.setResponse(response,
                         ApiResponse.fail(403, "用户无权限")))
-
-                // 请求未认证接口处理
                 .authenticationEntryPoint((request, response, exception) -> httpUtil.setResponse(response,
                         ApiResponse.fail(401, exception.getMessage()))));
     }
