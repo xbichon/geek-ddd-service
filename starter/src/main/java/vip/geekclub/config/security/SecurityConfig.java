@@ -5,7 +5,10 @@ import org.springframework.boot.web.servlet.FilterRegistrationBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.annotation.Order;
+import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
+import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
@@ -15,7 +18,6 @@ import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
 import vip.geekclub.contract.UserType;
 import vip.geekclub.framework.controller.ApiResponse;
-import vip.geekclub.framework.security.StatelessBaseConfigurer;
 import vip.geekclub.framework.utils.HttpUtil;
 
 import java.util.List;
@@ -27,8 +29,8 @@ import java.util.List;
  * 2. 安全链（@Order(2)）：处理需认证路径，经过 JWT 过滤器进行身份验证
  */
 @RequiredArgsConstructor
-@Configuration(proxyBeanMethods = false)
-//@EnableMethodSecurity
+@Configuration
+@EnableMethodSecurity
 public class SecurityConfig {
 
     /**
@@ -95,8 +97,8 @@ public class SecurityConfig {
     @Order(1)
     public SecurityFilterChain whiteListChain(HttpSecurity http) {
         http.securityMatcher(PERMIT_PATHS)
-                .authorizeHttpRequests(auth -> auth.anyRequest().permitAll())
-                .apply(new StatelessBaseConfigurer());
+                .authorizeHttpRequests(auth -> auth.anyRequest().permitAll());
+        configureStatelessMode(http);
 
         return http.build();
     }
@@ -127,10 +129,23 @@ public class SecurityConfig {
                                 (request, response, exception) ->
                                         httpUtil.setResponse(response, ApiResponse.fail(401, exception.getMessage()))
                         )
-                )
-                .apply(new StatelessBaseConfigurer());
+                );
+        configureStatelessMode(http);
 
         return http.build();
+    }
+
+    private void configureStatelessMode(HttpSecurity http) {
+        http
+                .csrf(AbstractHttpConfigurer::disable)
+                .httpBasic(AbstractHttpConfigurer::disable)
+                .formLogin(AbstractHttpConfigurer::disable)
+                .rememberMe(AbstractHttpConfigurer::disable)
+                .anonymous(AbstractHttpConfigurer::disable)
+                .logout(AbstractHttpConfigurer::disable)
+                .requestCache(AbstractHttpConfigurer::disable)
+                .sessionManagement(config ->
+                        config.sessionCreationPolicy(SessionCreationPolicy.STATELESS));
     }
 
     /**
