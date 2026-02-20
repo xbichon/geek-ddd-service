@@ -3,6 +3,7 @@ package vip.geekclub.framework.utils;
 import lombok.NonNull;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextAware;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
@@ -13,6 +14,7 @@ import java.util.Map;
  * @author xiongrui
  */
 @Component
+@Lazy(false)
 public class ApplicationUtil implements ApplicationContextAware {
 
     private static ApplicationContext applicationContext;
