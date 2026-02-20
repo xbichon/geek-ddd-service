@@ -20,7 +20,6 @@ import vip.geekclub.security.application.command.credential.PasswordLoginCommand
 
 import java.io.ByteArrayOutputStream;
 import java.util.Base64;
-import java.util.Set;
 import java.util.UUID;
 import java.util.concurrent.TimeUnit;
 
