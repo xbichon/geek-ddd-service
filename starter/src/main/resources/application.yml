@@ -5,7 +5,6 @@ spring:
     name: arc
   profiles:
     active: ${SPRING_PROFILES_ACTIVE:dev}
-
   jpa:
 #    database-platform: org.hibernate.dialect.MySQLDialect
     open-in-view: false
@@ -24,7 +23,6 @@ spring:
           autoregister_listeners: false
         jdbc:
           batch_size: 20
-        format_sql: true
         hbm2ddl:
           auto: none
 

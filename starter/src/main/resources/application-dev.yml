@@ -1,21 +1,52 @@
 spring:
+  main:
+    lazy-initialization: true
   datasource:
     url: jdbc:mysql://localhost:3306/${spring.datasource.name}?useSSL=true&serverTimezone=Asia/Shanghai&useUnicode=true&characterEncoding=utf-8&allowPublicKeyRetrieval=true&useConfigs=maxPerformance
     username: root
     password: 12345678
     name: geek_data
     driver-class-name: com.mysql.cj.jdbc.Driver
+    hikari:
+      connection-timeout: 1000
+      maximum-pool-size: 5
+      minimum-idle: 2
+      initialization-fail-timeout: 1000
   data:
     redis:
       host: localhost
       port: 6379
   jpa:
     show-sql: true
+    properties:
+      hibernate:
+#        format_sql: true
+        # 禁用字节码增强（节省 0.3-0.5s）
+        bytecode:
+          provider: none
+        enhancer:
+          enable: false
+        # 禁用实体验证（开发环境）
+        check_nullability: false
 
 server:
   port: 8080
   servlet:
     context-path: /api
+  # 禁用不必要的 Tomcat 功能
+  tomcat:
+    # 减少线程池预热（开发环境）
+    threads:
+      min-spare: 1  # 默认 10
+    max-connections: 1000  # 默认 10000，减少连接池预热
+    accept-count: 100      # 默认 100，连接队列
+    connection-timeout: 2000  # 2秒超时
+    # 禁用静态资源缓存预热
+    resource:
+      cache-ttl: 0
+  # 禁用 SSL（如果不用 HTTPS）
+  ssl:
+    enabled: false
 
 logging:
   level:

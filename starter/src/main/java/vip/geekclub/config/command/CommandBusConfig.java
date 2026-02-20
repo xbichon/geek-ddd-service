@@ -15,7 +15,6 @@ public class  CommandBusConfig {
     @Lazy
     @Bean
     public CommandBus commandBus(List<CommandHandler<?,?>> commandHandlers, CommandContextChain commandContextChain, CommandValidatorHandleChain commandValidatorHandleChain) {
-        log.info("开始初始化命令总线...");
         SimpleCommandBus commandBus = new SimpleCommandBus();
         commandBus.addHandlers(commandHandlers);
         // 注意：后添加的链先执行
@@ -23,7 +22,6 @@ public class  CommandBusConfig {
         commandBus.addChain(commandContextChain);
         // 2. 再验证命令
         commandBus.addChain(commandValidatorHandleChain);
-        log.info("结束初始化命令总线...");
         return commandBus;
     }
 }
