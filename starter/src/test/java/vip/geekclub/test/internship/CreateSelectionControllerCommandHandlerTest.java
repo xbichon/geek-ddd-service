@@ -5,7 +5,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.annotation.Rollback;
 import org.springframework.transaction.annotation.Transactional;
-import vip.geekclub.framework.command.CommandContext;
 import vip.geekclub.framework.security.UserPrincipal;
 import vip.geekclub.internship.application.command.thesisselection.CreateThesisSelectionCommand;
 import vip.geekclub.internship.application.command.thesisselection.CreateThesisSelectionCommandHandler;
@@ -35,7 +34,7 @@ public class CreateSelectionControllerCommandHandlerTest {
     public void testCreateGroupSelection_Success() {
 
         UserPrincipal currentUser = new UserPrincipal("cd5bbda6-5494-4cdd-9229-8e43d2895888","student" );
-        CommandContext.setCurrentUser(currentUser);
+//        CommandContext.setCurrentUser(currentUser);
 
         List<TeamMemberValue> members = List.of(
                 new TeamMemberValue(1L, "负责需求分析"),
