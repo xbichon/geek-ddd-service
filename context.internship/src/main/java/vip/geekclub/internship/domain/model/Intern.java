@@ -7,6 +7,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import vip.geekclub.framework.domain.model.AggregateRoot;
 import vip.geekclub.framework.domain.model.EntitySupport;
+import vip.geekclub.framework.exception.BusinessException;
 import vip.geekclub.framework.utils.AssertUtil;
 
 import java.util.UUID;
@@ -77,5 +78,13 @@ public class Intern extends EntitySupport implements AggregateRoot<Long> {
         this.authId = UUID.randomUUID().toString();
         this.className = className;
         this.advisorName = advisorName;
+    }
+
+    public void initAuthId() {
+        if (this.authId != null) {
+            throw new BusinessException(400, "用户ID已存在");
+        }
+        UUID uuid = UUID.randomUUID();
+        setAuthId(uuid.toString());
     }
 }

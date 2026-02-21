@@ -27,4 +27,11 @@ public interface InternRepository extends JpaRepository<@NonNull Intern, @NonNul
      * @return 实习生列表
      */
     List<Intern> findAllByIdIn(@NonNull List<Long> ids);
+
+    /**
+     * 查询所有未认证的实习生
+     *
+     * @return 未认证的实习生列表
+     */
+    List<Intern> findAllByAuthIdIsNull();
 }

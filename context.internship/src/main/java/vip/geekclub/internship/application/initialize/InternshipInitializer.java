@@ -29,27 +29,19 @@ public class InternshipInitializer implements Initializer {
         final String advisorName = "张莺";
         final String className = "软件工程2301班";
 
-        // 判断没有学生时才初始化
-        if (internRepository.count() == 0) {
-            Intern intern1 = new Intern("张三", "20230101001", className, advisorName);
-            Intern intern2 = new Intern("李四", "20230101002", className, advisorName);
-            Intern intern3 = new Intern("王五", "20230101003", className, advisorName);
-            Intern intern4 = new Intern("赵六", "20230101004", className, advisorName);
-            Intern intern5 = new Intern("孙七", "20230101005", className, advisorName);
-            Intern intern6 = new Intern("钱八", "20230101006", className, advisorName);
-            Intern intern7 = new Intern("杜久", "20230101007", className, advisorName);
-            List<Intern> savedInterns = internRepository.saveAll(List.of(intern1, intern2, intern3, intern4, intern5, intern6, intern7));
+
+        List<Intern> allByAuthIdIsNull = internRepository.findAllByAuthIdIsNull();
+        for (Intern intern : allByAuthIdIsNull) {
+            intern.initAuthId();
 
             // 为每个实习生创建 Principal（密码默认为 666666）
-            for (Intern intern : savedInterns) {
-                CreatePrincipalCommand command = new CreatePrincipalCommand(
-                        UserType.STUDENT, intern.getAuthId(),
-                        List.of(new IdentifierValue("STUDENT_NO", intern.getStudentNo())),
-                        "666666"
-                );
-                commandBus.dispatch(command);
-            }
+            CreatePrincipalCommand command = new CreatePrincipalCommand(UserType.STUDENT, intern.getAuthId(),
+                    List.of(new IdentifierValue("STUDENT_NO", intern.getStudentNo())),
+                    "666666"
+            );
+            commandBus.dispatch(command);
         }
+        internRepository.saveAll(allByAuthIdIsNull);
 
         // 判断没有论文时才初始化
         if (thesisRepository.count() == 0) {
