@@ -13,9 +13,9 @@ import org.springframework.stereotype.Service;
 import vip.geekclub.internship.application.query.dto.SelectionPageQuery;
 import vip.geekclub.internship.application.query.dto.SelectionItemResult;
 
+import java.util.Arrays;
 import java.util.List;
-
-import static org.jooq.impl.DSL.count;
+import java.util.stream.Collectors;
 
 /**
  * 论文选题列表查询服务
@@ -41,7 +41,7 @@ public class SelectionListQueryService {
             internTable.as("creator").STUDENT_NO,
             internTable.as("creator").ADVISOR_NAME,
             DSL.field("group_concat({0})", String.class, internTable.NAME).as("GroupMember")
-    };;
+    };
 
 
     /**
@@ -118,17 +118,31 @@ public class SelectionListQueryService {
      * @return ThesisSelectionListResult 对象
      */
     private SelectionItemResult mapToSelectionItem(Record r) {
+        String selectionType = r.get(thesisSelectionTable.SELECTION_TYPE);
+        String creatorName = r.get(internTable.as("creator").NAME);
+        String groupMembers = r.get("GroupMember", String.class);
+
+        // 如果不是小组，组员为空；如果是小组，剔除当前创建者
+        if (!"GROUP".equals(selectionType)) {
+            groupMembers = null;
+        } else if (groupMembers != null && creatorName != null) {
+            groupMembers = Arrays.stream(groupMembers.split(","))
+                    .map(String::trim)
+                    .filter(name -> !name.equals(creatorName.trim()))
+                    .collect(Collectors.joining(", "));
+        }
+
         return new SelectionItemResult(
                 r.get(thesisSelectionTable.ID),
                 r.get(thesisSelectionTable.THESIS_ID),
                 r.get(thesisTable.TITLE),
                 r.get(thesisSelectionTable.ACHIEVEMENT_TYPE),
-                r.get(thesisSelectionTable.SELECTION_TYPE),
-                r.get(internTable.as("creator").NAME),
+                selectionType,
+                creatorName,
                 r.get(internTable.as("creator").STUDENT_NO),
                 r.get(internTable.as("creator").CLASS_NAME),
                 r.get(internTable.as("creator").ADVISOR_NAME),
-                r.get("GroupMember", String.class)
+                groupMembers
         );
     }
 }
