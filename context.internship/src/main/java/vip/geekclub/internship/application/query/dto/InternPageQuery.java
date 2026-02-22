@@ -2,7 +2,7 @@ package vip.geekclub.internship.application.query.dto;
 
 import com.fasterxml.jackson.annotation.JsonUnwrapped;
 import org.springframework.util.StringUtils;
-import vip.geekclub.framework.jooq.PageParam;
+import vip.geekclub.framework.jooq.PageQuery;
 
 /**
  * 实习生分页查询参数
@@ -34,13 +34,11 @@ public record InternPageQuery(
          */
         Boolean selected,
 
-        /*
-         * 分页参数
-         */
-        @JsonUnwrapped
-        PageParam pageParam
+        Integer pageNum,
 
-) {
+        Integer pageSize
+
+)  implements PageQuery{
     public InternPageQuery {
 
         // 空值处理，将空字符串转为null
