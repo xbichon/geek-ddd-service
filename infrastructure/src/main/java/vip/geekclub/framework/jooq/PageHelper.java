@@ -46,6 +46,7 @@ public class PageHelper {
      * @return 分页结果
      */
     public static  <T> PageResult<T> page(SelectLimitStep<?> query, PageQuery pageQuery, RecordMapper<Record, T> mapper) {
+
         var list = query.limit(pageQuery.getLimit())
                 .offset(pageQuery.getOffset())
                 .fetch();
