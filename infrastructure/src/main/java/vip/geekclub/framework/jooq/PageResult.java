@@ -26,8 +26,4 @@ public record PageResult<T>(
          */
         int pageSize
 ) {
-
-    public PageResult(List<T> records, Long total,int pageNum,int pageSize) {
-        this(records, total, pageNum, pageSize);
-    }
 }
