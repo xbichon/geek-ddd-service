@@ -27,7 +27,7 @@ public record PageResult<T>(
         int pageSize
 ) {
 
-    public PageResult(List<T> records, Long total, PageQuery pageQuery) {
-        this(records, total, pageQuery.getPageNum(), pageQuery.getPageSize());
+    public PageResult(List<T> records, Long total,int pageNum,int pageSize) {
+        this(records, total, pageNum, pageSize);
     }
 }
