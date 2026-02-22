@@ -8,34 +8,25 @@ import vip.geekclub.framework.jooq.PageQuery;
  * 实习生分页查询参数
  */
 public record InternPageQuery(
-
-        /*
-         * 班级名称（精确查询）
-         */
+        // 班级名称（精确查询）
         String className,
 
-        /*
-         * 指导老师姓名（精确查询）
-         */
+        // 指导老师姓名（精确查询）
         String advisorName,
 
-        /*
-         * 学生姓名（模糊查询）
-         */
+        // 学生姓名（模糊查询）
         String studentName,
 
-        /*
-         * 学号（精确查询）
-         */
+        // 学号（精确查询）
         String studentNo,
 
-        /*
-         * 是否已选题（true-已选题，false-未选题）
-         */
+        // 是否已选题（true-已选题，false-未选题）
         Boolean selected,
 
+        // 分页参数
         Integer pageNum,
 
+        // 每页大小
         Integer pageSize
 
 )  implements PageQuery{

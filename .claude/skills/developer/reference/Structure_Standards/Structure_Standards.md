@@ -58,3 +58,20 @@
 
 ### （5）数据库迁移
 - 数据库迁移脚本放在 `infrastructure/src/main/resources/db/migration` 目录下
+
+## 3. 编码规范
+
+### （1）Record 类型参数注释
+
+对于 Java Record 类型的参数注释，使用单行注释 `//`，避免使用多行注释 `/* */`。
+
+**示例：**
+```java
+public record InternPageQuery(
+    // 班级名称（精确查询）
+    String className,
+
+    // 学生姓名（模糊查询）
+    String studentName
+) {}
+```
