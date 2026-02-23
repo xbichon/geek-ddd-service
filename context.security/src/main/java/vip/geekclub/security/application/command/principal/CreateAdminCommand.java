@@ -11,7 +11,7 @@ import vip.geekclub.security.domain.value.IdentifierValue;
 
 import java.util.List;
 
-@CommandHandlerMapping(CreateAdminVoidCommandHandler.class)
+@CommandHandlerMapping(CreateAdminCommandHandler.class)
 public record CreateAdminCommand(
         @NotEmpty(message = "标识符列表不能为空")
         List<IdentifierValue> identifierValues,

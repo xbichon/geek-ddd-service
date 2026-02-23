@@ -14,7 +14,7 @@ import java.util.List;
 
 @AllArgsConstructor
 @Service
-public class CreateThesisSelectionVoidCommandHandler implements VoidCommandHandler<CreateThesisSelectionCommand> {
+public class CreateThesisSelectionCommandHandler implements VoidCommandHandler<CreateThesisSelectionCommand> {
 
     private final InternRepository internRepository;
     private final TeamMemberValidator teamMemberValidator;

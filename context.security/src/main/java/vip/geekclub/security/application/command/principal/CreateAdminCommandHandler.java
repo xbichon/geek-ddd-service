@@ -15,7 +15,7 @@ import vip.geekclub.security.exception.AuthenticationAlreadyExistsException;
 
 @AllArgsConstructor
 @Service
-public class CreateAdminVoidCommandHandler implements VoidCommandHandler<CreateAdminCommand> {
+public class CreateAdminCommandHandler implements VoidCommandHandler<CreateAdminCommand> {
 
     private final PrincipalRepository principalRepository;
     private final PasswordCredentialRepository passwordCredentialRepository;

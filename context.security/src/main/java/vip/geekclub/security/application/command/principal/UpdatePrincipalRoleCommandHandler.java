@@ -10,18 +10,21 @@ import vip.geekclub.security.domain.repository.PrincipalRepository;
 
 @AllArgsConstructor
 @Service
-public class DeletePrincipalVoidCommandHandler implements VoidCommandHandler<DeletePrincipalCommand> {
+public class UpdatePrincipalRoleCommandHandler implements VoidCommandHandler<UpdatePrincipalRoleCommand> {
 
     private final PrincipalRepository principalRepository;
 
     @Override
     @Transactional
-    public void executeVoid(DeletePrincipalCommand command) {
+    public void executeVoid(UpdatePrincipalRoleCommand command) {
         // 1. 获取用户
         Principal principal = principalRepository.findById(command.id())
                 .orElseThrow(() -> new NotFoundException("用户不存在"));
 
-        // 2. 删除用户
-        principalRepository.delete(principal);
+        // 2. 更新用户信息
+        principal.updateRole(command.roles());
+
+        // 3. 保存用户
+        principalRepository.save(principal);
     }
 }

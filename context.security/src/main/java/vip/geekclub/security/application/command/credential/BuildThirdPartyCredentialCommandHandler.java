@@ -13,7 +13,7 @@ import vip.geekclub.security.exception.AuthenticationAlreadyExistsException;
 
 @AllArgsConstructor
 @Service
-public class BuildThirdPartyCredentialVoidCommandHandler implements VoidCommandHandler<BuildThirdPartyCredentialCommand> {
+public class BuildThirdPartyCredentialCommandHandler implements VoidCommandHandler<BuildThirdPartyCredentialCommand> {
 
     private final ThirdPartyCredentialRepository thirdPartyCredentialRepository;
     private final PrincipalRepository principalRepository;

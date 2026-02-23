@@ -16,7 +16,7 @@ import vip.geekclub.manager.domain.service.TeacherCreationUpdateValidator;
 @Transactional
 @RequiredArgsConstructor
 @Service
-public class UpdateTeacherVoidCommandHandler implements VoidCommandHandler<UpdateTeacherCommand> {
+public class UpdateTeacherCommandHandler implements VoidCommandHandler<UpdateTeacherCommand> {
 
     private final TeacherRepository teacherRepository;
     private final TeacherCreationUpdateValidator teacherCreationUpdateValidator;

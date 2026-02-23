@@ -12,7 +12,7 @@ import vip.geekclub.security.exception.AuthenticationAlreadyExistsException;
 
 @AllArgsConstructor
 @Service
-public class CreatePrincipalVoidCommandHandler implements VoidCommandHandler<CreatePrincipalCommand> {
+public class CreatePrincipalCommandHandler implements VoidCommandHandler<CreatePrincipalCommand> {
 
     private final PrincipalRepository principalRepository;
     private final PasswordCredentialRepository passwordCredentialRepository;

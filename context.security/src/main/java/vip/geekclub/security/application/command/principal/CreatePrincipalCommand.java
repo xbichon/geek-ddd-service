@@ -12,7 +12,7 @@ import vip.geekclub.security.domain.value.IdentifierValue;
 import java.util.List;
 import java.util.Set;
 
-@CommandHandlerMapping(CreatePrincipalVoidCommandHandler.class)
+@CommandHandlerMapping(CreatePrincipalCommandHandler.class)
 public record CreatePrincipalCommand(
         @NotNull(message = "应用类型不能为空") String userType,
         @NotNull(message = "外部用户ID不能为空") String authId,

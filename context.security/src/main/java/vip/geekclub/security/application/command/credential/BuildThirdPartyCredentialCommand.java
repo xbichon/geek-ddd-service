@@ -7,7 +7,7 @@ import vip.geekclub.framework.command.Command;
 import vip.geekclub.framework.command.CommandHandlerMapping;
 import vip.geekclub.security.domain.value.ThirdPartyType;
 
-@CommandHandlerMapping(BuildThirdPartyCredentialVoidCommandHandler.class)
+@CommandHandlerMapping(BuildThirdPartyCredentialCommandHandler.class)
 public record BuildThirdPartyCredentialCommand(
         @NotBlank(message = "用户ID不能为空") String authId,
         @NotNull(message = "第三方提供商不能为空") ThirdPartyType type,

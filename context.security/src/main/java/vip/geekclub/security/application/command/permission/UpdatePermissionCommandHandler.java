@@ -12,7 +12,7 @@ import vip.geekclub.security.domain.value.PermissionCode;
 
 @AllArgsConstructor
 @Service
-public class UpdatePermissionVoidCommandHandler implements VoidCommandHandler<UpdatePermissionCommand> {
+public class UpdatePermissionCommandHandler implements VoidCommandHandler<UpdatePermissionCommand> {
 
     private final PermissionRepository permissionRepository;
 

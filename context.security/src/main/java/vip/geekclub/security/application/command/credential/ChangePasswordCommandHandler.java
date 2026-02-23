@@ -8,7 +8,7 @@ import vip.geekclub.security.domain.repository.PasswordCredentialRepository;
 
 @AllArgsConstructor
 @Service
-public class ChangePasswordVoidCommandHandler implements VoidCommandHandler<ChangePasswordCommand> {
+public class ChangePasswordCommandHandler implements VoidCommandHandler<ChangePasswordCommand> {
 
     private final PasswordCredentialRepository passwordCredentialRepository;
 

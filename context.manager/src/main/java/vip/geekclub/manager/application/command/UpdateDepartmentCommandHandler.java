@@ -18,7 +18,7 @@ import vip.geekclub.manager.domain.repository.DepartmentRepository;
  */
 @AllArgsConstructor
 @Service
-public class UpdateDepartmentVoidCommandHandler implements VoidCommandHandler<UpdateDepartmentCommand> {
+public class UpdateDepartmentCommandHandler implements VoidCommandHandler<UpdateDepartmentCommand> {
 
     private final DepartmentRepository departmentRepository;
 

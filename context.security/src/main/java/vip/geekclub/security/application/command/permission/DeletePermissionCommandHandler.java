@@ -8,7 +8,7 @@ import vip.geekclub.security.domain.repository.PermissionRepository;
 
 @AllArgsConstructor
 @Service
-public class DeletePermissionVoidCommandHandler implements VoidCommandHandler<DeletePermissionCommand> {
+public class DeletePermissionCommandHandler implements VoidCommandHandler<DeletePermissionCommand> {
 
     private final PermissionRepository permissionRepository;
 
