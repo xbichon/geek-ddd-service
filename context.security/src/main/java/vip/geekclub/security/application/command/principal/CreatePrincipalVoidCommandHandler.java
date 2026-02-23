@@ -3,8 +3,7 @@ package vip.geekclub.security.application.command.principal;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import vip.geekclub.framework.command.CommandHandler;
-import vip.geekclub.framework.command.CommandResult;
+import vip.geekclub.framework.command.VoidCommandHandler;
 import vip.geekclub.security.domain.model.PasswordCredential;
 import vip.geekclub.security.domain.model.Principal;
 import vip.geekclub.security.domain.repository.PasswordCredentialRepository;
@@ -13,14 +12,14 @@ import vip.geekclub.security.exception.AuthenticationAlreadyExistsException;
 
 @AllArgsConstructor
 @Service
-public class CreatePrincipalCommandHandler implements CommandHandler<CreatePrincipalCommand, Void> {
+public class CreatePrincipalVoidCommandHandler implements VoidCommandHandler<CreatePrincipalCommand> {
 
     private final PrincipalRepository principalRepository;
     private final PasswordCredentialRepository passwordCredentialRepository;
 
     @Override
     @Transactional
-    public CommandResult<Void> execute(CreatePrincipalCommand command) {
+    public void executeVoid(CreatePrincipalCommand command) {
 
         // 1. 检查所有标识符是否已存在
         for (var identifier : command.identifierValues()) {
@@ -43,6 +42,5 @@ public class CreatePrincipalCommandHandler implements CommandHandler<CreatePrinc
         );
         passwordCredentialRepository.save(passwordCredential);
 
-        return CommandResult.ok();
     }
 }

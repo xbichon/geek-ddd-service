@@ -3,8 +3,7 @@ package vip.geekclub.security.application.command.principal;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import vip.geekclub.framework.command.CommandHandler;
-import vip.geekclub.framework.command.CommandResult;
+import vip.geekclub.framework.command.VoidCommandHandler;
 import vip.geekclub.framework.exception.BusinessException;
 import vip.geekclub.security.domain.service.IdentifierValidate;
 import vip.geekclub.security.domain.value.IdentifierValue;
@@ -16,7 +15,7 @@ import vip.geekclub.security.exception.AuthenticationAlreadyExistsException;
 
 @AllArgsConstructor
 @Service
-public class CreateAdminCommandHandler implements CommandHandler<CreateAdminCommand, Void> {
+public class CreateAdminVoidCommandHandler implements VoidCommandHandler<CreateAdminCommand> {
 
     private final PrincipalRepository principalRepository;
     private final PasswordCredentialRepository passwordCredentialRepository;
@@ -24,7 +23,7 @@ public class CreateAdminCommandHandler implements CommandHandler<CreateAdminComm
 
     @Override
     @Transactional
-    public CommandResult<Void> execute(CreateAdminCommand command) {
+    public void executeVoid(CreateAdminCommand command) {
         // 检查是否已存在超级管理员
         if (principalRepository.existsByIsSuperAdminTrue()) {
             throw new BusinessException(500, "超级管理员已存在，无需重复创建");
@@ -55,7 +54,5 @@ public class CreateAdminCommandHandler implements CommandHandler<CreateAdminComm
         );
         passwordCredentialRepository.save(credential);
 
-        // 5. 返回成功结果
-        return CommandResult.ok();
     }
 }

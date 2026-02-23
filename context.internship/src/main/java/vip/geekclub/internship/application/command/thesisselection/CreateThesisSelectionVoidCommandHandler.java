@@ -3,20 +3,18 @@ package vip.geekclub.internship.application.command.thesisselection;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import vip.geekclub.framework.command.CommandHandler;
-import vip.geekclub.framework.command.CommandResult;
+import vip.geekclub.framework.command.VoidCommandHandler;
 import vip.geekclub.framework.exception.NotFoundException;
 import vip.geekclub.internship.domain.repository.InternRepository;
 import vip.geekclub.internship.domain.service.TeamMemberValidator;
 import vip.geekclub.internship.domain.service.ThesisSelectionDomainService;
-import vip.geekclub.internship.domain.value.SelectionType;
 import vip.geekclub.internship.domain.value.SelectorValue;
 
 import java.util.List;
 
 @AllArgsConstructor
 @Service
-public class CreateThesisSelectionCommandHandler implements CommandHandler<CreateThesisSelectionCommand, Void> {
+public class CreateThesisSelectionVoidCommandHandler implements VoidCommandHandler<CreateThesisSelectionCommand> {
 
     private final InternRepository internRepository;
     private final TeamMemberValidator teamMemberValidator;
@@ -24,7 +22,7 @@ public class CreateThesisSelectionCommandHandler implements CommandHandler<Creat
 
     @Override
     @Transactional
-    public CommandResult<Void> execute(CreateThesisSelectionCommand command) {
+    public void executeVoid(CreateThesisSelectionCommand command) {
         // 1. 根据创建者ID获取实习生信息
         var intern = internRepository.findById(command.creatorId())
                 .orElseThrow(() -> new NotFoundException("创建者不存在"));
@@ -47,6 +45,5 @@ public class CreateThesisSelectionCommandHandler implements CommandHandler<Creat
         domainService.selectThesis(command.thesisId(), command.achievementType(), command.selectionType(),
                 command.creatorId(), studentIds, command.teamApplication());
 
-        return CommandResult.ok();
     }
 }

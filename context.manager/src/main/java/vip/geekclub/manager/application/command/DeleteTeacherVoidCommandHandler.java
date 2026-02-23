@@ -3,8 +3,7 @@ package vip.geekclub.manager.application.command;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import vip.geekclub.framework.command.CommandHandler;
-import vip.geekclub.framework.command.CommandResult;
+import vip.geekclub.framework.command.VoidCommandHandler;
 import vip.geekclub.framework.exception.ValidationException;
 import vip.geekclub.manager.application.command.dto.DeleteTeacherCommand;
 import vip.geekclub.manager.domain.model.Teacher;
@@ -16,12 +15,12 @@ import vip.geekclub.manager.domain.repository.TeacherRepository;
 @Transactional
 @RequiredArgsConstructor
 @Service
-public class DeleteTeacherCommandHandler implements CommandHandler<DeleteTeacherCommand, Void> {
+public class DeleteTeacherVoidCommandHandler implements VoidCommandHandler<DeleteTeacherCommand> {
 
     private final TeacherRepository teacherRepository;
 
     @Override
-    public CommandResult<Void> execute(DeleteTeacherCommand command) {
+    public void executeVoid(DeleteTeacherCommand command) {
         // 1. 获取教师
         Teacher teacher = teacherRepository.findById(command.id())
                 .orElseThrow(() -> new ValidationException("指定的教师不存在"));
@@ -31,8 +30,5 @@ public class DeleteTeacherCommandHandler implements CommandHandler<DeleteTeacher
 
         // 3. 删除教师
         teacherRepository.delete(teacher);
-
-        // 4. 返回成功结果
-        return CommandResult.ok();
     }
 }

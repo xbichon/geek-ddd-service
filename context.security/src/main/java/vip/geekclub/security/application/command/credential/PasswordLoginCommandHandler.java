@@ -4,7 +4,6 @@ import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import vip.geekclub.framework.command.CommandHandler;
-import vip.geekclub.framework.command.CommandResult;
 import vip.geekclub.framework.exception.InvalidCredentialsException;
 import vip.geekclub.framework.security.UserPrincipal;
 import vip.geekclub.security.domain.model.Principal;
@@ -21,7 +20,7 @@ public class PasswordLoginCommandHandler implements CommandHandler<PasswordLogin
 
     @Override
     @Transactional
-    public CommandResult<UserPrincipal> execute(PasswordLoginCommand command) {
+    public UserPrincipal execute(PasswordLoginCommand command) {
 
         // 1. 获取该用户的密码凭证
         var credential = passwordCredentialRepository.findByIdentifiersValueAndIdentifiersUserType(command.identifier(), command.userType())
@@ -34,6 +33,6 @@ public class PasswordLoginCommandHandler implements CommandHandler<PasswordLogin
         Principal principal = principalRepository.findById(credential.getPrincipalId())
                 .orElseThrow(() -> new InvalidCredentialsException("用户未找到"));
 
-        return CommandResult.ok(new UserPrincipal(principal.getAuthId(), principal.getUserType()));
+        return new UserPrincipal(principal.getAuthId(), principal.getUserType());
     }
 }

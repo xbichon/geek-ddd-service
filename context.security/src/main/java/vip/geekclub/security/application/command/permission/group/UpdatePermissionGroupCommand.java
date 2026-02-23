@@ -23,7 +23,7 @@ public record UpdatePermissionGroupCommand(
         @Max(value = 100, message = "排序值不能超过100")
         Integer sortOrder
 
-) implements Command {
+) implements Command<Void> {
     public UpdatePermissionGroupCommand {
         // 字符串字段trim处理
         name = StringUtil.trimToNull(name);

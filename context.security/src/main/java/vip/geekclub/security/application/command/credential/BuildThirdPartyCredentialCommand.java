@@ -7,12 +7,12 @@ import vip.geekclub.framework.command.Command;
 import vip.geekclub.framework.command.CommandHandlerMapping;
 import vip.geekclub.security.domain.value.ThirdPartyType;
 
-@CommandHandlerMapping(BuildThirdPartyCredentialCommandHandler.class)
+@CommandHandlerMapping(BuildThirdPartyCredentialVoidCommandHandler.class)
 public record BuildThirdPartyCredentialCommand(
         @NotBlank(message = "用户ID不能为空") String authId,
         @NotNull(message = "第三方提供商不能为空") ThirdPartyType type,
         @NotBlank(message = "标识符不能为空") String code
-) implements Command {
+) implements Command<Void> {
 
     public BuildThirdPartyCredentialCommand {
         code = StringUtils.trimAllWhitespace(code);

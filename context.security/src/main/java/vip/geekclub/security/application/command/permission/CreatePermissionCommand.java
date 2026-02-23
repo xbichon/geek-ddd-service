@@ -17,7 +17,7 @@ public record CreatePermissionCommand(
     String description,
     
     Long permissionGroupId
-) implements Command {
+) implements Command<Long> {
     
     public CreatePermissionCommand {
         // 字符串字段trim处理

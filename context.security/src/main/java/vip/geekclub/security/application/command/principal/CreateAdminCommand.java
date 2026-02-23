@@ -1,6 +1,5 @@
 package vip.geekclub.security.application.command.principal;
 
-import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
@@ -12,7 +11,7 @@ import vip.geekclub.security.domain.value.IdentifierValue;
 
 import java.util.List;
 
-@CommandHandlerMapping(CreateAdminCommandHandler.class)
+@CommandHandlerMapping(CreateAdminVoidCommandHandler.class)
 public record CreateAdminCommand(
         @NotEmpty(message = "标识符列表不能为空")
         List<IdentifierValue> identifierValues,
@@ -26,7 +25,7 @@ public record CreateAdminCommand(
 
         @NotNull(message = "应用类型不能为空")
         String userType
-) implements Command {
+) implements Command<Void> {
 
     public CreateAdminCommand {
         password = StringUtils.trimAllWhitespace(password);

@@ -3,22 +3,19 @@ package vip.geekclub.security.application.command.permission;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import vip.geekclub.framework.command.CommandHandler;
-import vip.geekclub.framework.command.CommandResult;
+import vip.geekclub.framework.command.VoidCommandHandler;
 import vip.geekclub.security.domain.repository.PermissionRepository;
 
 @AllArgsConstructor
 @Service
-public class DeletePermissionCommandHandler implements CommandHandler<DeletePermissionCommand, Void> {
+public class DeletePermissionVoidCommandHandler implements VoidCommandHandler<DeletePermissionCommand> {
 
     private final PermissionRepository permissionRepository;
 
     @Override
     @Transactional
-    public CommandResult<Void> execute(DeletePermissionCommand command) {
+    public void executeVoid(DeletePermissionCommand command) {
         // 删除权限
         permissionRepository.deleteById(command.id());
-        
-        return CommandResult.ok();
     }
 }

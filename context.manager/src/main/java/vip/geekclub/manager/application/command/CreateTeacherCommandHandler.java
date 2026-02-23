@@ -2,7 +2,8 @@ package vip.geekclub.manager.application.command;
 
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import vip.geekclub.framework.command.*;
+import vip.geekclub.framework.command.CommandBus;
+import vip.geekclub.framework.command.CommandHandler;
 import vip.geekclub.manager.application.command.dto.CreateTeacherCommand;
 import vip.geekclub.manager.domain.model.Teacher;
 import vip.geekclub.manager.domain.repository.TeacherRepository;
@@ -20,14 +21,14 @@ import java.util.Set;
 @Transactional
 @Service
 @RequiredArgsConstructor
-public class CreateTeacherCommandHandler implements CommandHandler<CreateTeacherCommand, IdResult> {
+public class CreateTeacherCommandHandler implements CommandHandler<CreateTeacherCommand, Long> {
 
     private final TeacherRepository teacherRepository;
     private final TeacherCreationUpdateValidator teacherCreationUpdateValidator;
     private final CommandBus commandBus;
 
     @Override
-    public CommandResult<IdResult> execute(CreateTeacherCommand command) {
+    public Long execute(CreateTeacherCommand command) {
         // 1. 验证参数
         teacherCreationUpdateValidator.validateForCreate(command);
 
@@ -51,6 +52,6 @@ public class CreateTeacherCommandHandler implements CommandHandler<CreateTeacher
         ));
 
         // 4. 返回结果
-        return CommandResult.ok(teacher.getId());
+        return teacher.getId();
     }
 }

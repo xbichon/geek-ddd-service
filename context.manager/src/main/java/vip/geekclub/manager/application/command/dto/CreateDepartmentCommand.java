@@ -28,5 +28,5 @@ public record CreateDepartmentCommand(
         @Size(max = Department.maxDescriptionLength, message = "描述长度不能超过200个字符")
         String description
 
-) implements Command {
+) implements Command<Long> {
 }

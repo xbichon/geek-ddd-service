@@ -7,8 +7,14 @@ package vip.geekclub.framework.command;
  * 所有具体的命令类都应该实现此接口，以便被命令总线识别和处理。
  * <p>
  * 命令应该是不可变的值对象，包含执行特定业务操作所需的所有数据。
- * 
+ * <p>
+ * R 表示命令执行后的自然产出类型：
+ * - Void: 纯副作用，无返回值（如删除操作）
+ * - IdResult/Long: 创建实体后返回的标识
+ * - 计算结果: 如 PriceCalculationResult、RouteResult 等
+ *
+ * @param <R> 命令执行的自然产出类型（不是附加查询数据）
  * @author leo
  */
-public interface Command {
+public interface Command<R> {
 }

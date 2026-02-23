@@ -14,5 +14,5 @@ public record DeleteTeacherCommand(
         @NotNull(message = "教师ID不能为空")
         Long id
 
-) implements Command {
+) implements Command<Void> {
 }

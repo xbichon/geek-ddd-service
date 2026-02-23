@@ -17,7 +17,7 @@ import vip.geekclub.internship.domain.value.TeamApplicationValue;
  */
 @Data
 @Accessors(fluent = true)
-public class CreateThesisSelectionCommand implements Command {
+public class CreateThesisSelectionCommand implements Command<Void> {
 
     @NotNull(message = "论文ID不能为空")
     private Long thesisId;

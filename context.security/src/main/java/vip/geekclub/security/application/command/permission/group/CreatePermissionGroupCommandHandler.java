@@ -4,8 +4,6 @@ import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import vip.geekclub.framework.command.CommandHandler;
-import vip.geekclub.framework.command.CommandResult;
-import vip.geekclub.framework.command.IdResult;
 import vip.geekclub.framework.exception.ValidationException;
 import vip.geekclub.security.domain.model.PermissionGroup;
 import vip.geekclub.security.domain.repository.PermissionGroupRepository;
@@ -13,13 +11,13 @@ import vip.geekclub.security.domain.value.SortOrder;
 
 @AllArgsConstructor
 @Service
-public class CreatePermissionGroupCommandHandler implements CommandHandler<CreatePermissionGroupCommand, IdResult> {
+public class CreatePermissionGroupCommandHandler implements CommandHandler<CreatePermissionGroupCommand, Long> {
 
     private final PermissionGroupRepository permissionGroupRepository;
 
     @Override
     @Transactional
-    public CommandResult<IdResult> execute(CreatePermissionGroupCommand command) {
+    public Long execute(CreatePermissionGroupCommand command) {
         // 1. 验证权限组名称不存在
         if (permissionGroupRepository.existsByName(command.name())) {
             throw new ValidationException("权限组名称已存在");
@@ -32,7 +30,7 @@ public class CreatePermissionGroupCommandHandler implements CommandHandler<Creat
             SortOrder.of(command.sortOrder())
         );
         permissionGroupRepository.save(permissionGroup);
-        
-        return CommandResult.ok(permissionGroup.getId());
+
+        return permissionGroup.getId();
     }
 }

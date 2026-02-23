@@ -8,7 +8,7 @@ public record UpdatePermissionCommand(
     String name,
     String code,
     String description
-) implements Command {
+) implements Command<Void> {
     
     public UpdatePermissionCommand {
         // 字符串字段trim处理

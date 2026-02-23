@@ -3,7 +3,6 @@ package vip.geekclub.manager.adapter.controller;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 import vip.geekclub.contract.UserType;
-import vip.geekclub.framework.command.IdResult;
 import vip.geekclub.framework.controller.ApiResponse;
 import vip.geekclub.framework.controller.WebCommandAdapter;
 import vip.geekclub.framework.security.Authorize;
@@ -30,7 +29,7 @@ public class TeacherController {
      * @return 创建成功的教师ID
      */
     @PostMapping
-    public ApiResponse<IdResult> createTeacher(@RequestBody CreateTeacherCommand command) {
+    public ApiResponse<Long> createTeacher(@RequestBody CreateTeacherCommand command) {
         return commandBus.dispatchToWeb(command);
     }
 

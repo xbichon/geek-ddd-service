@@ -1,7 +1,6 @@
 package vip.geekclub.framework.controller;
 
 import lombok.*;
-import vip.geekclub.framework.command.CommandResult;
 
 @Getter
 @Setter(AccessLevel.PRIVATE)
@@ -17,15 +16,6 @@ public class ApiResponse<T> {
         apiResponse.setCode(200);
         apiResponse.setMessage("success");
         apiResponse.setData(data);
-        return apiResponse;
-    }
-
-    // 静态方法简化成功/失败响应
-    public static <R> ApiResponse<R> success(CommandResult<R> result) {
-        ApiResponse<R> apiResponse = new ApiResponse<>();
-        apiResponse.setCode(200);
-        apiResponse.setData(result.data());
-        apiResponse.setMessage(result.message());
         return apiResponse;
     }
 

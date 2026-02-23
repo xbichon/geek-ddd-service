@@ -8,5 +8,5 @@ public record UpdatePrincipalRoleCommand(
     @NotNull(message = "用户ID不能为空")
     Long id,
     Set<Long> roles
-) implements Command {
+) implements Command<Void> {
 }

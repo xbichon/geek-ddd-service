@@ -4,8 +4,6 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import vip.geekclub.framework.command.CommandHandler;
-import vip.geekclub.framework.command.CommandResult;
-import vip.geekclub.framework.command.IdResult;
 import vip.geekclub.framework.exception.ValidationException;
 import vip.geekclub.manager.application.command.dto.CreateDepartmentCommand;
 import vip.geekclub.manager.domain.model.SortOrder;
@@ -17,13 +15,13 @@ import vip.geekclub.manager.domain.repository.DepartmentRepository;
  */
 @RequiredArgsConstructor
 @Service
-public class CreateDepartmentCommandHandler implements CommandHandler<CreateDepartmentCommand, IdResult> {
+public class CreateDepartmentCommandHandler implements CommandHandler<CreateDepartmentCommand, Long> {
 
     private final DepartmentRepository departmentRepository;
 
     @Override
     @Transactional
-    public CommandResult<IdResult> execute(CreateDepartmentCommand command) {
+    public Long execute(CreateDepartmentCommand command) {
 
         // 1. 校验名称在同一父部门下不重复
         validateDepartmentNameUnique(command.name().trim(), command.parentId());
@@ -37,7 +35,7 @@ public class CreateDepartmentCommandHandler implements CommandHandler<CreateDepa
 
         // 4. 保存部门
         departmentRepository.save(department);
-        return CommandResult.ok(department.getId());
+        return department.getId();
     }
 
     /**

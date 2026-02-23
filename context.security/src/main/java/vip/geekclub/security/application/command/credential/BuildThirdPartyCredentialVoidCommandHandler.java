@@ -3,8 +3,7 @@ package vip.geekclub.security.application.command.credential;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import vip.geekclub.framework.command.CommandHandler;
-import vip.geekclub.framework.command.CommandResult;
+import vip.geekclub.framework.command.VoidCommandHandler;
 import vip.geekclub.framework.exception.NotFoundException;
 import vip.geekclub.security.domain.model.Principal;
 import vip.geekclub.security.domain.model.ThirdPartyCredential;
@@ -14,14 +13,14 @@ import vip.geekclub.security.exception.AuthenticationAlreadyExistsException;
 
 @AllArgsConstructor
 @Service
-public class BuildThirdPartyCredentialCommandHandler implements CommandHandler<BuildThirdPartyCredentialCommand, Void> {
+public class BuildThirdPartyCredentialVoidCommandHandler implements VoidCommandHandler<BuildThirdPartyCredentialCommand> {
 
     private final ThirdPartyCredentialRepository thirdPartyCredentialRepository;
     private final PrincipalRepository principalRepository;
 
     @Override
     @Transactional
-    public CommandResult<Void> execute(BuildThirdPartyCredentialCommand command) {
+    public void executeVoid(BuildThirdPartyCredentialCommand command) {
         // 1. 查询用户
         Principal principal = principalRepository.findByAuthId(command.authId())
                 .orElseThrow(() -> new NotFoundException("用户不存在"));
@@ -39,7 +38,5 @@ public class BuildThirdPartyCredentialCommandHandler implements CommandHandler<B
         // 4. 创建第三方凭证
         ThirdPartyCredential credential = new ThirdPartyCredential(principal.getId(), command.type(), command.code());
         thirdPartyCredentialRepository.save(credential);
-
-        return CommandResult.ok();
     }
 }

@@ -3,8 +3,7 @@ package vip.geekclub.manager.application.command;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import vip.geekclub.framework.command.CommandHandler;
-import vip.geekclub.framework.command.CommandResult;
+import vip.geekclub.framework.command.VoidCommandHandler;
 import vip.geekclub.framework.exception.ValidationException;
 import vip.geekclub.manager.application.command.dto.UpdateTeacherCommand;
 import vip.geekclub.manager.domain.model.Teacher;
@@ -17,13 +16,13 @@ import vip.geekclub.manager.domain.service.TeacherCreationUpdateValidator;
 @Transactional
 @RequiredArgsConstructor
 @Service
-public class UpdateTeacherCommandHandler implements CommandHandler<UpdateTeacherCommand, Void> {
+public class UpdateTeacherVoidCommandHandler implements VoidCommandHandler<UpdateTeacherCommand> {
 
     private final TeacherRepository teacherRepository;
     private final TeacherCreationUpdateValidator teacherCreationUpdateValidator;
 
     @Override
-    public CommandResult<Void> execute(UpdateTeacherCommand command) {
+    public void executeVoid(UpdateTeacherCommand command) {
         // 1. 获取教师
         Teacher teacher = teacherRepository.findById(command.id())
                 .orElseThrow(() -> new ValidationException("指定的教师不存在"));
@@ -41,9 +40,6 @@ public class UpdateTeacherCommandHandler implements CommandHandler<UpdateTeacher
                 command.remark()
         );
         teacherRepository.save(teacher);
-
-        // 4.返回结果
-        return CommandResult.ok();
     }
 
 }

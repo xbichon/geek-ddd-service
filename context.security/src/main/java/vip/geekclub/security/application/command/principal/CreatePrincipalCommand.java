@@ -12,7 +12,7 @@ import vip.geekclub.security.domain.value.IdentifierValue;
 import java.util.List;
 import java.util.Set;
 
-@CommandHandlerMapping(CreatePrincipalCommandHandler.class)
+@CommandHandlerMapping(CreatePrincipalVoidCommandHandler.class)
 public record CreatePrincipalCommand(
         @NotNull(message = "应用类型不能为空") String userType,
         @NotNull(message = "外部用户ID不能为空") String authId,
@@ -28,7 +28,7 @@ public record CreatePrincipalCommand(
 
         Set<Long> roleIds
 
-) implements Command {
+) implements Command<Void> {
 
     /**
      * 简化构造函数，无需传递角色ID

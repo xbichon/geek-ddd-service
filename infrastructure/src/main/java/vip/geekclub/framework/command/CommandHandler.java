@@ -13,11 +13,12 @@ import org.springframework.core.ResolvableType;
  * <p>
  * 实现类应该使用 {@code @Component} 注解标记，以便被Spring容器管理和自动注册到命令总线中。
  *
- * @param <C> 此处理器可以处理的命令类型
+ * @param <C> 此处理器可以处理的命令类型（必须携带返回类型泛型）
+ * @param <R> 命令执行的自然产出类型
  * @author DDD Framework
  * @since 1.0
  */
-public interface CommandHandler<C extends Command,R> {
+public interface CommandHandler<C extends Command<R>, R> {
 
     /**
      * 处理指定的命令
@@ -26,10 +27,10 @@ public interface CommandHandler<C extends Command,R> {
      * 如果处理过程中发生业务异常，应该抛出相应的领域异常。
      *
      * @param command 要处理的命令对象，包含执行业务操作所需的所有参数
-     * @return 命令执行结果，包含操作状态信息和可选的业务主键
+     * @return 命令执行的自然产出结果（如生成的ID、计算结果等），不是附加查询数据
      * @throws RuntimeException 当业务规则验证失败或执行过程中发生错误时
      */
-    CommandResult<R> execute(C command);
+    R execute(C command);
 
     /**
      * 获取此处理器能够处理的命令类型

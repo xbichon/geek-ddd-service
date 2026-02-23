@@ -14,5 +14,5 @@ public record DeleteDepartmentCommand(
         @NotNull(message = "部门ID不能为空")
         Long id
 
-) implements Command {
+) implements Command<Void> {
 }

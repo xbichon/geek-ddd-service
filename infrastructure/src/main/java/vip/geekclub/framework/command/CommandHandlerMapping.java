@@ -15,5 +15,6 @@ public @interface CommandHandlerMapping {
      * 指定处理这个Command的Handler类
      * @return Handler类数组
      */
-    Class<? extends CommandHandler<?, ?>> value();
+    @SuppressWarnings("rawtypes")
+    Class<? extends CommandHandler> value();
 }

@@ -3,8 +3,7 @@ package vip.geekclub.security.application.command.permission.group;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import vip.geekclub.framework.command.CommandHandler;
-import vip.geekclub.framework.command.CommandResult;
+import vip.geekclub.framework.command.VoidCommandHandler;
 import vip.geekclub.framework.exception.NotFoundException;
 import vip.geekclub.framework.utils.AssertUtil;
 import vip.geekclub.security.domain.model.PermissionGroup;
@@ -13,14 +12,14 @@ import vip.geekclub.security.domain.repository.PermissionRepository;
 
 @AllArgsConstructor
 @Service
-public class DeletePermissionGroupCommandHandler implements CommandHandler<DeletePermissionGroupCommand, Void> {
+public class DeletePermissionGroupVoidCommandHandler implements VoidCommandHandler<DeletePermissionGroupCommand> {
 
     private final PermissionGroupRepository permissionGroupRepository;
     private final PermissionRepository permissionRepository;
 
     @Override
     @Transactional
-    public CommandResult<Void> execute(DeletePermissionGroupCommand command) {
+    public void executeVoid(DeletePermissionGroupCommand command) {
         // 1. 获取权限组
         PermissionGroup permissionGroup = permissionGroupRepository.findById(command.id())
                 .orElseThrow(() -> new NotFoundException("权限组不存在"));
@@ -31,8 +30,5 @@ public class DeletePermissionGroupCommandHandler implements CommandHandler<Delet
 
         // 3. 删除权限组
         permissionGroupRepository.delete(permissionGroup);
-
-        // 4. 返回成功结果
-        return CommandResult.ok("权限组删除成功");
     }
 }

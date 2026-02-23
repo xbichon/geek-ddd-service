@@ -3,8 +3,7 @@ package vip.geekclub.manager.application.command;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import vip.geekclub.framework.command.CommandHandler;
-import vip.geekclub.framework.command.CommandResult;
+import vip.geekclub.framework.command.VoidCommandHandler;
 import vip.geekclub.framework.exception.NotFoundException;
 import vip.geekclub.framework.exception.ValidationException;
 import vip.geekclub.manager.application.command.dto.UpdateDepartmentCommand;
@@ -19,13 +18,13 @@ import vip.geekclub.manager.domain.repository.DepartmentRepository;
  */
 @AllArgsConstructor
 @Service
-public class UpdateDepartmentCommandHandler implements CommandHandler<UpdateDepartmentCommand, Void> {
+public class UpdateDepartmentVoidCommandHandler implements VoidCommandHandler<UpdateDepartmentCommand> {
 
     private final DepartmentRepository departmentRepository;
 
     @Transactional
     @Override
-    public CommandResult<Void> execute(UpdateDepartmentCommand command) {
+    public void executeVoid(UpdateDepartmentCommand command) {
         // 1. 获取部门
         Department department = departmentRepository.findById(command.id())
                 .orElseThrow(() -> new NotFoundException("部门不存在"));
@@ -48,8 +47,5 @@ public class UpdateDepartmentCommandHandler implements CommandHandler<UpdateDepa
 
         // 4. 保存部门
         departmentRepository.save(department);
-
-        // 5. 返回成功结果
-        return CommandResult.ok();
     }
 }

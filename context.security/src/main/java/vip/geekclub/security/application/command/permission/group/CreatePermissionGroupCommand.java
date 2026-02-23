@@ -18,7 +18,7 @@ public record CreatePermissionGroupCommand(
     @Min(value = 0, message = "排序值不能小于0")
     @Max(value = 100, message = "排序值不能超过100")
     Integer sortOrder
-) implements Command {
+) implements Command<Long> {
     
     public CreatePermissionGroupCommand {
         // 字符串字段trim处理

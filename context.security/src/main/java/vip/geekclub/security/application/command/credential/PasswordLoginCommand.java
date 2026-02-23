@@ -6,6 +6,7 @@ import lombok.Builder;
 import org.springframework.util.StringUtils;
 import vip.geekclub.framework.command.Command;
 import vip.geekclub.framework.command.CommandHandlerMapping;
+import vip.geekclub.framework.security.UserPrincipal;
 
 @CommandHandlerMapping(PasswordLoginCommandHandler.class)
 @Builder
@@ -14,7 +15,7 @@ public record PasswordLoginCommand(
         @NotBlank(message = "账号不能为空") String identifier,
         @NotBlank(message = "密码不能为空") @Size(min = 6, max = 20, message = "密码长度必须在6-20个字符之间") String password,
         String identifierType
-) implements Command {
+) implements Command<UserPrincipal> {
     public PasswordLoginCommand {
         identifier = StringUtils.trimAllWhitespace(identifier);
         password = StringUtils.trimAllWhitespace(password);

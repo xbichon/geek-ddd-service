@@ -31,7 +31,7 @@ public record CreateTeacherCommand(
         @Size(max = Teacher.maxRemarkLength, message = "备注长度不能超过200个字符")
         String remark
 
-) implements Command {
+) implements Command<Long> {
 
     /**
      * 紧凑构造函数，自动去除字符串字段两端的空格，并将空字符串转为null

@@ -9,7 +9,6 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.web.bind.annotation.*;
 import vip.geekclub.framework.command.CommandBus;
-import vip.geekclub.framework.command.CommandResult;
 import vip.geekclub.framework.controller.ApiResponse;
 import vip.geekclub.framework.security.SessionStore;
 import vip.geekclub.framework.security.UserAuthentication;
@@ -71,8 +70,7 @@ public class PasswordAuthController {
 
         // 验证码验证通过，继续执行登录逻辑
         PasswordLoginCommand command = new PasswordLoginCommand(request.userType(), request.identifier(), request.password());
-        CommandResult<UserPrincipal> commandResult = commandBus.dispatch(command);
-        UserPrincipal userPrincipal = commandResult.data();
+        UserPrincipal userPrincipal = commandBus.dispatch(command);
         UserAuthentication userAuthentication = new UserAuthentication(userPrincipal);
         String jwtToken = authSessionManager.create(userAuthentication);
 

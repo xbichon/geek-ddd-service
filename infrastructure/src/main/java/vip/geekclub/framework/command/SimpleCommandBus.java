@@ -35,7 +35,7 @@ public class SimpleCommandBus implements CommandBus {
     /**
      * 命令类型到处理器的映射
      */
-    private final Map<Class<? extends Command>, CommandHandler<?, ?>> commandHandlers;
+    private final Map<Class<? extends Command<?>>, CommandHandler<?, ?>> commandHandlers;
 
     /**
      * 初始化状态标记（用于线程安全的延迟加载）
@@ -55,10 +55,10 @@ public class SimpleCommandBus implements CommandBus {
         this.chain = new CommandHandlerChain() {
             @Override
             @SuppressWarnings("unchecked")
-            protected <R> CommandResult<R> handle(Command command, CommandHandlerChain chain) {
+            public <R> R handle(Command<R> command) {
                 CommandHandler<?, ?> commandHandler = commandHandlers.get(command.getClass());
                 AssertUtil.notNull(commandHandler, () -> String.format(NO_HANDLER_ERROR_MSG, command.getClass().getName()));
-                return ((CommandHandler<Command, R>) commandHandler).execute(command);
+                return ((CommandHandler<Command<R>, R>) commandHandler).execute(command);
             }
         };
     }
@@ -70,7 +70,7 @@ public class SimpleCommandBus implements CommandBus {
         if (handlers == null || handlers.isEmpty()) return;
 
         for (CommandHandler<?, ?> handler : handlers) {
-            Class<? extends Command> commandType = handler.getCommandType();
+            Class<? extends Command<?>> commandType = (Class<? extends Command<?>>) handler.getCommandType();
             CommandHandler<?, ?> existing = this.commandHandlers.put(commandType, handler);
             AssertUtil.isNull(existing, () -> "检测到重复的 CommandHandler 注册: " + commandType.getName());
         }
@@ -113,14 +113,14 @@ public class SimpleCommandBus implements CommandBus {
      * 分发命令到对应的处理器
      */
     @Override
-    public <C extends Command, R> CommandResult<R> dispatch(C command) {
+    public <R> R dispatch(Command<R> command) {
         // 0. 延迟初始化处理器（第一次调用时）
         lazyInitHandlers();
 
         // 1. 命令非空验证
         AssertUtil.notNull(command, () -> "命令不能为空(" + command.getClass().getName() + ")");
 
-        // 2. 执行责任链
+        // 2. 执行责任链并返回结果
         return chain.handle(command);
     }
 }
