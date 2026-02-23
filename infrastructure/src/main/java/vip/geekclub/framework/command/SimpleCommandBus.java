@@ -70,7 +70,7 @@ public class SimpleCommandBus implements CommandBus {
         if (handlers == null || handlers.isEmpty()) return;
 
         for (CommandHandler<?, ?> handler : handlers) {
-            Class<? extends Command<?>> commandType = (Class<? extends Command<?>>) handler.getCommandType();
+            Class<? extends Command<?>> commandType = handler.getCommandType();
             CommandHandler<?, ?> existing = this.commandHandlers.put(commandType, handler);
             AssertUtil.isNull(existing, () -> "检测到重复的 CommandHandler 注册: " + commandType.getName());
         }

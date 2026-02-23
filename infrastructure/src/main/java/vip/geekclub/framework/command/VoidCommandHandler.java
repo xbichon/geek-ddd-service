@@ -9,20 +9,6 @@ package vip.geekclub.framework.command;
  * <p>
  * 实现类只需实现 {@link #executeVoid(Command)} 方法，无需处理返回值。
  *
- * <p>使用示例：</p>
- * <pre>
- * @Service
- * public class DeleteTeacherCommandHandler
- *         implements VoidCommandHandler<DeleteTeacherCommand> {
- *
- *     @Override
- *     public void executeVoid(DeleteTeacherCommand command) {
- *         teacherRepository.deleteById(command.id());
- *         // 无需 return 语句
- *     }
- * }
- * </pre>
- *
  * @param <C> 此处理器可以处理的命令类型（必须是 Command<Void>）
  * @author DDD Framework
  * @since 1.0

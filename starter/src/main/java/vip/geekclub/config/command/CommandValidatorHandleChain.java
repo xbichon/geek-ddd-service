@@ -17,7 +17,6 @@ public class CommandValidatorHandleChain extends CommandHandlerChain {
     private final Validator validator;
 
     @Override
-    @SuppressWarnings("unchecked")
     public <R> R handle(Command<R> command) {
         Set<ConstraintViolation<Command<R>>> violations = validator.validate(command);
         if (!violations.isEmpty()) {
