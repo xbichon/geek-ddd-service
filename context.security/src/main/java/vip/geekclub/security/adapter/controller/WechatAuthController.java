@@ -22,7 +22,6 @@ import vip.geekclub.security.adapter.gateway.WechatService;
 public class WechatAuthController {
 
     private final WechatService wechatService;
-    private final SessionStore authSessionManager;
 
     /**
      * 微信小程序登录
