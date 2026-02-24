@@ -2,111 +2,104 @@
 
 ## 1、规范
 
-### 1.1 接口定义
+### 1.1 接口定义（防冲突命名）
 
-- 文件放置在 `application.gateway` 包下；
-- 接口名使用 `{外部模块名}Gateway` 命名，如 `SecurityGateway`；
-- 方法命名使用领域友好术语，屏蔽外部模块细节；
-- DTO 定义在 `application.gateway.dto` 子包下。
+**格式**：`{BoundedContext}{Domain}Gateway`
 
-### 1.2 接口实现
+- `{BoundedContext}`：限界上下文名，如 `Internship`、`Manager`
+- `{Domain}`：通用域名，如 `Security`、`Payment`、`Notification`
 
-- 文件放置在 `adapter.gateway` 包下；
-- 实现类使用 `{接口名}Impl` 命名，如 `SecurityGatewayImpl`；
-- 使用 `@Component` 注解标记；
-- 负责调用外部模块、异常转换、数据映射。
-
-### 1.3 放置原则
-
-- **默认放在应用层**：由 Command Handler 或应用服务调用；
-- **下沉到领域层的条件**：必须是通用业务概念，且领域实体必须直接调用。
-
-## 2、示例
-
-### 2.1 接口定义
-
+**示例**：
 ```java
-public interface SecurityGateway {
-    Long createPrincipal(String authId, List<Identifier> identifiers,
-                         String password, Set<Long> roles);
-    void deletePrincipal(String authId);
+// internship 模块调用 security 域
+public interface InternshipSecurityGateway {
+    void createStudentPrincipal(String authId, String studentNo, String password);
+}
+
+// manager 模块调用 security 域
+public interface ManagerSecurityGateway {
+    void createAdminPrincipal(String authId, String username, String password);
 }
 ```
 
-### 2.2 接口实现
+### 1.2 接口实现
+
+**格式**：`{BoundedContext}{Domain}GatewayImpl`
 
 ```java
 @Component
 @RequiredArgsConstructor
-public class SecurityGatewayImpl implements SecurityGateway {
-
-    private final CommandBus commandBus;
-
-    @Override
-    public Long createPrincipal(String authId, List<Identifier> identifiers,
-                                String password, Set<Long> roles) {
-        // 转换并调用外部模块
-        var cmd = new CreatePrincipalCommand(authId, identifiers, password, roles);
-        return commandBus.dispatch(cmd);
-    }
+public class InternshipSecurityGatewayImpl implements InternshipSecurityGateway {
+    private final SecurityClient securityClient;
 
     @Override
-    public void deletePrincipal(String authId) {
-        commandBus.dispatch(new DeletePrincipalCommand(authId));
+    public void createStudentPrincipal(String authId, String studentNo, String password) {
+        securityClient.createPrincipal(authId, studentNo, password, UserType.STUDENT);
     }
 }
 ```
 
-### 2.3 使用方式
+### 1.3 放置规范
 
-```java
-@Service
-@RequiredArgsConstructor
-public class CreateTeacherHandler implements CommandHandler<CreateTeacherCommand, Long> {
+- **接口**：`vip.geekclub.{boundedContext}.application.gateway`
+- **实现**：`vip.geekclub.{boundedContext}.adapter.gateway`
 
-    private final TeacherRepository repository;
-    private final SecurityGateway securityGateway;  // 注入防腐层
+```
+internship模块
+├── application/gateway/InternshipSecurityGateway.java  (接口)
+└── adapter/gateway/InternshipSecurityGatewayImpl.java  (实现)
 
-    @Override
-    public Long execute(CreateTeacherCommand cmd) {
-        // 1. 创建领域对象
-        Teacher teacher = Teacher.create(cmd.name(), cmd.email());
-        repository.save(teacher);
-
-        // 2. 通过防腐层调用外部模块
-        securityGateway.createPrincipal(
-            teacher.getAuthId(),
-            List.of(new Identifier("email", cmd.email())),
-            "123456",
-            cmd.roleIds()
-        );
-
-        return teacher.getId();
-    }
-}
+manager模块
+├── application/gateway/ManagerSecurityGateway.java     (接口)
+└── adapter/gateway/ManagerSecurityGatewayImpl.java     (实现)
 ```
 
-## 3、设计原则
+## 2、设计原则
 
 ### 3.1 防腐层保护调用方
 
-- 定义在**调用方模块**内部，而非被调用方；
-- 被调用方只提供应用服务或 Command/Query。
+- 定义在**调用方模块**内部，而非被调用方
+- 被调用方只提供应用服务或 Command/Query
 
-### 3.2 接口与实现分离
+### 3.2 严禁直接使用通用域 Client
+
+必须通过本模块的 Gateway 接口，防止直接依赖：
+
+```java
+// 错误：直接依赖通用域
+@Autowired private SecurityClient securityClient;
+
+// 正确：通过本模块 Gateway
+@Autowired private InternshipSecurityGateway securityGateway;
+```
+
+### 3.3 接口与实现分离
 
 ```
 application.gateway/     ← 接口定义（契约）
-    └── SecurityGateway.java
-
 adapter.gateway/         ← 接口实现（技术细节）
-    └── SecurityGatewayImpl.java
 ```
 
-### 3.3 放置原则
+## 4、常见命名对照
 
-- **默认放在应用层**，由应用服务调用；
-- **下沉到领域层的条件**（必须同时满足）：
-  1. 换技术实现概念仍成立；
-  2. 领域实体必须直接调用；
-  3. 无法通过参数传入解决。
+| 通用域 | internship 模块 | manager 模块 |
+|:---|:---|:---|
+| Security | InternshipSecurityGateway | ManagerSecurityGateway |
+| Payment | InternshipPaymentGateway | ManagerPaymentGateway |
+| Notification | InternshipNotificationGateway | ManagerNotificationGateway |
+| Storage | InternshipStorageGateway | ManagerStorageGateway |
+
+## 5、为什么不使用 @Qualifier？
+
+通过类名区分（推荐）：
+```java
+// 编译期强制校验，无需额外说明
+private final InternshipSecurityGateway gateway;
+```
+
+使用 @Qualifier 的写法（不推荐）：
+```java
+// 容易遗忘，可读性差
+@Autowired @Qualifier("internship")
+private SecurityGateway gateway;
+```
