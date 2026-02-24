@@ -6,6 +6,8 @@
 - 使用 `@RestController` + `@RequestMapping` + `@RequiredArgsConstructor`；
 - 方法参数使用 DTO + `@Valid` 校验；
 - 返回类型统一使用 `ApiResponse<T>` 包装；
+- 命令通过 `CommandBus.dispatch(command)` 调用，命令直接返回结果，控制器用 `ApiResponse` 包装；
+- 查询直接调用 QueryService，使用方式不变；
 - **优先复用应用层 DTO**：Controller 直接使用 QueryService/CommandHandler 的 DTO；只有无法复用（如字段差异大）时才重新定义；
 - **URL 四级结构**：`/{userType}/{boundedContext}/{resource}/{action}`
   - `userType`：用户角色，如 `teacher`、`student`、`admin`。**注意：新增角色需在 `SecurityConfig.configureUrl()` 中添加对应的路径权限配置，如 `.requestMatchers("/teacher/**").hasRole(UserType.TEACHER)`**
@@ -15,20 +17,43 @@
 
 ## 2、示例
 
+### 示例1：查询操作（调用QueryService）
+
 ```java
 @RestController("Teacher_SelectionController")
 @RequestMapping("/teacher/internship/selection")
 @RequiredArgsConstructor
 public class SelectionController {
 
+    private final SelectionService service;
+
     @GetMapping("/list")
     public ApiResponse<PageResult<Result>> list(Query query) {
         return ApiResponse.success(service.list(query));
     }
+}
+```
 
-    @PostMapping("/submit")
-    public ApiResponse<Long> submit(@RequestBody @Valid SubmitRequest request) {
-        return ApiResponse.success(service.submit(request));
+### 示例2：命令操作（调用CommandBus）
+
+```java
+@RestController
+@RequestMapping("/security/auth")
+@RequiredArgsConstructor
+public class PasswordAuthController {
+
+    private final CommandBus commandBus;
+
+    @PostMapping("/login")
+    public ApiResponse<Long> login(@RequestBody @Valid PasswordLoginRequest request) {
+        // 1. 创建命令
+        PasswordVerificationCommand command = new PasswordVerificationCommand(
+            request.userType(), request.identifier(), request.password()
+        );
+
+        // 2. 调用命令总线（返回UserPrincipal）
+        Long id = commandBus.dispatch(command);
+        return ApiResponse.success(id);
     }
 }
 ```

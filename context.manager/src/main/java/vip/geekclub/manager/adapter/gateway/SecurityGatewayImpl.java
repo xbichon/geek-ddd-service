@@ -6,7 +6,6 @@ import vip.geekclub.contract.UserType;
 import vip.geekclub.framework.command.CommandBus;
 import vip.geekclub.manager.application.gateway.SecurityGateway;
 import vip.geekclub.security.application.command.principal.CreateAdminCommand;
-import vip.geekclub.security.application.command.principal.CreatePrincipalCommand;
 import vip.geekclub.security.domain.value.IdentifierValue;
 
 import java.util.List;
