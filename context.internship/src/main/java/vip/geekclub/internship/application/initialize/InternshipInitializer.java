@@ -2,16 +2,13 @@ package vip.geekclub.internship.application.initialize;
 
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Component;
-import vip.geekclub.contract.UserType;
-import vip.geekclub.framework.command.CommandBus;
 import vip.geekclub.framework.initialize.Initializer;
 import vip.geekclub.internship.domain.model.Intern;
 import vip.geekclub.internship.domain.model.Thesis;
 import vip.geekclub.internship.domain.repository.InternRepository;
 import vip.geekclub.internship.domain.repository.ThesisRepository;
 import vip.geekclub.internship.domain.value.AchievementType;
-import vip.geekclub.security.application.command.principal.CreatePrincipalCommand;
-import vip.geekclub.security.domain.value.IdentifierValue;
+import vip.geekclub.internship.application.gateway.SecurityGateway;
 
 import java.util.List;
 
@@ -21,7 +18,7 @@ public class InternshipInitializer implements Initializer {
 
     private final InternRepository internRepository;
     private final ThesisRepository thesisRepository;
-    private final CommandBus commandBus;
+    private final SecurityGateway securityGateway;
 
     @Override
     public void initialize() {
@@ -35,11 +32,11 @@ public class InternshipInitializer implements Initializer {
             intern.initAuthId();
 
             // 为每个实习生创建 Principal（密码默认为 666666）
-            CreatePrincipalCommand command = new CreatePrincipalCommand(UserType.STUDENT, intern.getAuthId(),
-                    List.of(new IdentifierValue("STUDENT_NO", intern.getStudentNo())),
+            securityGateway.createStudentPrincipal(
+                    intern.getAuthId(),
+                    intern.getStudentNo(),
                     "666666"
             );
-            commandBus.dispatch(command);
         }
         internRepository.saveAll(allByAuthIdIsNull);
 

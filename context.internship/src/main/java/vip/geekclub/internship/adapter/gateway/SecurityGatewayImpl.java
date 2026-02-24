@@ -1,11 +1,10 @@
-package vip.geekclub.manager.adapter.gateway;
+package vip.geekclub.internship.adapter.gateway;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 import vip.geekclub.contract.UserType;
 import vip.geekclub.framework.command.CommandBus;
-import vip.geekclub.manager.application.gateway.SecurityGateway;
-import vip.geekclub.security.application.command.principal.CreateAdminCommand;
+import vip.geekclub.internship.application.gateway.SecurityGateway;
 import vip.geekclub.security.application.command.principal.CreatePrincipalCommand;
 import vip.geekclub.security.domain.value.IdentifierValue;
 
@@ -19,23 +18,6 @@ import java.util.List;
 public class SecurityGatewayImpl implements SecurityGateway {
 
     private final CommandBus commandBus;
-
-    @Override
-    public void createAdminPrincipal(String authId, String username,
-                                     String password) {
-        List<IdentifierValue> identifiers = List.of(
-                IdentifierValue.ofUsername(username)
-        );
-
-        CreateAdminCommand command = new CreateAdminCommand(
-                identifiers,
-                password,
-                authId,
-                UserType.TEACHER
-        );
-
-        commandBus.dispatch(command);
-    }
 
     @Override
     public void createStudentPrincipal(String authId, String studentNo,
