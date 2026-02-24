@@ -15,7 +15,7 @@ import vip.geekclub.framework.security.UserAuthentication;
 import vip.geekclub.framework.security.UserPrincipal;
 import vip.geekclub.security.adapter.controller.dto.CaptchaResponse;
 import vip.geekclub.security.adapter.controller.dto.PasswordLoginRequest;
-import vip.geekclub.security.application.command.credential.PasswordLoginCommand;
+import vip.geekclub.security.application.command.credential.PasswordVerificationCommand;
 
 import java.io.ByteArrayOutputStream;
 import java.util.Base64;
@@ -69,7 +69,7 @@ public class PasswordAuthController {
         }
 
         // 验证码验证通过，继续执行登录逻辑
-        PasswordLoginCommand command = new PasswordLoginCommand(request.userType(), request.identifier(), request.password());
+        PasswordVerificationCommand command = new PasswordVerificationCommand(request.userType(), request.identifier(), request.password());
         UserPrincipal userPrincipal = commandBus.dispatch(command);
         UserAuthentication userAuthentication = new UserAuthentication(userPrincipal);
         String jwtToken = authSessionManager.create(userAuthentication);

@@ -13,14 +13,14 @@ import vip.geekclub.security.domain.repository.PrincipalRepository;
 
 @AllArgsConstructor
 @Service
-public class PasswordLoginCommandHandler implements CommandHandler<PasswordLoginCommand, UserPrincipal> {
+public class PasswordVerificationCommandHandler implements CommandHandler<PasswordVerificationCommand, UserPrincipal> {
 
     private final PasswordCredentialRepository passwordCredentialRepository;
     private final PrincipalRepository principalRepository;
 
     @Override
     @Transactional
-    public UserPrincipal execute(PasswordLoginCommand command) {
+    public UserPrincipal execute(PasswordVerificationCommand command) {
 
         // 1. 获取该用户的密码凭证
         var credential = passwordCredentialRepository.findByIdentifiersValueAndIdentifiersUserType(command.identifier(), command.userType())
