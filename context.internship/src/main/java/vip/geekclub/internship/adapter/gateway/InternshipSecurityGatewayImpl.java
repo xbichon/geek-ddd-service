@@ -4,7 +4,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 import vip.geekclub.contract.UserType;
 import vip.geekclub.framework.command.CommandBus;
-import vip.geekclub.internship.application.gateway.SecurityGateway;
+import vip.geekclub.internship.application.gateway.InternshipSecurityGateway;
 import vip.geekclub.security.application.command.principal.CreatePrincipalCommand;
 import vip.geekclub.security.domain.value.IdentifierValue;
 
@@ -15,7 +15,7 @@ import java.util.List;
  */
 @Component
 @RequiredArgsConstructor
-public class SecurityGatewayImpl implements SecurityGateway {
+public class InternshipSecurityGatewayImpl implements InternshipSecurityGateway {
 
     private final CommandBus commandBus;
 

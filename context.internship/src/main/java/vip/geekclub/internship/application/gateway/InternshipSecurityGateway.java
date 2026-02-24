@@ -4,7 +4,7 @@ package vip.geekclub.internship.application.gateway;
  * 安全模块防腐层接口
  * 用于调用 security 模块的服务
  */
-public interface SecurityGateway {
+public interface InternshipSecurityGateway {
 
     /**
      * 创建学生凭证

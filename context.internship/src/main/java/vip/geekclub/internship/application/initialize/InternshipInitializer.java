@@ -3,12 +3,12 @@ package vip.geekclub.internship.application.initialize;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Component;
 import vip.geekclub.framework.initialize.Initializer;
+import vip.geekclub.internship.application.gateway.InternshipSecurityGateway;
 import vip.geekclub.internship.domain.model.Intern;
 import vip.geekclub.internship.domain.model.Thesis;
 import vip.geekclub.internship.domain.repository.InternRepository;
 import vip.geekclub.internship.domain.repository.ThesisRepository;
 import vip.geekclub.internship.domain.value.AchievementType;
-import vip.geekclub.internship.application.gateway.SecurityGateway;
 
 import java.util.List;
 
@@ -18,7 +18,7 @@ public class InternshipInitializer implements Initializer {
 
     private final InternRepository internRepository;
     private final ThesisRepository thesisRepository;
-    private final SecurityGateway securityGateway;
+    private final InternshipSecurityGateway securityGateway;
 
     @Override
     public void initialize() {

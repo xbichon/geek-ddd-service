@@ -4,7 +4,7 @@ import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import vip.geekclub.manager.application.gateway.SecurityGateway;
+import vip.geekclub.manager.application.gateway.ManagerSecurityGateway;
 import vip.geekclub.manager.domain.model.Teacher;
 import vip.geekclub.manager.domain.repository.TeacherRepository;
 
@@ -13,7 +13,7 @@ import vip.geekclub.manager.domain.repository.TeacherRepository;
 @AllArgsConstructor
 public class Initializer implements vip.geekclub.framework.initialize.Initializer {
     private final TeacherRepository teacherRepository;
-    private final SecurityGateway securityGateway;
+    private final ManagerSecurityGateway securityGateway;
 
     @Transactional
     @Override
