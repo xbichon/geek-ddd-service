@@ -6,7 +6,6 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-import vip.geekclub.framework.security.SessionStore;
 import vip.geekclub.framework.controller.ApiResponse;
 import vip.geekclub.security.adapter.controller.dto.WechatBindRequest;
 import vip.geekclub.security.adapter.controller.dto.WechatLoginRequest;

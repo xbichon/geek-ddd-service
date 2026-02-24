@@ -22,11 +22,6 @@ public class InternshipInitializer implements Initializer {
 
     @Override
     public void initialize() {
-        // 初始化5个实习生
-        final String advisorName = "张莺";
-        final String className = "软件工程2301班";
-
-
         List<Intern> allByAuthIdIsNull = internRepository.findAllByAuthIdIsNull();
         for (Intern intern : allByAuthIdIsNull) {
             intern.initAuthId();

@@ -36,21 +36,4 @@ public class SecurityGatewayImpl implements SecurityGateway {
 
         commandBus.dispatch(command);
     }
-
-    @Override
-    public void createStudentPrincipal(String authId, String studentNo,
-                                       String password) {
-        List<IdentifierValue> identifiers = List.of(
-                new IdentifierValue("STUDENT_NO", studentNo)
-        );
-
-        CreatePrincipalCommand command = new CreatePrincipalCommand(
-                UserType.STUDENT,
-                authId,
-                identifiers,
-                password
-        );
-
-        commandBus.dispatch(command);
-    }
 }
