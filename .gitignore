@@ -41,3 +41,6 @@ Icon?
 *.swp
 *~
 .*
+
+# 例外规则：允许特定的点文件/文件夹被git跟踪
+!.claude/skills/
