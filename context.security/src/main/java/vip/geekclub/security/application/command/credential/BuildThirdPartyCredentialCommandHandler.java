@@ -36,7 +36,7 @@ public class BuildThirdPartyCredentialCommandHandler implements VoidCommandHandl
         }
 
         // 4. 创建第三方凭证
-        ThirdPartyCredential credential = new ThirdPartyCredential(principal.getId(), command.type(), command.code());
+        ThirdPartyCredential credential = new ThirdPartyCredential(principal.getId(), principal.getAuthId(), command.type(), command.code());
         thirdPartyCredentialRepository.save(credential);
     }
 }

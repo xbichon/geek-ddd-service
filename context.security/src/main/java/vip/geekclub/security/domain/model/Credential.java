@@ -23,4 +23,9 @@ public abstract class Credential extends EntitySupport implements AggregateRoot<
      * 关联的用户ID
      */
     private Long principalId;
+
+    /**
+     * 认证标识，冗余存储用于验证后快速返回
+     */
+    private String authId;
 }

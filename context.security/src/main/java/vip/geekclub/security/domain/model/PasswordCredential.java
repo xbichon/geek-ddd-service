@@ -41,8 +41,9 @@ public class PasswordCredential extends Credential {
     /**
      * 私有构造函数
      */
-    private PasswordCredential(Long principalId, List<IdentifierValue> identifierValues, String password, String userType) {
+    private PasswordCredential(Long principalId, String authId, List<IdentifierValue> identifierValues, String password, String userType) {
         setPrincipalId(principalId);
+        setAuthId(authId);
         setPassword(password);
         setIdentifier(identifierValues, userType);
     }
@@ -50,8 +51,8 @@ public class PasswordCredential extends Credential {
     /**
      * 创建包含多个标识符的密码凭证
      */
-    public static PasswordCredential create(Long principalId, List<IdentifierValue> identifierValues, String password, String userType) {
-        return new PasswordCredential(principalId, identifierValues, password, userType);
+    public static PasswordCredential create(Long principalId, String authId, List<IdentifierValue> identifierValues, String password, String userType) {
+        return new PasswordCredential(principalId, authId, identifierValues, password, userType);
     }
 
     /**

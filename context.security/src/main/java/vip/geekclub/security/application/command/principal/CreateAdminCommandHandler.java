@@ -48,6 +48,7 @@ public class CreateAdminCommandHandler implements VoidCommandHandler<CreateAdmin
         // 4. 创建用户名密码认证信息
         PasswordCredential credential = PasswordCredential.create(
                 admin.getId(),
+                admin.getAuthId(),
                 command.identifierValues(),
                 command.password(),
                 command.userType()

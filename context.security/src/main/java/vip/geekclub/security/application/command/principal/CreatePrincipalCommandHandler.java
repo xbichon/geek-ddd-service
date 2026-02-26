@@ -36,6 +36,7 @@ public class CreatePrincipalCommandHandler implements VoidCommandHandler<CreateP
         // 4. 创建密码凭证
         PasswordCredential passwordCredential = PasswordCredential.create(
                 principal.getId(),
+                principal.getAuthId(),
                 command.identifierValues(),
                 command.password(),
                 command.userType()

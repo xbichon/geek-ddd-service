@@ -16,6 +16,7 @@ import vip.geekclub.framework.security.UserPrincipal;
 import vip.geekclub.security.adapter.controller.dto.CaptchaResponse;
 import vip.geekclub.security.adapter.controller.dto.PasswordLoginRequest;
 import vip.geekclub.security.application.command.credential.PasswordVerificationCommand;
+import vip.geekclub.security.application.query.PrincipalQueryService;
 
 import java.io.ByteArrayOutputStream;
 import java.util.Base64;
@@ -34,6 +35,7 @@ public class PasswordAuthController {
 
     private final SessionStore authSessionManager;
     private final StringRedisTemplate stringRedisTemplate;
+    private final PrincipalQueryService principalQueryService;
 
     @Value("${spring.profiles.active:prod}")
     private String activeProfile;
@@ -69,8 +71,13 @@ public class PasswordAuthController {
         }
 
         // 验证码验证通过，继续执行登录逻辑
+        // 1. 命令端验证密码，获取 authId
         PasswordVerificationCommand command = new PasswordVerificationCommand(request.userType(), request.identifier(), request.password());
-        UserPrincipal userPrincipal = commandBus.dispatch(command);
+        String authId = commandBus.dispatch(command);
+
+        // 2. 查询端获取用户信息（CQRS：命令与查询分离）
+        String userType = principalQueryService.getUserTypeByAuthId(authId);
+        UserPrincipal userPrincipal = new UserPrincipal(authId, userType);
         UserAuthentication userAuthentication = new UserAuthentication(userPrincipal);
         String jwtToken = authSessionManager.create(userAuthentication);
 

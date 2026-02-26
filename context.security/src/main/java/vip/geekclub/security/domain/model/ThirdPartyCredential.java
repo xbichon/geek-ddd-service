@@ -31,8 +31,9 @@ public class ThirdPartyCredential extends Credential {
     /**
      * 构造函数
      */
-    public ThirdPartyCredential(Long principalId, ThirdPartyType type, String code) {
+    public ThirdPartyCredential(Long principalId, String authId, ThirdPartyType type, String code) {
         setPrincipalId(principalId);
+        setAuthId(authId);
         setType(type);
         setCode(code);
     }
