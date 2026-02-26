@@ -42,6 +42,6 @@ public class SelectionController {
     @GetMapping("/export")
     public void exportAllThesisSelectionsToExcel(HttpServletResponse response) throws IOException {
         List<SelectionItemResult> dataList = thesisSelectionListQueryService.findAll();
-        ExcelExportUtil.export(response, dataList, "论文选题列表", "论文选题列表");
+        ExcelExportUtil.export(response, dataList,SelectionItemResult.class, "论文选题列表", "论文选题列表");
     }
 }
