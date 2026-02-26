@@ -62,7 +62,6 @@ public class JwtUtil {
     /**
      * 生成JWT令牌（将对象序列化为JSON存入data字段）
      *
-     * @param subject           主题
      * @param data              数据对象
      * @param expirationSeconds 过期时间（秒）
      * @param <T>               数据类型
