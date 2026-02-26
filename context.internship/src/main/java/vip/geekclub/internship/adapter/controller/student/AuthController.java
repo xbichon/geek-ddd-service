@@ -1,4 +1,4 @@
-package vip.geekclub.manager.adapter.controller;
+package vip.geekclub.internship.adapter.controller.student;
 
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotBlank;
@@ -14,18 +14,17 @@ import vip.geekclub.framework.security.UserAuthentication;
 import vip.geekclub.framework.security.UserPrincipal;
 import vip.geekclub.security.adapter.controller.dto.CaptchaResponse;
 import vip.geekclub.security.application.command.credential.PasswordVerificationCommand;
-import vip.geekclub.security.application.query.PrincipalQueryService;
 import vip.geekclub.support.CaptchaKit;
 
 /**
- * 教师认证控制器
- * 处理教师登录功能
+ * 学生认证控制器
+ * 处理学生登录功能
  */
 @Slf4j
-@RestController
+@RestController("STUDENT_AuthController")
 @RequiredArgsConstructor
-@RequestMapping("/teacher/auth")
-public class TeacherAuthController {
+@RequestMapping("/student/auth")
+public class AuthController {
 
     private final SessionStore authSessionManager;
     private final CaptchaKit captchaKit;
@@ -35,13 +34,13 @@ public class TeacherAuthController {
     private final CommandBus commandBus;
 
     /**
-     * 教师登录
+     * 学生登录
      *
      * @param request 登录请求
      * @return JWT Token
      */
     @PostMapping("/login")
-    public ApiResponse<?> login(@RequestBody @Valid TeacherLoginRequest request) {
+    public ApiResponse<?> login(@RequestBody @Valid StudentLoginRequest request) {
 
         // 非开发环境才验证验证码
         if (!"dev".equals(activeProfile)) {
@@ -50,11 +49,12 @@ public class TeacherAuthController {
                 return ApiResponse.fail(400, result.errorMessage());
             }
         }
+
         PasswordVerificationCommand command = new PasswordVerificationCommand(
-                UserType.TEACHER, request.identifier(), request.password());
+                UserType.STUDENT, request.identifier(), request.password());
         String authId = commandBus.dispatch(command);
 
-        UserPrincipal userPrincipal = new UserPrincipal(authId, UserType.TEACHER);
+        UserPrincipal userPrincipal = new UserPrincipal(authId, UserType.STUDENT);
         UserAuthentication userAuthentication = new UserAuthentication(userPrincipal);
         String jwtToken = authSessionManager.create(userAuthentication);
 
@@ -67,15 +67,16 @@ public class TeacherAuthController {
      * @return 验证码结果
      */
     @GetMapping("/captcha")
-    public ApiResponse<CaptchaKit.CaptchaResult> captcha() {
+    public ApiResponse<CaptchaResponse> captcha() {
         CaptchaKit.CaptchaResult result = captchaKit.generate();
-        return ApiResponse.success(result);
+        CaptchaResponse response = new CaptchaResponse(result.key(), result.data());
+        return ApiResponse.success(response);
     }
 
     /**
-     * 教师登录请求
+     * 学生登录请求
      */
-    public record TeacherLoginRequest(
+    public record StudentLoginRequest(
             @NotBlank(message = "用户名不能为空") String identifier,
             @NotBlank(message = "密码不能为空") String password,
             @NotBlank(message = "验证码不能为空") String captcha,
