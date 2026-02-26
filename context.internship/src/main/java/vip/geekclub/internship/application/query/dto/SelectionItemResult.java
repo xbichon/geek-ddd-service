@@ -40,4 +40,7 @@ public class SelectionItemResult {
 
     @ExcelProperty("组员")
     private String groupMembers;
+
+    @ExcelProperty("结组原因")
+    private String cancelReason;
 }

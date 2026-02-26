@@ -2,6 +2,7 @@ package vip.geekclub.internship.domain.service;
 
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Transactional;
 import vip.geekclub.framework.exception.ValidationException;
 import vip.geekclub.internship.domain.model.TeamApplication;
 import vip.geekclub.internship.domain.model.ThesisSelection;
@@ -36,6 +37,7 @@ public class ThesisSelectionDomainService {
      * @param studentIds      选题者列表
      * @param teamApplicationValue 结组申请信息
      */
+    @Transactional
     public void selectThesis(Long thesisId, String achievementType, SelectionType selectionType, Long creatorId,
                              List<SelectorValue> studentIds, TeamApplicationValue teamApplicationValue) {
         // 1. 业务规则：检查论文是否存在

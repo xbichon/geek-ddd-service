@@ -29,8 +29,11 @@ public class SelectionListQueryService {
     private final ThesisSelectionTable thesisSelectionTable = Tables.ThesisSelection;
     private final InternTable internTable = Tables.Intern;
     private final ThesisTable thesisTable = Tables.Thesis;
-    private final SelectorTable selectorTable = Tables.Selector;
-    private final Field<?>[] commonSelectFields= new Field<?>[] {
+    private final TeamApplicationTable teamApplicationTable = Tables.TeamApplication;
+    private final TeamMemberTable teamMemberTable = Tables.TeamMember;
+
+    // 基础查询字段
+    private final Field<?>[] commonSelectFields = new Field<?>[]{
             thesisSelectionTable.ID,
             thesisSelectionTable.THESIS_ID,
             thesisSelectionTable.ACHIEVEMENT_TYPE,
@@ -40,7 +43,11 @@ public class SelectionListQueryService {
             internTable.as("creator").CLASS_NAME,
             internTable.as("creator").STUDENT_NO,
             internTable.as("creator").ADVISOR_NAME,
-            DSL.field("group_concat({0})", String.class, internTable.NAME).as("GroupMember")
+            // 结组原因
+            teamApplicationTable.REASON.as("CancelReason"),
+            // 组员及职责：姓名(职责)
+            DSL.field("group_concat(distinct concat({0}, '(', {1}, ')') order by {0} separator ', ')",
+                    String.class, internTable.as("member").NAME, teamMemberTable.RESPONSIBILITY).as("GroupMembersWithDuty")
     };
 
 
@@ -55,8 +62,10 @@ public class SelectionListQueryService {
                 .from(thesisSelectionTable)
                 .join(internTable.as("creator")).on(thesisSelectionTable.CREATOR_ID.eq(internTable.as("creator").ID))
                 .join(thesisTable).on(thesisTable.ID.eq(thesisSelectionTable.THESIS_ID))
-                .leftJoin(selectorTable).on(selectorTable.PAPER_SELECTION_ID.eq(thesisSelectionTable.ID))
-                .leftJoin(internTable).on(internTable.ID.eq(selectorTable.STUDENT_ID))
+                // 关联结组申请获取原因和组员职责
+                .leftJoin(teamApplicationTable).on(teamApplicationTable.THESIS_SELECTION_ID.eq(thesisSelectionTable.ID))
+                .leftJoin(teamMemberTable).on(teamMemberTable.TEAM_APPLICATION_ID.eq(teamApplicationTable.ID))
+                .leftJoin(internTable.as("member")).on(internTable.as("member").ID.eq(teamMemberTable.STUDENT_ID))
                 .groupBy(
                         thesisSelectionTable.ID,
                         thesisSelectionTable.THESIS_ID,
@@ -66,7 +75,8 @@ public class SelectionListQueryService {
                         internTable.as("creator").CLASS_NAME,
                         internTable.as("creator").ADVISOR_NAME,
                         internTable.as("creator").NAME,
-                        internTable.as("creator").STUDENT_NO
+                        internTable.as("creator").STUDENT_NO,
+                        teamApplicationTable.REASON
                 )
                 .orderBy(thesisSelectionTable.ID.asc());
 
@@ -83,16 +93,19 @@ public class SelectionListQueryService {
                 .from(thesisSelectionTable)
                 .join(internTable.as("creator")).on(thesisSelectionTable.CREATOR_ID.eq(internTable.as("creator").ID))
                 .join(thesisTable).on(thesisTable.ID.eq(thesisSelectionTable.THESIS_ID))
-                .leftJoin(selectorTable).on(selectorTable.PAPER_SELECTION_ID.eq(thesisSelectionTable.ID))
-                .leftJoin(internTable).on(internTable.ID.eq(selectorTable.STUDENT_ID))
+                // 关联结组申请获取原因和组员职责
+                .leftJoin(teamApplicationTable).on(teamApplicationTable.THESIS_SELECTION_ID.eq(thesisSelectionTable.ID))
+                .leftJoin(teamMemberTable).on(teamMemberTable.TEAM_APPLICATION_ID.eq(teamApplicationTable.ID))
+                .leftJoin(internTable.as("member")).on(internTable.as("member").ID.eq(teamMemberTable.STUDENT_ID))
                 .where(DSL.and(
                         query.thesisId() != null ? thesisSelectionTable.THESIS_ID.eq(query.thesisId()) : null,
-                        query.className() != null ? internTable.CLASS_NAME.eq(query.className()) : null,
+                        query.className() != null ? internTable.as("creator").CLASS_NAME.eq(query.className()) : null,
                         query.advisorName() != null ? internTable.as("creator").ADVISOR_NAME.eq(query.advisorName()) : null,
                         query.studentName() != null ? thesisSelectionTable.ID.in(
-                                DSL.selectDistinct(selectorTable.PAPER_SELECTION_ID)
-                                        .from(selectorTable)
-                                        .join(internTable).on(internTable.ID.eq(selectorTable.STUDENT_ID))
+                                DSL.selectDistinct(teamApplicationTable.THESIS_SELECTION_ID)
+                                        .from(teamApplicationTable)
+                                        .join(teamMemberTable).on(teamMemberTable.TEAM_APPLICATION_ID.eq(teamApplicationTable.ID))
+                                        .join(internTable).on(internTable.ID.eq(teamMemberTable.STUDENT_ID))
                                         .where(internTable.NAME.like("%" + query.studentName() + "%"))
                         ) : null
                 ))
@@ -105,7 +118,8 @@ public class SelectionListQueryService {
                         internTable.as("creator").CLASS_NAME,
                         internTable.as("creator").ADVISOR_NAME,
                         internTable.as("creator").NAME,
-                        internTable.as("creator").STUDENT_NO
+                        internTable.as("creator").STUDENT_NO,
+                        teamApplicationTable.REASON
                 );
 
         return PageHelper.page(list, query, this::mapToSelectionItem);
@@ -120,15 +134,17 @@ public class SelectionListQueryService {
     private SelectionItemResult mapToSelectionItem(Record r) {
         String selectionType = r.get(thesisSelectionTable.SELECTION_TYPE);
         String creatorName = r.get(internTable.as("creator").NAME);
-        String groupMembers = r.get("GroupMember", String.class);
+        String groupMembersWithDuty = r.get("GroupMembersWithDuty", String.class);
+        String cancelReason = r.get("CancelReason", String.class);
 
         // 如果不是小组，组员为空；如果是小组，剔除当前创建者
         if (!"GROUP".equals(selectionType)) {
-            groupMembers = null;
-        } else if (groupMembers != null && creatorName != null) {
-            groupMembers = Arrays.stream(groupMembers.split(","))
+            groupMembersWithDuty = null;
+        } else if (groupMembersWithDuty != null && creatorName != null) {
+            String finalCreatorName = creatorName.trim();
+            groupMembersWithDuty = Arrays.stream(groupMembersWithDuty.split(","))
                     .map(String::trim)
-                    .filter(name -> !name.equals(creatorName.trim()))
+                    .filter(member -> !member.startsWith(finalCreatorName + "("))
                     .collect(Collectors.joining(", "));
         }
 
@@ -142,7 +158,8 @@ public class SelectionListQueryService {
                 r.get(internTable.as("creator").STUDENT_NO),
                 r.get(internTable.as("creator").CLASS_NAME),
                 r.get(internTable.as("creator").ADVISOR_NAME),
-                groupMembers
+                groupMembersWithDuty,
+                cancelReason
         );
     }
 }
