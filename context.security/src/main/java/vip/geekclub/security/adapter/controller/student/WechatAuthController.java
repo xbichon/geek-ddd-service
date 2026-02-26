@@ -7,8 +7,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import vip.geekclub.framework.controller.ApiResponse;
-import vip.geekclub.security.adapter.controller.dto.WechatBindRequest;
-import vip.geekclub.security.adapter.controller.dto.WechatLoginRequest;
+import vip.geekclub.security.adapter.controller.student.dto.WechatBindRequest;
+import vip.geekclub.security.adapter.controller.student.dto.WechatLoginRequest;
 import vip.geekclub.security.adapter.gateway.WechatService;
 
 /**

@@ -1,4 +1,4 @@
-package vip.geekclub.security.adapter.controller.dto;
+package vip.geekclub.security.adapter.controller.student.dto;
 
 import jakarta.validation.constraints.NotBlank;
 
