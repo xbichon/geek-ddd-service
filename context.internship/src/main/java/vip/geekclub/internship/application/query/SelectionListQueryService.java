@@ -31,6 +31,7 @@ public class SelectionListQueryService {
     private final ThesisTable thesisTable = Tables.Thesis;
     private final TeamApplicationTable teamApplicationTable = Tables.TeamApplication;
     private final TeamMemberTable teamMemberTable = Tables.TeamMember;
+    private final SelectorTable selectorTable = Tables.Selector;
 
     // 基础查询字段
     private final Field<?>[] commonSelectFields = new Field<?>[]{
@@ -101,9 +102,15 @@ public class SelectionListQueryService {
                         query.thesisId() != null ? thesisSelectionTable.THESIS_ID.eq(query.thesisId()) : null,
                         query.className() != null ? internTable.as("creator").CLASS_NAME.eq(query.className()) : null,
                         query.advisorName() != null ? internTable.as("creator").ADVISOR_NAME.eq(query.advisorName()) : null,
+                        // 使用 EXISTS 子查询：只要选题中包含该学生，就返回该选题（包含所有组员）
                         query.studentName() != null ?
-                                DSL.or(internTable.as("member").NAME.like("%" + query.studentName() + "%"),
-                                        internTable.as("creator").NAME.like("%" + query.studentName() + "%"))
+                                DSL.exists(DSL.selectOne()
+                                        .from(selectorTable)
+                                        .join(internTable).on(selectorTable.STUDENT_ID.eq(internTable.ID))
+                                        .where(internTable.NAME.like("%" + query.studentName() + "%")
+                                                .and(selectorTable.PAPER_SELECTION_ID.eq(thesisSelectionTable.ID)))
+
+                                )
                                 : null
                 ))
                 .groupBy(
