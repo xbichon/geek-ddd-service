@@ -1,33 +1,33 @@
-package vip.geekclub.security.adapter.controller;
+package vip.geekclub.internship.adapter.controller.student;
 
 import jakarta.validation.Valid;
+import jakarta.validation.constraints.NotBlank;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.bind.annotation.*;
+import vip.geekclub.contract.UserType;
 import vip.geekclub.framework.command.CommandBus;
 import vip.geekclub.framework.controller.ApiResponse;
 import vip.geekclub.framework.security.SessionStore;
 import vip.geekclub.framework.security.UserAuthentication;
 import vip.geekclub.framework.security.UserPrincipal;
 import vip.geekclub.security.adapter.controller.dto.CaptchaResponse;
-import vip.geekclub.security.adapter.controller.dto.PasswordLoginRequest;
 import vip.geekclub.security.application.command.credential.PasswordVerificationCommand;
 import vip.geekclub.security.application.query.PrincipalQueryService;
 import vip.geekclub.support.CaptchaKit;
 
 /**
- * 用户名密码认证控制器
- * 处理传统的用户名密码登录功能
+ * 学生认证控制器
+ * 处理学生登录功能
  */
 @Slf4j
-@RestController
+@RestController("STUDENT_StudentAuthController")
 @RequiredArgsConstructor
-@RequestMapping("/security/auth")
-public class PasswordAuthController {
+@RequestMapping("/student/auth")
+public class StudentAuthController {
 
     private final SessionStore authSessionManager;
-    private final PrincipalQueryService principalQueryService;
     private final CaptchaKit captchaKit;
 
     @Value("${spring.profiles.active:prod}")
@@ -35,13 +35,13 @@ public class PasswordAuthController {
     private final CommandBus commandBus;
 
     /**
-     * 用户名密码登录
+     * 学生登录
      *
      * @param request 登录请求
      * @return JWT Token
      */
     @PostMapping("/login")
-    public ApiResponse<?> login(@RequestBody @Valid PasswordLoginRequest request) {
+    public ApiResponse<?> login(@RequestBody @Valid StudentLoginRequest request) {
 
         // 非开发环境才验证验证码
         if (!"dev".equals(activeProfile)) {
@@ -51,14 +51,11 @@ public class PasswordAuthController {
             }
         }
 
-        // 验证码验证通过，继续执行登录逻辑
-        // 1. 命令端验证密码，获取 authId
-        PasswordVerificationCommand command = new PasswordVerificationCommand(request.userType(), request.identifier(), request.password());
+        PasswordVerificationCommand command = new PasswordVerificationCommand(
+                UserType.STUDENT, request.identifier(), request.password());
         String authId = commandBus.dispatch(command);
 
-        // 2. 查询端获取用户信息（CQRS：命令与查询分离）
-        String userType = principalQueryService.getUserTypeByAuthId(authId);
-        UserPrincipal userPrincipal = new UserPrincipal(authId, userType);
+        UserPrincipal userPrincipal = new UserPrincipal(authId, UserType.STUDENT);
         UserAuthentication userAuthentication = new UserAuthentication(userPrincipal);
         String jwtToken = authSessionManager.create(userAuthentication);
 
@@ -67,14 +64,24 @@ public class PasswordAuthController {
 
     /**
      * 生成验证码
-     * 生成验证码图片和UUID key并一起返回给前端
      *
-     * @return 验证码结果，包含图片Base64编码和UUID key
+     * @return 验证码结果
      */
     @GetMapping("/captcha")
     public ApiResponse<CaptchaResponse> captcha() {
         CaptchaKit.CaptchaResult result = captchaKit.generate();
-        CaptchaResponse response = new CaptchaResponse(result.captchaKey(), result.imageData());
+        CaptchaResponse response = new CaptchaResponse(result.key(), result.data());
         return ApiResponse.success(response);
+    }
+
+    /**
+     * 学生登录请求
+     */
+    public record StudentLoginRequest(
+            @NotBlank(message = "用户名不能为空") String identifier,
+            @NotBlank(message = "密码不能为空") String password,
+            @NotBlank(message = "验证码不能为空") String captcha,
+            @NotBlank(message = "验证码KEY不能为空") String captchaKey
+    ) {
     }
 }

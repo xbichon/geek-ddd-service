@@ -31,10 +31,10 @@ public class CaptchaKit {
     /**
      * 验证码结果
      *
-     * @param captchaKey 验证码key
-     * @param imageData  图片Base64数据
+     * @param key 验证码key
+     * @param data  图片Base64数据
      */
-    public record CaptchaResult(String captchaKey, String imageData) {
+    public record CaptchaResult(String key, String data) {
     }
 
     /**
