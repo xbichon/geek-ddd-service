@@ -14,19 +14,16 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class SelectionItemResult {
 
-    @ExcelProperty("选题ID")
     private Long selectionId;
-
-    @ExcelProperty("论文ID")
     private Long thesisId;
 
-    @ExcelProperty("论文标题")
+    @ExcelProperty("选题方向")
     private String thesisTitle;
 
     @ExcelProperty("成果形式")
     private String achievementType;
 
-    @ExcelProperty("选择类型")
+    @ExcelProperty("组队形式")
     private String selectionType;
 
     @ExcelProperty("学生姓名")
