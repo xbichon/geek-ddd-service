@@ -37,7 +37,7 @@ public class SecurityConfig {
      * 免认证路径（白名单）
      * 匹配这些路径的请求不会经过 JWT 过滤器
      */
-    private static final String[] PERMIT_PATHS = {"/security/auth/**", "/test/**"};
+    private static final String[] PERMIT_PATHS = {"/teacher/auth/**", "/student/auth/**", "/test/**"};
 
     /**
      * 安全路径匹配规则
