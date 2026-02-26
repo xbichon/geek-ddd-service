@@ -1,4 +1,4 @@
-package vip.geekclub.security.adapter.controller;
+package vip.geekclub.security.adapter.controller.teacher;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -12,7 +12,7 @@ import java.util.Set;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/security/permission")
+@RequestMapping("/teacher/auth/permission")
 public class PermissionController {
 
     private final PermissionQueryService permissionQueryService;

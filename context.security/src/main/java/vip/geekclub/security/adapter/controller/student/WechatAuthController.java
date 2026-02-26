@@ -1,4 +1,4 @@
-package vip.geekclub.security.adapter.controller;
+package vip.geekclub.security.adapter.controller.student;
 
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -15,9 +15,9 @@ import vip.geekclub.security.adapter.gateway.WechatService;
  * 微信认证控制器
  * 处理微信小程序登录和绑定功能
  */
-@RestController
+@RestController(value = "STUDENT_WechatAuthController")
 @RequiredArgsConstructor
-@RequestMapping("/security/auth/wechat")
+@RequestMapping("/student/auth/wechat")
 public class WechatAuthController {
 
     private final WechatService wechatService;
