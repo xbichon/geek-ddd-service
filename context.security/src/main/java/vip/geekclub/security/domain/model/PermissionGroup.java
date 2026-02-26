@@ -2,7 +2,7 @@ package vip.geekclub.security.domain.model;
 
 import vip.geekclub.framework.domain.model.AggregateRoot;
 import vip.geekclub.framework.domain.model.EntitySupport;
-import vip.geekclub.framework.utils.StringUtil;
+import vip.geekclub.support.StringUtil;
 import vip.geekclub.framework.utils.AssertUtil;
 
 import jakarta.persistence.*;

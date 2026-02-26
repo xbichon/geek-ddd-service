@@ -5,7 +5,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import vip.geekclub.framework.controller.ApiResponse;
-import vip.geekclub.framework.jooq.PageResult;
+import vip.geekclub.support.jooq.PageResult;
 import vip.geekclub.internship.application.query.InternListQueryService;
 import vip.geekclub.internship.application.query.dto.InternItemResult;
 import vip.geekclub.internship.application.query.dto.InternPageQuery;

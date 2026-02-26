@@ -2,7 +2,7 @@ package vip.geekclub.manager.application.command.dto;
 
 import jakarta.validation.constraints.*;
 import vip.geekclub.framework.command.Command;
-import vip.geekclub.framework.utils.StringUtil;
+import vip.geekclub.support.StringUtil;
 import vip.geekclub.manager.domain.model.Teacher;
 import vip.geekclub.manager.domain.model.TeacherStatus;
 

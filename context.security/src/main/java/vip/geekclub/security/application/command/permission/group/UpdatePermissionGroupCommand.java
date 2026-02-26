@@ -6,7 +6,7 @@ import jakarta.validation.constraints.Size;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.Max;
 import vip.geekclub.framework.command.Command;
-import vip.geekclub.framework.utils.StringUtil;
+import vip.geekclub.support.StringUtil;
 
 public record UpdatePermissionGroupCommand(
         @NotNull(message = "权限组ID不能为空")

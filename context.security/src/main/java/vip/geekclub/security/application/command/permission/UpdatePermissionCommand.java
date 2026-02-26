@@ -1,7 +1,7 @@
 package vip.geekclub.security.application.command.permission;
 
 import vip.geekclub.framework.command.Command;
-import vip.geekclub.framework.utils.StringUtil;
+import vip.geekclub.support.StringUtil;
 
 public record UpdatePermissionCommand(
     Long id,

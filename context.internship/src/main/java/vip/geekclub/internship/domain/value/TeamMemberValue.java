@@ -2,7 +2,7 @@ package vip.geekclub.internship.domain.value;
 
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
-import vip.geekclub.framework.utils.StringUtil;
+import vip.geekclub.support.StringUtil;
 
 /**
  * 小组成员DTO

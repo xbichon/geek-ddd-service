@@ -1,4 +1,4 @@
-package vip.geekclub.framework.utils;
+package vip.geekclub.support;
 
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;

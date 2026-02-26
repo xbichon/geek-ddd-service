@@ -18,7 +18,7 @@ import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
 import vip.geekclub.contract.UserType;
 import vip.geekclub.framework.controller.ApiResponse;
-import vip.geekclub.framework.utils.HttpUtil;
+import vip.geekclub.support.HttpUtil;
 
 import java.util.List;
 

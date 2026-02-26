@@ -1,4 +1,4 @@
-package vip.geekclub.framework.utils;
+package vip.geekclub.support;
 
 import org.springframework.util.StringUtils;
 

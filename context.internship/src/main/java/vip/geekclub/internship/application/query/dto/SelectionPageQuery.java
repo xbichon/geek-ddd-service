@@ -1,6 +1,6 @@
 package vip.geekclub.internship.application.query.dto;
 
-import vip.geekclub.framework.jooq.PageQuery;
+import vip.geekclub.support.jooq.PageQuery;
 
 /**
  * 论文选择结果列表查询参数

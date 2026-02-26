@@ -1,4 +1,4 @@
-package vip.geekclub.framework.jooq;
+package vip.geekclub.support.jooq;
 
 import org.jooq.Record;
 import org.jooq.RecordMapper;

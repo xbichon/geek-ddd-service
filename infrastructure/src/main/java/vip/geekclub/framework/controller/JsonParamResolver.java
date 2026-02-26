@@ -2,7 +2,7 @@ package vip.geekclub.framework.controller;
 
 import lombok.NonNull;
 import vip.geekclub.framework.exception.ValidationException;
-import vip.geekclub.framework.utils.JsonUtils;
+import vip.geekclub.support.JsonUtils;
 import vip.geekclub.framework.utils.AssertUtil;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;

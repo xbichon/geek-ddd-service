@@ -2,14 +2,11 @@ package vip.geekclub.config.security;
 
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
-import org.springframework.util.AntPathMatcher;
 import vip.geekclub.framework.security.SessionStore;
 import vip.geekclub.framework.security.UserAuthentication;
 import vip.geekclub.framework.exception.JwtParseException;
 
-import java.util.Arrays;
-
-import vip.geekclub.framework.utils.HttpUtil;
+import vip.geekclub.support.HttpUtil;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;

@@ -1,4 +1,4 @@
-package vip.geekclub.framework.utils;
+package vip.geekclub.support;
 
 import com.fasterxml.jackson.annotation.JsonInclude.Include;
 import com.fasterxml.jackson.core.JsonGenerator;

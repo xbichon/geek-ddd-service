@@ -1,8 +1,6 @@
 package vip.geekclub.internship.application.query.dto;
 
-import com.fasterxml.jackson.annotation.JsonUnwrapped;
-import org.springframework.util.StringUtils;
-import vip.geekclub.framework.jooq.PageQuery;
+import vip.geekclub.support.jooq.PageQuery;
 
 /**
  * 实习生分页查询参数
