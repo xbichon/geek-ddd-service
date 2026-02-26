@@ -1,12 +1,9 @@
 package vip.geekclub.security.adapter.controller;
 
-import cn.hutool.captcha.CaptchaUtil;
-import cn.hutool.captcha.LineCaptcha;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.web.bind.annotation.*;
 import vip.geekclub.framework.command.CommandBus;
 import vip.geekclub.framework.controller.ApiResponse;
@@ -17,11 +14,7 @@ import vip.geekclub.security.adapter.controller.dto.CaptchaResponse;
 import vip.geekclub.security.adapter.controller.dto.PasswordLoginRequest;
 import vip.geekclub.security.application.command.credential.PasswordVerificationCommand;
 import vip.geekclub.security.application.query.PrincipalQueryService;
-
-import java.io.ByteArrayOutputStream;
-import java.util.Base64;
-import java.util.UUID;
-import java.util.concurrent.TimeUnit;
+import vip.geekclub.support.CaptchaKit;
 
 /**
  * 用户名密码认证控制器
@@ -34,8 +27,8 @@ import java.util.concurrent.TimeUnit;
 public class PasswordAuthController {
 
     private final SessionStore authSessionManager;
-    private final StringRedisTemplate stringRedisTemplate;
     private final PrincipalQueryService principalQueryService;
+    private final CaptchaKit captchaKit;
 
     @Value("${spring.profiles.active:prod}")
     private String activeProfile;
@@ -52,21 +45,9 @@ public class PasswordAuthController {
 
         // 非开发环境才验证验证码
         if (!"dev".equals(activeProfile)) {
-            // 验证验证码
-            String redisKey = "captcha:" + request.captchaKey();
-
-            // 从Redis中获取验证码
-            String storedCaptcha = stringRedisTemplate.opsForValue().get(redisKey);
-            if (storedCaptcha == null) {
-                return ApiResponse.fail(400, "验证码已过期或不存在");
-            }
-
-            // 无论验证成功与否，都删除验证码
-            stringRedisTemplate.delete(redisKey);
-
-            // 检查验证码是否正确（忽略大小写）
-            if (!storedCaptcha.equalsIgnoreCase(request.captcha())) {
-                return ApiResponse.fail(400, "验证码错误");
+            var result = captchaKit.validate(request.captchaKey(), request.captcha());
+            if (result.isFail()) {
+                return ApiResponse.fail(400, result.errorMessage());
             }
         }
 
@@ -92,28 +73,8 @@ public class PasswordAuthController {
      */
     @GetMapping("/captcha")
     public ApiResponse<CaptchaResponse> captcha() {
-        // 定义图片的宽和高
-        LineCaptcha lineCaptcha = CaptchaUtil.createLineCaptcha(200, 100);
-
-        // 生成UUID作为KEY
-        String captchaKey = UUID.randomUUID().toString();
-        String redisKey = "captcha:" + captchaKey;
-
-        // 将验证码文本存储到Redis中，设置2分钟过期
-        String captchaText = lineCaptcha.getCode();
-        stringRedisTemplate.opsForValue().set(redisKey, captchaText, 120, TimeUnit.SECONDS);
-
-        log.debug("生成验证码: {}, UUID Key: {}", captchaText, captchaKey);
-
-        // 将图片转换为Base64编码
-        ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
-        lineCaptcha.write(outputStream);
-        byte[] imageBytes = outputStream.toByteArray();
-        String base64Image = Base64.getEncoder().encodeToString(imageBytes);
-        String imageData = "data:image/png;base64," + base64Image;
-
-        // 返回验证码结果，包含图片Base64编码和UUID key
-        CaptchaResponse result = new CaptchaResponse(captchaKey, imageData);
-        return ApiResponse.success(result);
+        CaptchaKit.CaptchaResult result = captchaKit.generate();
+        CaptchaResponse response = new CaptchaResponse(result.captchaKey(), result.imageData());
+        return ApiResponse.success(response);
     }
 }
