@@ -26,12 +26,43 @@ public class InternshipInitializer implements Initializer {
         for (Intern intern : allByAuthIdIsNull) {
             intern.initAuthId();
 
-            // 为每个实习生创建 Principal（密码默认为 666666）
+            // 根据指导老师手机号设置初始密码（使用完整手机号）
+            String password = switch (intern.getAdvisorName()) {
+                case "张莺" -> "33807292";     // 张莺
+                case "田东方" -> "30121290";    // 田东方
+                case "孟祥佳" -> "30666028";    // 孟祥佳
+                case "许昭霞" -> "13312903";    // 许昭霞
+                case "田晓霞" -> "31142317";    // 田晓霞
+                case "王甜" -> "36009727";      // 王甜
+                case "温馨" -> "33777128";      // 温馨
+                case "岳少涛" -> "32122570";    // 岳少涛
+                case "何飞" -> "21889813";      // 何飞
+                case "孙晓昂" -> "03294810";    // 孙晓昂
+                case "刘明凯" -> "69166760";    // 刘明凯
+                case "卢华燕" -> "03118762";    // 卢华燕
+                case "杨怡辰" -> "11716951";    // 杨怡辰
+                case "李慧" -> "81099610";      // 李慧
+                case "崔红伟" -> "32128410";    // 崔红伟
+                case "杜敬一" -> "31115330";    // 杜敬一
+                case "王琦" -> "31149358";      // 王琦
+                case "李笑雨" -> "30187925";    // 李笑雨
+                case "张恩琪" -> "33115570";    // 张恩琪
+                case "马鹏程" -> "11572820";    // 马鹏程
+                case "史红生" -> "31933601";    // 史红生
+                case "石明月" -> "31915602";    // 石明月
+                case "张晓楠" -> "31089307";    // 张晓楠
+                case "谷壬倩" -> "31828469";    // 谷壬倩
+                case "刘爽" -> "33113680";      // 刘爽
+                default -> "666666"; // 默认密码
+            };
+
+            // 统一调用网关创建学生凭证（使用完整手机号作为密码）
             securityGateway.createStudentPrincipal(
                     intern.getAuthId(),
                     intern.getStudentNo(),
-                    "666666"
+                    password
             );
+
         }
         internRepository.saveAll(allByAuthIdIsNull);
 
