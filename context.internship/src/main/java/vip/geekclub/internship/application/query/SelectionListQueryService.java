@@ -44,7 +44,7 @@ public class SelectionListQueryService {
             internTable.as("creator").STUDENT_NO,
             internTable.as("creator").ADVISOR_NAME,
             // 结组原因
-            teamApplicationTable.REASON.as("CancelReason"),
+            teamApplicationTable.REASON.as("TeamReason"),
             // 组员及职责：姓名(职责)
             DSL.field("group_concat(distinct concat({0}, '(', {1}, ')') order by {0} separator ', ')",
                     String.class, internTable.as("member").NAME, teamMemberTable.RESPONSIBILITY).as("GroupMembersWithDuty")
@@ -101,13 +101,10 @@ public class SelectionListQueryService {
                         query.thesisId() != null ? thesisSelectionTable.THESIS_ID.eq(query.thesisId()) : null,
                         query.className() != null ? internTable.as("creator").CLASS_NAME.eq(query.className()) : null,
                         query.advisorName() != null ? internTable.as("creator").ADVISOR_NAME.eq(query.advisorName()) : null,
-                        query.studentName() != null ? thesisSelectionTable.ID.in(
-                                DSL.selectDistinct(teamApplicationTable.THESIS_SELECTION_ID)
-                                        .from(teamApplicationTable)
-                                        .join(teamMemberTable).on(teamMemberTable.TEAM_APPLICATION_ID.eq(teamApplicationTable.ID))
-                                        .join(internTable).on(internTable.ID.eq(teamMemberTable.STUDENT_ID))
-                                        .where(internTable.NAME.like("%" + query.studentName() + "%"))
-                        ) : null
+                        query.studentName() != null ?
+                                DSL.or(internTable.as("member").NAME.like("%" + query.studentName() + "%"),
+                                        internTable.as("creator").NAME.like("%" + query.studentName() + "%"))
+                                : null
                 ))
                 .groupBy(
                         thesisSelectionTable.ID,
@@ -135,17 +132,11 @@ public class SelectionListQueryService {
         String selectionType = r.get(thesisSelectionTable.SELECTION_TYPE);
         String creatorName = r.get(internTable.as("creator").NAME);
         String groupMembersWithDuty = r.get("GroupMembersWithDuty", String.class);
-        String cancelReason = r.get("CancelReason", String.class);
+        String teamReason = r.get("TeamReason", String.class);
 
         // 如果不是小组，组员为空；如果是小组，剔除当前创建者
         if (!"GROUP".equals(selectionType)) {
             groupMembersWithDuty = null;
-        } else if (groupMembersWithDuty != null && creatorName != null) {
-            String finalCreatorName = creatorName.trim();
-            groupMembersWithDuty = Arrays.stream(groupMembersWithDuty.split(","))
-                    .map(String::trim)
-                    .filter(member -> !member.startsWith(finalCreatorName + "("))
-                    .collect(Collectors.joining(", "));
         }
 
         return new SelectionItemResult(
@@ -159,7 +150,7 @@ public class SelectionListQueryService {
                 r.get(internTable.as("creator").CLASS_NAME),
                 r.get(internTable.as("creator").ADVISOR_NAME),
                 groupMembersWithDuty,
-                cancelReason
+                teamReason
         );
     }
 }

@@ -1,5 +1,6 @@
 package vip.geekclub.internship.application.query.dto;
 
+import com.alibaba.excel.annotation.ExcelIgnore;
 import com.alibaba.excel.annotation.ExcelProperty;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -14,7 +15,10 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class SelectionItemResult {
 
+    @ExcelIgnore
     private Long selectionId;
+
+    @ExcelIgnore
     private Long thesisId;
 
     @ExcelProperty("选题方向")
@@ -42,5 +46,5 @@ public class SelectionItemResult {
     private String groupMembers;
 
     @ExcelProperty("结组原因")
-    private String cancelReason;
+    private String teamReason;
 }
