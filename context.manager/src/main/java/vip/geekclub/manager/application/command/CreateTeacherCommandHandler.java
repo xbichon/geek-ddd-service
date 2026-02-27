@@ -2,18 +2,16 @@ package vip.geekclub.manager.application.command;
 
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import vip.geekclub.framework.command.CommandBus;
 import vip.geekclub.framework.command.CommandHandler;
 import vip.geekclub.manager.application.command.dto.CreateTeacherCommand;
+import vip.geekclub.manager.application.gateway.ManagerSecurityGateway;
 import vip.geekclub.manager.domain.model.Teacher;
 import vip.geekclub.manager.domain.repository.TeacherRepository;
 import lombok.RequiredArgsConstructor;
 import vip.geekclub.manager.domain.service.TeacherCreationUpdateValidator;
-import vip.geekclub.security.application.command.principal.CreatePrincipalCommand;
 import vip.geekclub.security.domain.value.IdentifierValue;
 
 import java.util.List;
-import java.util.Set;
 
 /**
  * 创建教师命令处理器
@@ -25,7 +23,7 @@ public class CreateTeacherCommandHandler implements CommandHandler<CreateTeacher
 
     private final TeacherRepository teacherRepository;
     private final TeacherCreationUpdateValidator teacherCreationUpdateValidator;
-    private final CommandBus commandBus;
+    private final ManagerSecurityGateway securityGateway;
 
     @Override
     public Long execute(CreateTeacherCommand command) {
@@ -43,13 +41,14 @@ public class CreateTeacherCommandHandler implements CommandHandler<CreateTeacher
         teacherRepository.save(teacher);
 
         // 3. 创建用户的凭证
-        commandBus.dispatch(new CreatePrincipalCommand(
-                "teacher", teacher.getAuthId(),
-                List.of(new IdentifierValue(IdentifierValue.EMAIL, teacher.getEmail())
-                        , new IdentifierValue(IdentifierValue.PHONE, teacher.getPhone())),
-                "123456",
-                Set.of()
-        ));
+        securityGateway.createTeacherPrincipal(
+                teacher.getAuthId(),
+                List.of(
+                        new IdentifierValue(IdentifierValue.EMAIL, teacher.getEmail()),
+                        new IdentifierValue(IdentifierValue.PHONE, teacher.getPhone())
+                ),
+                "123456"
+        );
 
         // 4. 返回结果
         return teacher.getId();

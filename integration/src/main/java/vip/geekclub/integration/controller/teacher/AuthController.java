@@ -1,4 +1,4 @@
-package vip.geekclub.manager.adapter.controller.teacher;
+package vip.geekclub.integration.controller.teacher;
 
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotBlank;
@@ -7,12 +7,11 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.bind.annotation.*;
 import vip.geekclub.contract.UserType;
-import vip.geekclub.framework.command.CommandBus;
 import vip.geekclub.framework.controller.ApiResponse;
 import vip.geekclub.framework.security.SessionStore;
 import vip.geekclub.framework.security.UserAuthentication;
 import vip.geekclub.framework.security.UserPrincipal;
-import vip.geekclub.security.application.command.credential.PasswordVerificationCommand;
+import vip.geekclub.integration.gateway.IntegrationSecurityGateway;
 import vip.geekclub.support.CaptchaKit;
 
 /**
@@ -27,10 +26,10 @@ public class AuthController {
 
     private final SessionStore authSessionManager;
     private final CaptchaKit captchaKit;
+    private final IntegrationSecurityGateway securityGateway;
 
     @Value("${spring.profiles.active:prod}")
     private String activeProfile;
-    private final CommandBus commandBus;
 
     /**
      * 教师登录
@@ -48,9 +47,8 @@ public class AuthController {
                 return ApiResponse.fail(400, result.errorMessage());
             }
         }
-        PasswordVerificationCommand command = new PasswordVerificationCommand(
+        String authId = securityGateway.verifyPassword(
                 UserType.TEACHER, request.identifier(), request.password());
-        String authId = commandBus.dispatch(command);
 
         UserPrincipal userPrincipal = new UserPrincipal(authId, UserType.TEACHER);
         UserAuthentication userAuthentication = new UserAuthentication(userPrincipal);
