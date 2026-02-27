@@ -1,4 +1,4 @@
-package vip.geekclub.manager.adapter.controller;
+package vip.geekclub.manager.adapter.controller.teacher;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;

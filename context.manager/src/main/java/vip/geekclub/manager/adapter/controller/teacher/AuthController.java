@@ -1,4 +1,4 @@
-package vip.geekclub.security.adapter.controller.teacher;
+package vip.geekclub.manager.adapter.controller.teacher;
 
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotBlank;
