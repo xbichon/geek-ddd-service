@@ -6,7 +6,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import vip.geekclub.framework.controller.ApiResponse;
 import vip.geekclub.framework.security.UserPrincipal;
-import vip.geekclub.integration.gateway.IntegrationSecurityGateway;
+import vip.geekclub.integration.facade.SecurityFacade;
 
 import java.util.Set;
 
@@ -15,12 +15,12 @@ import java.util.Set;
 @RequestMapping("/teacher/permission")
 public class PermissionController {
 
-    private final IntegrationSecurityGateway securityGateway;
+    private final SecurityFacade securityFacade;
 
     @GetMapping("/current")
     public ApiResponse<Set<String>> getPermissionByUserId(UserPrincipal userPrincipal) {
 
-        Set<String> permissions = securityGateway.getPermissionsByAuthId(userPrincipal.authId());
+        Set<String> permissions = securityFacade.getPermissionsByAuthId(userPrincipal.authId());
         return ApiResponse.success(permissions);
     }
 }

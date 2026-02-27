@@ -91,13 +91,13 @@
             <version>0.0.1-SNAPSHOT</version>
             <scope>compile</scope>
         </dependency>
-<!--        <dependency>-->
-<!--            <groupId>io.netty</groupId>-->
-<!--            <artifactId>netty-resolver-dns-native-macos</artifactId>-->
-<!--            <classifier>osx-aarch_64</classifier>-->
-<!--        </dependency>-->
-        <!-- Source: https://mvnrepository.com/artifact/io.netty/netty-resolver-dns-native-macos -->
-    </dependencies>
+        <dependency>
+            <groupId>vip.geekclub</groupId>
+            <artifactId>integration</artifactId>
+            <version>0.0.1-SNAPSHOT</version>
+            <scope>compile</scope>
+        </dependency>
+   </dependencies>
 
     <build>
         <plugins>

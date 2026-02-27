@@ -11,7 +11,7 @@ import vip.geekclub.framework.controller.ApiResponse;
 import vip.geekclub.framework.security.SessionStore;
 import vip.geekclub.framework.security.UserAuthentication;
 import vip.geekclub.framework.security.UserPrincipal;
-import vip.geekclub.integration.gateway.IntegrationSecurityGateway;
+import vip.geekclub.integration.facade.SecurityFacade;
 import vip.geekclub.support.CaptchaKit;
 
 /**
@@ -26,7 +26,7 @@ public class AuthController {
 
     private final SessionStore authSessionManager;
     private final CaptchaKit captchaKit;
-    private final IntegrationSecurityGateway securityGateway;
+    private final SecurityFacade securityFacade;
 
     @Value("${spring.profiles.active:prod}")
     private String activeProfile;
@@ -48,7 +48,7 @@ public class AuthController {
             }
         }
 
-        String authId = securityGateway.verifyPassword(
+        String authId = securityFacade.verifyPassword(
                 UserType.STUDENT, request.identifier(), request.password());
 
         UserPrincipal userPrincipal = new UserPrincipal(authId, UserType.STUDENT);
