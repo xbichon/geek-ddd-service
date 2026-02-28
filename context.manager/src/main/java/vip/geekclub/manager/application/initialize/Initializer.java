@@ -22,6 +22,9 @@ public class Initializer implements vip.geekclub.framework.initialize.Initialize
             return;
         }
 
+        log.info("初始化系统管理员角色...");
+        securityGateway.initializeSystemAdminRole();
+
         log.info("初始化管理员用户...");
         Teacher teacher = Teacher.createTeacher(
                 "管理员",

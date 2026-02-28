@@ -30,7 +30,12 @@ public class Permission extends EntitySupport implements AggregateRoot<Long> {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-
+    /**
+     * 用户类型
+     */
+    @NotBlank(message = "用户类型不能为空")
+    @Column(name = "user_type")
+    private String userType;
 
     /**
      * 权限名称
@@ -63,7 +68,8 @@ public class Permission extends EntitySupport implements AggregateRoot<Long> {
     /**
      * 构造函数
      */
-    public Permission(String name, PermissionCode code, String description, Long permissionGroupId) {
+    public Permission(String userType, String name, PermissionCode code, String description, Long permissionGroupId) {
+        this.userType = userType;
         setName(name);
         setDescription(description);
         this.permissionCode = code;

@@ -36,9 +36,15 @@ public class PermissionGroup extends EntitySupport implements AggregateRoot<Long
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-
-
     // ================================ 字段定义 ================================
+
+    /**
+     * 用户类型
+     */
+    @NotBlank(message = "用户类型不能为空")
+    @Size(min = 1, max = 20, message = "用户类型长度必须在1-20之间")
+    @Column(name = "user_type")
+    private String userType;
 
     /**
      * 权限组名称
@@ -67,21 +73,24 @@ public class PermissionGroup extends EntitySupport implements AggregateRoot<Long
     /**
      * 创建权限组
      */
-    public static PermissionGroup createPermissionGroup(String name, String description, SortOrder sortOrder) {
-        return new PermissionGroup(name, description, sortOrder);
+    public static PermissionGroup createPermissionGroup(String userType, String name, String description, SortOrder sortOrder) {
+        return new PermissionGroup(userType, name, description, sortOrder);
     }
 
-    private PermissionGroup(String name, String description, SortOrder sortOrder) {
+    private PermissionGroup(String userType, String name, String description, SortOrder sortOrder) {
         // 清除空格
+        userType = StringUtil.trimToNull(userType);
         name = StringUtil.trimToNull(name);
         description = StringUtil.trimToNull(description);
 
         // 校验参数
+        AssertUtil.notBlank(userType, () -> "用户类型不能为空");
         AssertUtil.notBlank(name, () -> "权限组名称不能为空");
         AssertUtil.requireLengthBetween(name, 1, NAME_MAX_LENGTH, () -> "权限组名称长度必须在1-" + NAME_MAX_LENGTH + "之间");
         AssertUtil.requireLengthLessThan(description, DESCRIPTION_MAX_LENGTH + 1, () -> "描述长度不能超过" + DESCRIPTION_MAX_LENGTH + "个字符");
 
         // 设置字段值
+        this.userType = userType;
         setName(name);
         setDescription(description);
         this.sortOrder = sortOrder;

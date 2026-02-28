@@ -17,7 +17,10 @@ public record CreatePermissionGroupCommand(
     
     @Min(value = 0, message = "排序值不能小于0")
     @Max(value = 100, message = "排序值不能超过100")
-    Integer sortOrder
+    Integer sortOrder,
+
+    @NotBlank(message = "用户类型不能为空")
+    String userType
 ) implements Command<Long> {
     
     public CreatePermissionGroupCommand {

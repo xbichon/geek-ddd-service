@@ -16,11 +16,4 @@ public interface PrincipalRepository extends CrudRepository<@NonNull Principal, 
      * @return 用户
      */
     Optional<Principal> findByAuthId(String authId);
-
-    /**
-     * 检查是否存在超级管理员
-     *
-     * @return 是否存在超级管理员
-     */
-    boolean existsByIsSuperAdminTrue();
 }

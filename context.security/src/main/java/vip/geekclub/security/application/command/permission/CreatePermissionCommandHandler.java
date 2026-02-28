@@ -22,13 +22,14 @@ public class CreatePermissionCommandHandler implements CommandHandler<CreatePerm
         if (permissionRepository.existsByCode(command.code())) {
             throw new ValidationException("权限编码已存在");
         }
-        
+
         // 2. 创建权限领域对象
         Permission permission = new Permission(
-            command.name(),
-            PermissionCode.of(command.code()),
-            command.description(),
-            command.permissionGroupId()
+                command.userType(),
+                command.name(),
+                PermissionCode.of(command.code()),
+                command.description(),
+                command.permissionGroupId()
         );
         permissionRepository.save(permission);
 

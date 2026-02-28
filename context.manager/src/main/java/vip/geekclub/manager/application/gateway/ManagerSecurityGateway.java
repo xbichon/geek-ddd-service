@@ -11,6 +11,11 @@ import java.util.List;
 public interface ManagerSecurityGateway {
 
     /**
+     * 初始化系统管理员角色
+     */
+    void initializeSystemAdminRole();
+
+    /**
      * 创建管理员凭证
      *
      * @param authId     认证标识

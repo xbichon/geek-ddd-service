@@ -16,7 +16,10 @@ public record CreatePermissionCommand(
     @Size(max = 100, message = "描述长度不能超过100")
     String description,
     
-    Long permissionGroupId
+    Long permissionGroupId,
+
+    @NotBlank(message = "用户类型不能为空")
+    String userType
 ) implements Command<Long> {
     
     public CreatePermissionCommand {

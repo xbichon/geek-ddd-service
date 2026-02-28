@@ -22,12 +22,13 @@ public class CreatePermissionGroupCommandHandler implements CommandHandler<Creat
         if (permissionGroupRepository.existsByName(command.name())) {
             throw new ValidationException("权限组名称已存在");
         }
-        
+
         // 2. 创建权限组领域对象
         PermissionGroup permissionGroup = PermissionGroup.createPermissionGroup(
-            command.name(),
-            command.description(),
-            SortOrder.of(command.sortOrder())
+                command.userType(),
+                command.name(),
+                command.description(),
+                SortOrder.of(command.sortOrder())
         );
         permissionGroupRepository.save(permissionGroup);
 
