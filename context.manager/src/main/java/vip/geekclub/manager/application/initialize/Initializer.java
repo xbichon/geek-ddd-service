@@ -2,6 +2,7 @@ package vip.geekclub.manager.application.initialize;
 
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.core.annotation.Order;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import vip.geekclub.manager.application.gateway.ManagerSecurityGateway;
@@ -11,6 +12,7 @@ import vip.geekclub.manager.domain.repository.TeacherRepository;
 @Slf4j
 @Service
 @AllArgsConstructor
+@Order(1)
 public class Initializer implements vip.geekclub.framework.initialize.Initializer {
     private final TeacherRepository teacherRepository;
     private final ManagerSecurityGateway securityGateway;
@@ -21,7 +23,6 @@ public class Initializer implements vip.geekclub.framework.initialize.Initialize
         if (teacherRepository.count() > 0) {
             return;
         }
-
 
         log.info("初始化管理员用户...");
         Teacher teacher = Teacher.createTeacher(
