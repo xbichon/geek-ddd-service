@@ -7,7 +7,7 @@ import vip.geekclub.framework.command.CommandBus;
 import vip.geekclub.manager.application.gateway.ManagerSecurityGateway;
 import vip.geekclub.security.application.command.principal.CreateAdminCommand;
 import vip.geekclub.security.application.command.principal.CreatePrincipalCommand;
-import vip.geekclub.security.application.command.role.InitAdminRoleCommand;
+import vip.geekclub.security.application.command.role.InitSystemAdminRoleCommand;
 import vip.geekclub.security.domain.value.IdentifierValue;
 
 import java.util.List;
@@ -24,7 +24,7 @@ public class ManagerSecurityGatewayImpl implements ManagerSecurityGateway {
 
     @Override
     public void initializeSystemAdminRole() {
-        commandBus.dispatch(new InitAdminRoleCommand(UserType.TEACHER));
+        commandBus.dispatch(new InitSystemAdminRoleCommand(UserType.TEACHER));
     }
 
     @Override

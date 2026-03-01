@@ -13,13 +13,13 @@ import vip.geekclub.security.domain.repository.RoleRepository;
  */
 @Service
 @AllArgsConstructor
-public class InitAdminRoleCommandHandler implements VoidCommandHandler<InitAdminRoleCommand> {
+public class InitSystemAdminRoleCommandHandler implements VoidCommandHandler<InitSystemAdminRoleCommand> {
 
     private final RoleRepository roleRepository;
 
     @Override
     @Transactional
-    public void executeVoid(InitAdminRoleCommand command) {
+    public void executeVoid(InitSystemAdminRoleCommand command) {
         // 检查该用户类型下是否已存在系统管理员角色
         if (roleRepository.existsByUserTypeAndSystemAdminTrue(command.userType())) {
             throw new BusinessException(409, "该用户类型的系统管理员角色已存在");
