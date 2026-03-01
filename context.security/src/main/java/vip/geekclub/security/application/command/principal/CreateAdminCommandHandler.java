@@ -4,7 +4,6 @@ import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import vip.geekclub.framework.command.VoidCommandHandler;
-import vip.geekclub.framework.exception.BusinessException;
 import vip.geekclub.security.domain.service.IdentifierValidate;
 import vip.geekclub.security.domain.value.IdentifierValue;
 import vip.geekclub.security.domain.model.PasswordCredential;
