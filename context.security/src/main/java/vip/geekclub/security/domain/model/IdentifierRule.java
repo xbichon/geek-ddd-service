@@ -5,7 +5,7 @@ import lombok.Getter;
 
 @AllArgsConstructor
 @Getter
-public class IdentifierType {
+public class IdentifierRule {
 
     private String type;
     private String regex;
