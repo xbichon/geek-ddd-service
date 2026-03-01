@@ -9,6 +9,7 @@ import vip.geekclub.manager.domain.model.Teacher;
 import vip.geekclub.manager.domain.repository.TeacherRepository;
 import lombok.RequiredArgsConstructor;
 import vip.geekclub.manager.domain.service.TeacherCreationUpdateValidator;
+import vip.geekclub.security.domain.authentication.value.IdentifierType;
 import vip.geekclub.security.domain.authentication.value.IdentifierValue;
 
 import java.util.List;
@@ -44,8 +45,8 @@ public class CreateTeacherCommandHandler implements CommandHandler<CreateTeacher
         securityGateway.createTeacherPrincipal(
                 teacher.getAuthId(),
                 List.of(
-                        new IdentifierValue(IdentifierValue.EMAIL, teacher.getEmail()),
-                        new IdentifierValue(IdentifierValue.PHONE, teacher.getPhone())
+                        IdentifierValue.ofEmail(teacher.getEmail()),
+                        IdentifierValue.ofPhone(teacher.getPhone())
                 ),
                 "123456"
         );
