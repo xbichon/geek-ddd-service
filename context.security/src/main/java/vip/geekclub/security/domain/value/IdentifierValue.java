@@ -14,7 +14,6 @@ public record IdentifierValue(
     public final static String EMAIL = "email";
     public final static String PHONE = "phone";
     public final static String USERNAME = "username";
-    public final static String BUSINESSNO = "business_no";
 
     public IdentifierValue {
         value = value.trim();
@@ -33,7 +32,4 @@ public record IdentifierValue(
         return new IdentifierValue(PHONE, phone);
     }
 
-    public static IdentifierValue ofBusinessNo(String businessNo) {
-        return new IdentifierValue(BUSINESSNO, businessNo);
-    }
 }
