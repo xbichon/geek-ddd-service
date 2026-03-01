@@ -15,15 +15,14 @@
 ## 2、示例
 
 ```java
-package vip.geekclub.security.domain.repository;
+package vip.geekclub.security.domain.authorization.repository;
 
 import lombok.NonNull;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
-import vip.geekclub.security.domain.model.Principal;
+import vip.geekclub.security.domain.authentication.model.Principal;
 
 import java.util.Optional;
-import java.util.UUID;
 
 @Repository
 public interface PrincipalRepository extends JpaRepository<@NonNull Principal, @NonNull Long> {

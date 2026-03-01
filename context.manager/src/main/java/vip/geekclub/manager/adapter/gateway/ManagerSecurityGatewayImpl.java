@@ -7,7 +7,7 @@ import vip.geekclub.framework.command.CommandBus;
 import vip.geekclub.manager.application.gateway.ManagerSecurityGateway;
 import vip.geekclub.security.application.command.principal.InitAdminCommand;
 import vip.geekclub.security.application.command.principal.CreatePrincipalCommand;
-import vip.geekclub.security.domain.value.IdentifierValue;
+import vip.geekclub.security.domain.authentication.value.IdentifierValue;
 
 import java.util.List;
 import java.util.Set;

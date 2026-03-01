@@ -1,4 +1,4 @@
-package vip.geekclub.security.domain.value;
+package vip.geekclub.security.domain.authentication.value;
 
 public class IdentifierType {
     public final static String EMAIL = "email";

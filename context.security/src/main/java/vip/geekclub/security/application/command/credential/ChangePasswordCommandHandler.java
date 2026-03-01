@@ -4,7 +4,7 @@ import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import vip.geekclub.framework.command.VoidCommandHandler;
-import vip.geekclub.security.domain.repository.PasswordCredentialRepository;
+import vip.geekclub.security.domain.authentication.repository.PasswordCredentialRepository;
 
 @AllArgsConstructor
 @Service

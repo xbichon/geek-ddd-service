@@ -1,4 +1,4 @@
-package vip.geekclub.security.domain.model;
+package vip.geekclub.security.domain.authorization.model;
 
 import vip.geekclub.framework.domain.model.AggregateRoot;
 import vip.geekclub.framework.domain.model.EntitySupport;

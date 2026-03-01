@@ -1,4 +1,4 @@
-package vip.geekclub.security.domain.model;
+package vip.geekclub.security.domain.authentication.model;
 
 import jakarta.persistence.*;
 import lombok.AccessLevel;

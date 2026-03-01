@@ -5,9 +5,9 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import vip.geekclub.framework.command.CommandHandler;
 import vip.geekclub.framework.exception.ValidationException;
-import vip.geekclub.security.domain.model.Permission;
-import vip.geekclub.security.domain.repository.PermissionRepository;
-import vip.geekclub.security.domain.value.PermissionCode;
+import vip.geekclub.security.domain.authorization.model.Permission;
+import vip.geekclub.security.domain.authorization.repository.PermissionRepository;
+import vip.geekclub.security.domain.authorization.value.PermissionCode;
 
 @AllArgsConstructor
 @Service

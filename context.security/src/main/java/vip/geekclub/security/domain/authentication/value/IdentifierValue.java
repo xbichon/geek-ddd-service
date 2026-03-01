@@ -1,4 +1,4 @@
-package vip.geekclub.security.domain.value;
+package vip.geekclub.security.domain.authentication.value;
 
 import jakarta.validation.constraints.NotBlank;
 

@@ -1,10 +1,10 @@
-package vip.geekclub.security.domain.service;
+package vip.geekclub.security.domain.authentication.service;
 
 import org.springframework.stereotype.Service;
 import vip.geekclub.framework.exception.BusinessException;
-import vip.geekclub.security.domain.model.IdentifierRule;
-import vip.geekclub.security.domain.value.IdentifierType;
-import vip.geekclub.security.domain.value.IdentifierValue;
+import vip.geekclub.security.domain.authentication.model.IdentifierRule;
+import vip.geekclub.security.domain.authentication.value.IdentifierType;
+import vip.geekclub.security.domain.authentication.value.IdentifierValue;
 
 import java.util.List;
 import java.util.Optional;

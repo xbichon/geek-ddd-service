@@ -8,7 +8,7 @@ import org.springframework.data.repository.config.BootstrapMode;
 @Configuration
 //@EnableJpaAuditing  // 启用审计
 @EnableJpaRepositories(
-        basePackages = "vip.geekclub.**.domain.repository",
+        basePackages = "vip.geekclub.security.domain.authorization.repository",
         bootstrapMode = BootstrapMode.LAZY
 )
 @EntityScan("vip.geekclub.**.domain")

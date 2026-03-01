@@ -4,12 +4,12 @@ import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import vip.geekclub.framework.command.VoidCommandHandler;
-import vip.geekclub.security.domain.model.Identifier;
-import vip.geekclub.security.domain.model.Password;
-import vip.geekclub.security.domain.model.Principal;
-import vip.geekclub.security.domain.repository.IdentifierRepository;
-import vip.geekclub.security.domain.repository.PasswordCredentialRepository;
-import vip.geekclub.security.domain.repository.PrincipalRepository;
+import vip.geekclub.security.domain.authentication.model.Identifier;
+import vip.geekclub.security.domain.authentication.model.Password;
+import vip.geekclub.security.domain.authentication.model.Principal;
+import vip.geekclub.security.domain.authentication.repository.IdentifierRepository;
+import vip.geekclub.security.domain.authentication.repository.PasswordCredentialRepository;
+import vip.geekclub.security.domain.authentication.repository.PrincipalRepository;
 import vip.geekclub.security.exception.AuthenticationAlreadyExistsException;
 
 @AllArgsConstructor

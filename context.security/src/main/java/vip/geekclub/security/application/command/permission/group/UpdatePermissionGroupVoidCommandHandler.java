@@ -6,8 +6,8 @@ import org.springframework.transaction.annotation.Transactional;
 import vip.geekclub.framework.command.VoidCommandHandler;
 import vip.geekclub.framework.exception.NotFoundException;
 import vip.geekclub.framework.exception.ValidationException;
-import vip.geekclub.security.domain.model.PermissionGroup;
-import vip.geekclub.security.domain.repository.PermissionGroupRepository;
+import vip.geekclub.security.domain.authorization.model.PermissionGroup;
+import vip.geekclub.security.domain.authorization.repository.PermissionGroupRepository;
 import vip.geekclub.security.domain.value.SortOrder;
 
 @AllArgsConstructor

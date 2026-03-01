@@ -1,4 +1,4 @@
-package vip.geekclub.security.domain.model;
+package vip.geekclub.security.domain.authentication.model;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;

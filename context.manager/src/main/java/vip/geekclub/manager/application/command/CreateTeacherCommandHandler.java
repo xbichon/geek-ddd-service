@@ -9,7 +9,7 @@ import vip.geekclub.manager.domain.model.Teacher;
 import vip.geekclub.manager.domain.repository.TeacherRepository;
 import lombok.RequiredArgsConstructor;
 import vip.geekclub.manager.domain.service.TeacherCreationUpdateValidator;
-import vip.geekclub.security.domain.value.IdentifierValue;
+import vip.geekclub.security.domain.authentication.value.IdentifierValue;
 
 import java.util.List;
 

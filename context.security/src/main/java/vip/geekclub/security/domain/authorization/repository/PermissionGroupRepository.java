@@ -1,11 +1,11 @@
-package vip.geekclub.security.domain.repository;
+package vip.geekclub.security.domain.authorization.repository;
 
 import lombok.NonNull;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
-import vip.geekclub.security.domain.model.PermissionGroup;
+import vip.geekclub.security.domain.authorization.model.PermissionGroup;
 
 @Repository
 public interface PermissionGroupRepository extends CrudRepository<@NonNull PermissionGroup, @NonNull Long> {

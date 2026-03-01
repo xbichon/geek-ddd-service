@@ -1,10 +1,10 @@
-package vip.geekclub.security.domain.repository;
+package vip.geekclub.security.domain.authentication.repository;
 
 import lombok.NonNull;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
-import vip.geekclub.security.domain.model.ThirdPartyCredential;
-import vip.geekclub.security.domain.value.ThirdPartyType;
+import vip.geekclub.security.domain.authentication.model.ThirdPartyCredential;
+import vip.geekclub.security.domain.authentication.value.ThirdPartyType;
 
 @Repository
 public interface ThirdPartyCredentialRepository extends JpaRepository<@NonNull ThirdPartyCredential, @NonNull Long> {

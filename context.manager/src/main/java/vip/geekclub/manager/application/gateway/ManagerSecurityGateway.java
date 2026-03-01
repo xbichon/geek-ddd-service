@@ -1,6 +1,6 @@
 package vip.geekclub.manager.application.gateway;
 
-import vip.geekclub.security.domain.value.IdentifierValue;
+import vip.geekclub.security.domain.authentication.value.IdentifierValue;
 
 import java.util.List;
 

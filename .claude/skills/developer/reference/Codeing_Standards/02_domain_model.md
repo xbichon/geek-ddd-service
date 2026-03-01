@@ -12,19 +12,22 @@
 - 领域层属于命令端，禁止依赖查询端代码；
 - 用户未明确指定属性时，询问用户或仅保留ID字段，禁止自行添加属性；
 
-## 2、示例 
+## 2、示例
+
 ```java
-package vip.geekclub.security.domain.model;
+package vip.geekclub.security.domain.authorization.model;
 
 @Entity
 @Table(name = "security_principal")
-@Getter @Setter(AccessLevel.PRIVATE)
+@Getter
+@Setter(AccessLevel.PRIVATE)
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class Principal implements AggregateRoot<Long> {
 
-    @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    
+
     private String userType;
 
     public Principal(String userType) {

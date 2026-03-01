@@ -5,7 +5,7 @@ import jakarta.validation.constraints.NotNull;
 import org.springframework.util.StringUtils;
 import vip.geekclub.framework.command.Command;
 import vip.geekclub.framework.command.CommandHandlerMapping;
-import vip.geekclub.security.domain.value.ThirdPartyType;
+import vip.geekclub.security.domain.authentication.value.ThirdPartyType;
 
 @CommandHandlerMapping(BuildThirdPartyCredentialCommandHandler.class)
 public record BuildThirdPartyCredentialCommand(

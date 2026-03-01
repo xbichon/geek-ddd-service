@@ -5,8 +5,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import vip.geekclub.framework.command.VoidCommandHandler;
 import vip.geekclub.framework.exception.NotFoundException;
-import vip.geekclub.security.domain.model.Principal;
-import vip.geekclub.security.domain.repository.PrincipalRepository;
+import vip.geekclub.security.domain.authentication.model.Principal;
+import vip.geekclub.security.domain.authentication.repository.PrincipalRepository;
 
 @AllArgsConstructor
 @Service

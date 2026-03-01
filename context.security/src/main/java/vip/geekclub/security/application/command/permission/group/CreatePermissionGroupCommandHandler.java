@@ -5,8 +5,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import vip.geekclub.framework.command.CommandHandler;
 import vip.geekclub.framework.exception.ValidationException;
-import vip.geekclub.security.domain.model.PermissionGroup;
-import vip.geekclub.security.domain.repository.PermissionGroupRepository;
+import vip.geekclub.security.domain.authorization.model.PermissionGroup;
+import vip.geekclub.security.domain.authorization.repository.PermissionGroupRepository;
 import vip.geekclub.security.domain.value.SortOrder;
 
 @AllArgsConstructor

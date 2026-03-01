@@ -1,4 +1,4 @@
-package vip.geekclub.security.domain.value;
+package vip.geekclub.security.domain.authentication.value;
 
 /**
  * 第三方认证服务提供商枚举

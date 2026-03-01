@@ -1,9 +1,9 @@
-package vip.geekclub.security.domain.repository;
+package vip.geekclub.security.domain.authentication.repository;
 
 import lombok.NonNull;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
-import vip.geekclub.security.domain.model.Identifier;
+import vip.geekclub.security.domain.authentication.model.Identifier;
 
 import java.util.Optional;
 

@@ -7,7 +7,7 @@ import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 import vip.geekclub.framework.command.Command;
 import vip.geekclub.framework.command.CommandHandlerMapping;
-import vip.geekclub.security.domain.value.IdentifierValue;
+import vip.geekclub.security.domain.authentication.value.IdentifierValue;
 
 import java.util.List;
 import java.util.Set;

@@ -1,4 +1,4 @@
-package vip.geekclub.security.domain.model;
+package vip.geekclub.security.domain.authentication.model;
 
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Size;
@@ -8,7 +8,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import vip.geekclub.framework.domain.model.AggregateRoot;
 import vip.geekclub.framework.domain.model.EntitySupport;
-import vip.geekclub.security.domain.value.ThirdPartyType;
+import vip.geekclub.security.domain.authentication.value.ThirdPartyType;
 
 @Entity
 @Table(name = "security_credential_third_party")

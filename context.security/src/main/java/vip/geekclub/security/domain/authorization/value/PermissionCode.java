@@ -1,4 +1,4 @@
-package vip.geekclub.security.domain.value;
+package vip.geekclub.security.domain.authorization.value;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Embeddable;
