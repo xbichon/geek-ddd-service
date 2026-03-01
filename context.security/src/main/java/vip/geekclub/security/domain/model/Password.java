@@ -61,15 +61,6 @@ public class Password extends EntitySupport implements AggregateRoot<Long> {
         this.hash = passwordEncoder.get().encode(password);
     }
 
-    /**
-     * 变更密码
-     */
-    public void changePassword(String oldPassword, String newPassword) {
-        if (!passwordEncoder.get().matches(oldPassword, this.hash)) {
-            throw new InvalidCredentialsException("旧密码错误");
-        }
-        setHash(newPassword);
-    }
 
     /**
      * 验证密码

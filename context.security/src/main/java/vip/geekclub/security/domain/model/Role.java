@@ -67,14 +67,4 @@ public class Role extends EntitySupport implements AggregateRoot<Long> {
         role.systemAdmin = true;
         return role;
     }
-
-    /**
-     * 删除前校验
-     */
-    public void validateDeletable() {
-        if (this.systemAdmin) {
-            throw new BusinessLogicException("系统管理员角色不允许删除");
-        }
-    }
-
 }
