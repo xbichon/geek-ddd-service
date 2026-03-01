@@ -9,14 +9,14 @@ import vip.geekclub.support.StringUtil;
 /**
  * 初始化系统管理员角色命令
  */
-@CommandHandlerMapping(InitializeSystemAdminRoleCommandHandler.class)
-public record InitializeSystemAdminRoleCommand(
+@CommandHandlerMapping(InitAdminRoleCommandHandler.class)
+public record InitAdminRoleCommand(
         @NotBlank(message = "用户类型不能为空")
         @Size(min = 1, max = 20, message = "用户类型长度必须在1-20之间")
         String userType
 ) implements Command<Void> {
 
-    public InitializeSystemAdminRoleCommand {
+    public InitAdminRoleCommand {
         userType = StringUtil.trimToNull(userType);
     }
 }
