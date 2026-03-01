@@ -3,6 +3,7 @@ package vip.geekclub.security.domain.service;
 import org.springframework.stereotype.Service;
 import vip.geekclub.framework.exception.BusinessException;
 import vip.geekclub.security.domain.model.IdentifierRule;
+import vip.geekclub.security.domain.value.IdentifierType;
 import vip.geekclub.security.domain.value.IdentifierValue;
 
 import java.util.List;
@@ -12,9 +13,9 @@ import java.util.Optional;
 public class IdentifierValidate {
 
     List<IdentifierRule> identifierTypes = List.of(
-            new IdentifierRule("phone", "^1[3-9]\\d{9}$"),
-            new IdentifierRule("email", "^\\w+([-+.]\\w+)*@\\w+([-.]\\w+)*\\.\\w+([-.]\\w+)*$"),
-            new IdentifierRule("username", "^(?!\\d{11}$)(?![^@]*@.*$)[a-zA-Z0-9_]{4,16}$")
+            new IdentifierRule(IdentifierType.PHONE, "^1[3-9]\\d{9}$"),
+            new IdentifierRule(IdentifierType.EMAIL, "^\\w+([-+.]\\w+)*@\\w+([-.]\\w+)*\\.\\w+([-.]\\w+)*$"),
+            new IdentifierRule(IdentifierType.USERNAME, "^(?!\\d{11}$)(?![^@]*@.*$)[a-zA-Z0-9_]{4,16}$")
     );
 
     /**
