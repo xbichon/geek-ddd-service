@@ -10,8 +10,6 @@ import vip.geekclub.security.domain.authentication.repository.PasswordCredential
 @Service
 public class ChangePasswordCommandHandler implements VoidCommandHandler<ChangePasswordCommand> {
 
-    private final PasswordCredentialRepository passwordCredentialRepository;
-
     @Override
     @Transactional
     public void executeVoid(ChangePasswordCommand command) {
