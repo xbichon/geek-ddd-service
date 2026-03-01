@@ -4,8 +4,10 @@ import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import vip.geekclub.framework.command.VoidCommandHandler;
-import vip.geekclub.security.domain.model.PasswordCredential;
+import vip.geekclub.security.domain.model.Identifier;
+import vip.geekclub.security.domain.model.Password;
 import vip.geekclub.security.domain.model.Principal;
+import vip.geekclub.security.domain.repository.IdentifierRepository;
 import vip.geekclub.security.domain.repository.PasswordCredentialRepository;
 import vip.geekclub.security.domain.repository.PrincipalRepository;
 import vip.geekclub.security.exception.AuthenticationAlreadyExistsException;
@@ -16,6 +18,7 @@ public class CreatePrincipalCommandHandler implements VoidCommandHandler<CreateP
 
     private final PrincipalRepository principalRepository;
     private final PasswordCredentialRepository passwordCredentialRepository;
+    private final IdentifierRepository identifierRepository;
 
     @Override
     @Transactional
@@ -23,8 +26,7 @@ public class CreatePrincipalCommandHandler implements VoidCommandHandler<CreateP
 
         // 1. 检查所有标识符是否已存在
         for (var identifier : command.identifierValues()) {
-            if (passwordCredentialRepository.existsByIdentifier(
-                    command.userType(), identifier.value())) {
+            if (identifierRepository.existsByValueAndUserType(identifier.value(), command.userType())) {
                 throw new AuthenticationAlreadyExistsException("该标识符已被使用: " + identifier.value());
             }
         }
@@ -34,14 +36,22 @@ public class CreatePrincipalCommandHandler implements VoidCommandHandler<CreateP
         principalRepository.save(principal);
 
         // 4. 创建密码凭证
-        PasswordCredential passwordCredential = PasswordCredential.create(
+        Password passwordCredential = Password.create(
                 principal.getId(),
                 principal.getAuthId(),
-                command.identifierValues(),
-                command.password(),
-                command.userType()
+                command.password()
         );
         passwordCredentialRepository.save(passwordCredential);
 
+        // 5. 创建标识符
+        for (var identifierValue : command.identifierValues()) {
+            Identifier identifier = new Identifier(
+                    identifierValue.value(),
+                    identifierValue.type(),
+                    command.userType(),
+                    principal.getId()
+            );
+            identifierRepository.save(identifier);
+        }
     }
 }

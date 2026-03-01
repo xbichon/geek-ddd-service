@@ -34,11 +34,8 @@ public class Initializer implements vip.geekclub.framework.initialize.Initialize
         );
         teacherRepository.save(teacher);
 
-        log.info("初始化系统管理员角色...");
-        securityGateway.initializeSystemAdminRole();
-
         // 2. 创建用户的凭证
-        securityGateway.createAdminPrincipal(
+        securityGateway.initAdmin(
                 teacher.getAuthId(),
                 "admin",
                 "888888"

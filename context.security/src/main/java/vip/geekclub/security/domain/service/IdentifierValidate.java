@@ -21,7 +21,6 @@ public class IdentifierValidate {
      * 验证标识符
      *
      * @param identifierValue 标识符
-     * @return 是否合法
      */
     public void validate(IdentifierValue identifierValue) {
         Optional<IdentifierType> identifierType = identifierTypes.stream()

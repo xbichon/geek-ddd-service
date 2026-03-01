@@ -5,9 +5,8 @@ import org.springframework.stereotype.Component;
 import vip.geekclub.contract.UserType;
 import vip.geekclub.framework.command.CommandBus;
 import vip.geekclub.manager.application.gateway.ManagerSecurityGateway;
-import vip.geekclub.security.application.command.principal.CreateAdminCommand;
+import vip.geekclub.security.application.command.principal.InitAdminCommand;
 import vip.geekclub.security.application.command.principal.CreatePrincipalCommand;
-import vip.geekclub.security.application.command.role.InitSystemAdminRoleCommand;
 import vip.geekclub.security.domain.value.IdentifierValue;
 
 import java.util.List;
@@ -23,18 +22,13 @@ public class ManagerSecurityGatewayImpl implements ManagerSecurityGateway {
     private final CommandBus commandBus;
 
     @Override
-    public void initializeSystemAdminRole() {
-        commandBus.dispatch(new InitSystemAdminRoleCommand(UserType.TEACHER));
-    }
-
-    @Override
-    public void createAdminPrincipal(String authId, String username,
-                                     String password) {
+    public void initAdmin(String authId, String username,
+                          String password) {
         List<IdentifierValue> identifiers = List.of(
                 IdentifierValue.ofUsername(username)
         );
 
-        CreateAdminCommand command = new CreateAdminCommand(
+        InitAdminCommand command = new InitAdminCommand(
                 identifiers,
                 password,
                 authId,

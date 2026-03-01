@@ -1,13 +1,13 @@
 package vip.geekclub.security.domain.model;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.Enumerated;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 import jakarta.validation.constraints.Size;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import vip.geekclub.framework.domain.model.AggregateRoot;
+import vip.geekclub.framework.domain.model.EntitySupport;
 import vip.geekclub.security.domain.value.ThirdPartyType;
 
 @Entity
@@ -15,7 +15,15 @@ import vip.geekclub.security.domain.value.ThirdPartyType;
 @Getter
 @Setter(AccessLevel.PRIVATE)
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class ThirdPartyCredential extends Credential {
+public class ThirdPartyCredential extends EntitySupport implements AggregateRoot<Long> {
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+
+    private Long principalId;
+
+    private String authId;
     /**
      * 第三方服务提供商，例如微信、支付宝等
      */

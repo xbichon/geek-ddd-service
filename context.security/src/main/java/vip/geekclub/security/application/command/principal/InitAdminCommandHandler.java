@@ -4,47 +4,54 @@ import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import vip.geekclub.framework.command.VoidCommandHandler;
+import vip.geekclub.framework.exception.BusinessException;
+import vip.geekclub.security.domain.model.Identifier;
+import vip.geekclub.security.domain.model.Password;
 import vip.geekclub.security.domain.service.IdentifierValidate;
 import vip.geekclub.security.domain.value.IdentifierValue;
-import vip.geekclub.security.domain.model.PasswordCredential;
 import vip.geekclub.security.domain.model.Principal;
 import vip.geekclub.security.domain.model.Role;
+import vip.geekclub.security.domain.repository.IdentifierRepository;
 import vip.geekclub.security.domain.repository.PasswordCredentialRepository;
 import vip.geekclub.security.domain.repository.PrincipalRepository;
 import vip.geekclub.security.domain.repository.RoleRepository;
 import vip.geekclub.security.exception.AuthenticationAlreadyExistsException;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Set;
 
 @AllArgsConstructor
 @Service
-public class CreateAdminCommandHandler implements VoidCommandHandler<CreateAdminCommand> {
+public class InitAdminCommandHandler implements VoidCommandHandler<InitAdminCommand> {
 
     private final PrincipalRepository principalRepository;
     private final PasswordCredentialRepository passwordCredentialRepository;
     private final RoleRepository roleRepository;
+    private final IdentifierRepository identifierRepository;
     private final IdentifierValidate identifierValidate;
 
     @Override
     @Transactional
-    public void executeVoid(CreateAdminCommand command) {
+    public void executeVoid(InitAdminCommand command) {
         // 验证标识符
         identifierValidate.validate(command.identifierValues());
 
+        Integer systemAdminCount = roleRepository.countByUserTypeAndSystemAdminIsTrue(command.userType());
+        if (systemAdminCount > 0) {
+            throw new BusinessException(500, "系统已存在系统管理员");
+        }
+
         // 认证信息查重（检查用户名是否已存在）
         for (IdentifierValue identifierValue : command.identifierValues()) {
-            if (passwordCredentialRepository.existsByIdentifier(
-                    identifierValue.value(), identifierValue.type())) {
+            if (identifierRepository.existsByValueAndUserType(identifierValue.value(), command.userType())) {
                 throw new AuthenticationAlreadyExistsException("该用户名已被使用");
             }
         }
 
         // 获取或创建系统管理员角色
-        Role systemAdminRole = roleRepository.findByUserTypeAndSystemAdmin(command.userType(), true)
-                .orElseGet(() -> {
-                    Role newRole = Role.createSystemAdminRole(command.userType());
-                    return roleRepository.save(newRole);
-                });
+        Role systemAdminRole = Role.createSystemAdminRole(command.userType());
+        roleRepository.save(systemAdminRole);
 
         // 创建管理员领域对象，关联系统管理员角色
         Principal admin = new Principal(
@@ -54,13 +61,24 @@ public class CreateAdminCommandHandler implements VoidCommandHandler<CreateAdmin
         );
         principalRepository.save(admin);
 
+        // 创建标识符
+        List<Identifier> identifiers = new ArrayList<>();
+        for (IdentifierValue identifierValue : command.identifierValues()) {
+            Identifier identifier = new Identifier(
+                    identifierValue.value(),
+                    identifierValue.type(),
+                    command.userType(),
+                    admin.getId()
+            );
+            identifiers.add(identifier);
+        }
+        identifierRepository.saveAll(identifiers);
+
         // 创建用户名密码认证信息
-        PasswordCredential credential = PasswordCredential.create(
+        Password credential = Password.create(
                 admin.getId(),
                 admin.getAuthId(),
-                command.identifierValues(),
-                command.password(),
-                command.userType()
+                command.password()
         );
         passwordCredentialRepository.save(credential);
     }

@@ -19,6 +19,9 @@ public interface RoleRepository extends CrudRepository<@NonNull Role, @NonNull L
      */
     Optional<Role> findByUserTypeAndSystemAdmin(String userType, boolean systemAdmin);
 
+
+    Integer countByUserTypeAndSystemAdminIsTrue(String userType);
+
     /**
      * 检查是否存在系统管理员角色
      *

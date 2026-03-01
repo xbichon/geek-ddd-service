@@ -27,12 +27,12 @@
 
     <!-- 创建密码凭证表结构 -->
     <changeSet id="1748008821470-2" author="bichon">
-        <createTable tableName="security_credential_password">
+        <createTable tableName="security_password">
             <column name="id" type="BIGINT" autoIncrement="true" remarks="主键">
                 <constraints primaryKey="true" nullable="false"/>
             </column>
             <column name="principal_id" type="BIGINT" remarks="关联用户ID"/>
-            <column name="password" type="VARCHAR(200)" remarks="加密后的密码"/>
+            <column name="hash" type="VARCHAR(200)" remarks="加密后的密码哈希"/>
             <column name="auth_id" type="VARCHAR(36)" remarks="认证标识，冗余存储"/>
             <column name="create_time" defaultValueComputed="CURRENT_TIMESTAMP" type="DATETIME" remarks="创建时间"/>
             <column name="update_time" type="DATETIME" remarks="更新时间"
@@ -40,10 +40,10 @@
             <column name="version" type="BIGINT" defaultValue="0" remarks="版本"/>
         </createTable>
 
-        <createIndex tableName="security_credential_password" indexName="idx_principal_id">
+        <createIndex tableName="security_password" indexName="idx_principal_id">
             <column name="principal_id"/>
         </createIndex>
-        <createIndex tableName="security_credential_password" indexName="idx_auth_id_password">
+        <createIndex tableName="security_password" indexName="idx_auth_id_password">
             <column name="auth_id"/>
         </createIndex>
     </changeSet>
@@ -54,7 +54,7 @@
             <column name="id" type="BIGINT" autoIncrement="true" remarks="主键">
                 <constraints primaryKey="true" nullable="false"/>
             </column>
-            <column name="credential_id" type="BIGINT" remarks="关联密码凭证ID">
+            <column name="principal_id" type="BIGINT" remarks="关联用户主体ID">
                 <constraints nullable="false"/>
             </column>
             <column name="type" type="VARCHAR(20)" remarks="标识符类型：USERNAME/EMAIL/PHONE"/>
@@ -70,8 +70,8 @@
             <column name="value"/>
         </createIndex>
 
-        <createIndex tableName="security_identifier" indexName="idx_credential_id">
-            <column name="credential_id"/>
+        <createIndex tableName="security_identifier" indexName="idx_principal_id">
+            <column name="principal_id"/>
         </createIndex>
     </changeSet>
 
