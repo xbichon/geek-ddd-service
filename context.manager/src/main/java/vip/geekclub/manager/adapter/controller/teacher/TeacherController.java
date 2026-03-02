@@ -2,7 +2,7 @@ package vip.geekclub.manager.adapter.controller.teacher;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
-import vip.geekclub.contract.UserType;
+import vip.geekclub.contract.auth.UserType;
 import vip.geekclub.framework.controller.ApiResponse;
 import vip.geekclub.framework.controller.WebCommandAdapter;
 import vip.geekclub.framework.security.Authorize;

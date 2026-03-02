@@ -9,7 +9,7 @@ import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
 import lombok.*;
-import vip.geekclub.security.domain.value.SortOrder;
+import vip.geekclub.contract.value.SortOrder;
 
 @Entity
 @Table(name = "security_permission_group")

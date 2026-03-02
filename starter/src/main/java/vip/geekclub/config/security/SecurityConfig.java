@@ -16,7 +16,7 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
-import vip.geekclub.contract.UserType;
+import vip.geekclub.contract.auth.UserType;
 import vip.geekclub.framework.controller.ApiResponse;
 import vip.geekclub.support.HttpUtil;
 

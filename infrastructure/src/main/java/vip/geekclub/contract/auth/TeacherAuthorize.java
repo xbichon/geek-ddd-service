@@ -1,7 +1,4 @@
-package vip.geekclub.contract;
-
-import org.springframework.core.annotation.AliasFor;
-import vip.geekclub.framework.security.Authorize;
+package vip.geekclub.contract.auth;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;

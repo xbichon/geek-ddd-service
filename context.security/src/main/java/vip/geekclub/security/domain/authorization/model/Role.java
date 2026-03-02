@@ -6,7 +6,7 @@ import jakarta.validation.constraints.NotNull;
 import lombok.*;
 import vip.geekclub.framework.domain.model.AggregateRoot;
 import vip.geekclub.framework.domain.model.EntitySupport;
-import vip.geekclub.security.domain.value.Description;
+import vip.geekclub.contract.value.Description;
 import vip.geekclub.security.domain.authorization.value.RoleName;
 
 import java.util.HashSet;

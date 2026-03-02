@@ -2,7 +2,7 @@ package vip.geekclub.manager.adapter.gateway;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
-import vip.geekclub.contract.UserType;
+import vip.geekclub.contract.auth.UserType;
 import vip.geekclub.framework.command.CommandBus;
 import vip.geekclub.manager.application.gateway.ManagerSecurityGateway;
 import vip.geekclub.security.application.command.principal.InitAdminCommand;

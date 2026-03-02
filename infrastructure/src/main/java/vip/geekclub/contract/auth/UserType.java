@@ -1,4 +1,4 @@
-package vip.geekclub.contract;
+package vip.geekclub.contract.auth;
 
 public class UserType {
     public static final String TEACHER = "TEACHER";

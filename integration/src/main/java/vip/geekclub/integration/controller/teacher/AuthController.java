@@ -6,7 +6,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.bind.annotation.*;
-import vip.geekclub.contract.UserType;
+import vip.geekclub.contract.auth.UserType;
 import vip.geekclub.framework.controller.ApiResponse;
 import vip.geekclub.framework.security.SessionStore;
 import vip.geekclub.framework.security.UserAuthentication;

@@ -7,7 +7,7 @@ import vip.geekclub.framework.command.CommandHandler;
 import vip.geekclub.framework.exception.ValidationException;
 import vip.geekclub.security.domain.authorization.model.PermissionGroup;
 import vip.geekclub.security.domain.authorization.repository.PermissionGroupRepository;
-import vip.geekclub.security.domain.value.SortOrder;
+import vip.geekclub.contract.value.SortOrder;
 
 @AllArgsConstructor
 @Service
