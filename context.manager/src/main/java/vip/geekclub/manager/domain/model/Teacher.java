@@ -9,6 +9,7 @@ import java.util.UUID;
 import vip.geekclub.framework.domain.model.AggregateRoot;
 import vip.geekclub.framework.domain.model.EntitySupport;
 import vip.geekclub.framework.utils.AssertUtil;
+import vip.geekclub.manager.domain.vlaue.TeacherStatus;
 
 /**
  * 教师聚合根

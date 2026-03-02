@@ -1,17 +1,21 @@
-package vip.geekclub.manager.application.command.dto;
+package vip.geekclub.manager.application.command.teacher;
 
 import jakarta.validation.constraints.*;
 import vip.geekclub.framework.command.Command;
 import vip.geekclub.support.StringUtil;
 import vip.geekclub.manager.domain.model.Teacher;
+import vip.geekclub.manager.domain.vlaue.TeacherStatus;
 
 /**
- * 创建教师命令
+ * 更新教师命令
  *
  * @author geekclub
  * @since 1.0
  */
-public record CreateTeacherCommand(
+public record UpdateTeacherCommand(
+
+        @NotNull(message = "教师ID不能为空")
+        Long id,
 
         @NotBlank(message = "教师姓名不能为空")
         @Size(max = Teacher.maxNameLength, message = "教师姓名长度不能超过50个字符")
@@ -28,15 +32,18 @@ public record CreateTeacherCommand(
         @NotNull(message = "所属部门ID不能为空")
         Long departmentId,
 
+        @NotNull(message = "教师状态不能为空")
+        TeacherStatus status,
+
         @Size(max = Teacher.maxRemarkLength, message = "备注长度不能超过200个字符")
         String remark
 
-) implements Command<Long> {
+) implements Command<Void> {
 
     /**
      * 紧凑构造函数，自动去除字符串字段两端的空格，并将空字符串转为null
      */
-    public CreateTeacherCommand {
+    public UpdateTeacherCommand {
         name = StringUtil.trimToNull(name);
         phone = StringUtil.trimToNull(phone);
         email = StringUtil.trimToNull(email);

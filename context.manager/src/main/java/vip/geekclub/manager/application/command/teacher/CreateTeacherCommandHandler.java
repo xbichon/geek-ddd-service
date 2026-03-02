@@ -1,15 +1,13 @@
-package vip.geekclub.manager.application.command;
+package vip.geekclub.manager.application.command.teacher;
 
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import vip.geekclub.framework.command.CommandHandler;
-import vip.geekclub.manager.application.command.dto.CreateTeacherCommand;
 import vip.geekclub.manager.application.gateway.ManagerSecurityGateway;
 import vip.geekclub.manager.domain.model.Teacher;
 import vip.geekclub.manager.domain.repository.TeacherRepository;
 import lombok.RequiredArgsConstructor;
 import vip.geekclub.manager.domain.service.TeacherCreationUpdateValidator;
-import vip.geekclub.security.domain.authentication.value.IdentifierType;
 import vip.geekclub.security.domain.authentication.value.IdentifierValue;
 
 import java.util.List;

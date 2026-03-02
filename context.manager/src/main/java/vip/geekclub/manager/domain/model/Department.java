@@ -9,6 +9,7 @@ import vip.geekclub.framework.domain.model.AggregateRoot;
 import vip.geekclub.framework.domain.model.EntitySupport;
 import vip.geekclub.framework.exception.BusinessException;
 import vip.geekclub.framework.utils.AssertUtil;
+import vip.geekclub.manager.domain.vlaue.DepartmentStatus;
 
 /**
  * 部门聚合根

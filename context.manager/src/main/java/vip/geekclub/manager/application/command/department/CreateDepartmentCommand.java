@@ -1,4 +1,4 @@
-package vip.geekclub.manager.application.command.dto;
+package vip.geekclub.manager.application.command.department;
 
 import jakarta.validation.constraints.*;
 import org.hibernate.validator.constraints.Range;

@@ -1,11 +1,11 @@
-package vip.geekclub.manager.application.command.dto;
+package vip.geekclub.manager.application.command.department;
 
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 import vip.geekclub.contract.value.SortOrder;
 import vip.geekclub.framework.command.Command;
-import vip.geekclub.manager.domain.model.DepartmentStatus;
+import vip.geekclub.manager.domain.vlaue.DepartmentStatus;
 import vip.geekclub.manager.domain.model.Department;
 
 /**

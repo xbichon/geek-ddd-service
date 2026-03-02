@@ -1,12 +1,10 @@
-package vip.geekclub.manager.application.command;
+package vip.geekclub.manager.application.command.teacher;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import vip.geekclub.framework.command.VoidCommandHandler;
 import vip.geekclub.framework.exception.NotFoundException;
-import vip.geekclub.framework.exception.ValidationException;
-import vip.geekclub.manager.application.command.dto.DeleteTeacherCommand;
 import vip.geekclub.manager.domain.model.Teacher;
 import vip.geekclub.manager.domain.repository.TeacherRepository;
 

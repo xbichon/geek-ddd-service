@@ -1,17 +1,17 @@
-package vip.geekclub.manager.application.command.dto;
+package vip.geekclub.manager.application.command.department;
 
 import jakarta.validation.constraints.NotNull;
 import vip.geekclub.framework.command.Command;
 
 /**
- * 删除教师命令
+ * 删除部门命令
  *
  * @author geekclub
  * @since 1.0
  */
-public record DeleteTeacherCommand(
+public record DeleteDepartmentCommand(
 
-        @NotNull(message = "教师ID不能为空")
+        @NotNull(message = "部门ID不能为空")
         Long id
 
 ) implements Command<Void> {

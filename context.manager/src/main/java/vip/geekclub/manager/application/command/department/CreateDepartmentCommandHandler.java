@@ -1,4 +1,4 @@
-package vip.geekclub.manager.application.command;
+package vip.geekclub.manager.application.command.department;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -7,8 +7,6 @@ import vip.geekclub.contract.value.SortOrder;
 import vip.geekclub.framework.command.CommandHandler;
 import vip.geekclub.framework.exception.BusinessException;
 import vip.geekclub.framework.exception.NotFoundException;
-import vip.geekclub.framework.exception.ValidationException;
-import vip.geekclub.manager.application.command.dto.CreateDepartmentCommand;
 import vip.geekclub.manager.domain.model.Department;
 import vip.geekclub.manager.domain.repository.DepartmentRepository;
 

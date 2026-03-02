@@ -3,7 +3,7 @@ package vip.geekclub.manager.application.query.dto;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.Accessors;
-import vip.geekclub.manager.domain.model.DepartmentStatus;
+import vip.geekclub.manager.domain.vlaue.DepartmentStatus;
 
 import java.util.ArrayList;
 import java.util.List;

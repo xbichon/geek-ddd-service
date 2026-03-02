@@ -6,9 +6,8 @@ import org.springframework.util.StringUtils;
 
 import vip.geekclub.framework.exception.BusinessException;
 import vip.geekclub.framework.exception.NotFoundException;
-import vip.geekclub.framework.exception.ValidationException;
-import vip.geekclub.manager.application.command.dto.CreateTeacherCommand;
-import vip.geekclub.manager.application.command.dto.UpdateTeacherCommand;
+import vip.geekclub.manager.application.command.teacher.CreateTeacherCommand;
+import vip.geekclub.manager.application.command.teacher.UpdateTeacherCommand;
 import vip.geekclub.manager.domain.model.Department;
 import vip.geekclub.manager.domain.model.Teacher;
 import vip.geekclub.manager.domain.repository.DepartmentRepository;

@@ -1,4 +1,4 @@
-package vip.geekclub.manager.application.command;
+package vip.geekclub.manager.application.command.department;
 
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -6,8 +6,6 @@ import org.springframework.transaction.annotation.Transactional;
 import vip.geekclub.framework.command.VoidCommandHandler;
 import vip.geekclub.framework.exception.BusinessException;
 import vip.geekclub.framework.exception.NotFoundException;
-import vip.geekclub.framework.exception.ValidationException;
-import vip.geekclub.manager.application.command.dto.DeleteDepartmentCommand;
 import vip.geekclub.manager.domain.model.Department;
 import vip.geekclub.manager.domain.repository.DepartmentRepository;
 

@@ -6,9 +6,9 @@ import vip.geekclub.contract.auth.UserType;
 import vip.geekclub.framework.controller.ApiResponse;
 import vip.geekclub.framework.controller.WebCommandAdapter;
 import vip.geekclub.framework.security.Authorize;
-import vip.geekclub.manager.application.command.dto.CreateTeacherCommand;
-import vip.geekclub.manager.application.command.dto.DeleteTeacherCommand;
-import vip.geekclub.manager.application.command.dto.UpdateTeacherCommand;
+import vip.geekclub.manager.application.command.teacher.CreateTeacherCommand;
+import vip.geekclub.manager.application.command.teacher.DeleteTeacherCommand;
+import vip.geekclub.manager.application.command.teacher.UpdateTeacherCommand;
 
 /**
  * 教师管理控制器
