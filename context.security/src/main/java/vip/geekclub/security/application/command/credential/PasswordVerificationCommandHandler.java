@@ -4,7 +4,7 @@ import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import vip.geekclub.framework.command.CommandHandler;
-import vip.geekclub.framework.exception.InvalidCredentialsException;
+import vip.geekclub.security.exception.InvalidCredentialsException;
 import vip.geekclub.security.domain.authentication.model.Identifier;
 import vip.geekclub.security.domain.authentication.repository.IdentifierRepository;
 import vip.geekclub.security.domain.authentication.repository.PasswordCredentialRepository;

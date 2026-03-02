@@ -1,4 +1,6 @@
-package vip.geekclub.framework.exception;
+package vip.geekclub.security.exception;
+
+import vip.geekclub.framework.exception.AppException;
 
 /**
  * 用户名密码验证错误异常
