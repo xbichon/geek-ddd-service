@@ -14,8 +14,8 @@ public record SortOrder(
     Integer sortOrder
 ) {
     private static final Integer DEFAULT_VALUE = 0;
-    private static final Integer MIN_VALUE = 0;
-    private static final Integer MAX_VALUE = 100;
+    public static final int MIN_VALUE = 0;
+    public static final int MAX_VALUE = 100;
 
     public SortOrder {
         if (sortOrder == null) {

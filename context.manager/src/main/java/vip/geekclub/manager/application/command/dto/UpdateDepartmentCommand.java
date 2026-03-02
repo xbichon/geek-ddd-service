@@ -3,10 +3,10 @@ package vip.geekclub.manager.application.command.dto;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
+import vip.geekclub.contract.value.SortOrder;
 import vip.geekclub.framework.command.Command;
 import vip.geekclub.manager.domain.model.DepartmentStatus;
 import vip.geekclub.manager.domain.model.Department;
-import vip.geekclub.manager.domain.model.SortOrder;
 
 /**
  * 更新部门命令
