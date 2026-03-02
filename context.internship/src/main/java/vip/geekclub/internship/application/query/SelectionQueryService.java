@@ -6,7 +6,7 @@ import org.jooq.Record;
 import vip.geekclub.internship.generated.Tables;
 import vip.geekclub.internship.generated.tables.*;
 import org.springframework.stereotype.Service;
-import vip.geekclub.framework.exception.BusinessException;
+import vip.geekclub.framework.exception.AppException;
 import vip.geekclub.internship.application.query.dto.*;
 
 import java.util.List;
@@ -47,7 +47,7 @@ public class SelectionQueryService {
                 .fetchOne();
 
         if (selectorRecord == null) {
-            throw new BusinessException(404, "当前用户尚未选题");
+            throw new AppException(404, "当前用户尚未选题");
         }
 
         Long selectionId = selectorRecord.get(selectorTable.PAPER_SELECTION_ID);
@@ -70,7 +70,7 @@ public class SelectionQueryService {
                 .fetchOne();
 
         if (record == null) {
-            throw new BusinessException(404, "选题记录不存在");
+            throw new AppException(404, "选题记录不存在");
         }
 
         Long resultSelectionId = record.get(thesisSelectionTable.ID);

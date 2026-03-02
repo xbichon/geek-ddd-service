@@ -4,6 +4,7 @@ import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import vip.geekclub.framework.command.VoidCommandHandler;
+import vip.geekclub.framework.exception.BusinessException;
 import vip.geekclub.framework.exception.NotFoundException;
 import vip.geekclub.framework.exception.ValidationException;
 import vip.geekclub.manager.application.command.dto.UpdateDepartmentCommand;
@@ -33,7 +34,7 @@ public class UpdateDepartmentCommandHandler implements VoidCommandHandler<Update
         if (department.isChangeName(command.name())) {
             // 2.1. 验证部门的名称在同一父部门下不重复
             if (departmentRepository.existsByNameAndParentId(command.name().trim(), department.getParentId())) {
-                throw new ValidationException("同一父部门下已存在相同名称的部门");
+                throw new BusinessException("同一父部门下已存在相同名称的部门");
             }
         }
 

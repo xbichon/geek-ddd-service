@@ -2,6 +2,7 @@ package vip.geekclub.internship.domain.service;
 
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
+import vip.geekclub.framework.exception.BusinessException;
 import vip.geekclub.framework.exception.ValidationException;
 import vip.geekclub.internship.domain.model.Intern;
 import vip.geekclub.internship.domain.repository.InternRepository;
@@ -34,7 +35,7 @@ public class TeamMemberValidator {
 
         // 验证当前用户在组员中
         if (!memberIds.contains(currentUser.getId())) {
-            throw new ValidationException("当前用户不是小组成员");
+            throw new BusinessException("当前用户不是小组成员");
         }
 
         // 查询所有组员信息
@@ -42,7 +43,7 @@ public class TeamMemberValidator {
 
         // 验证所有组员都存在
         if (members.size() != memberIds.size()) {
-            throw new ValidationException("部分小组成员不存在");
+            throw new BusinessException("部分小组成员不存在");
         }
 
         // 获取当前用户的指导老师
@@ -51,7 +52,7 @@ public class TeamMemberValidator {
         // 验证所有组员的指导老师与当前用户的指导老师相同
         for (Intern member : members) {
             if (!Objects.equals(member.getAdvisorName(), currentAdvisor)) {
-                throw new ValidationException("小组成员的指导老师必须相同");
+                throw new BusinessException("小组成员的指导老师必须相同");
             }
         }
     }

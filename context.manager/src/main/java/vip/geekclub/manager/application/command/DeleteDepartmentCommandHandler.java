@@ -4,6 +4,7 @@ import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import vip.geekclub.framework.command.VoidCommandHandler;
+import vip.geekclub.framework.exception.BusinessException;
 import vip.geekclub.framework.exception.NotFoundException;
 import vip.geekclub.framework.exception.ValidationException;
 import vip.geekclub.manager.application.command.dto.DeleteDepartmentCommand;
@@ -36,7 +37,7 @@ public class DeleteDepartmentCommandHandler implements VoidCommandHandler<Delete
 
         // 验证是否有子部门
         if (departmentRepository.existsByParentId(department.getId())) {
-            throw new ValidationException("该部门下还有子部门，不能删除");
+            throw new BusinessException("该部门下还有子部门，不能删除");
         }
 
         // 3. 删除部门

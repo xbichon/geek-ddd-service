@@ -6,7 +6,7 @@ import org.springframework.context.ApplicationContext;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.support.TransactionSynchronization;
 import org.springframework.transaction.support.TransactionSynchronizationManager;
-import vip.geekclub.framework.exception.BusinessLogicException;
+import vip.geekclub.framework.exception.BusinessException;
 
 @Slf4j
 @Component
@@ -21,7 +21,7 @@ public class TransactionalDomainEventPublisher implements DomainEventPublisher {
     @Override
     public void publishEvent(@NonNull Object event) {
         if (!(event instanceof DomainEvent domainEvent))
-            throw new BusinessLogicException("发布事件对象必须是领域事件: " + event.getClass().getSimpleName());
+            throw new BusinessException("发布事件对象必须是领域事件: " + event.getClass().getSimpleName());
 
         publishAfterCommit(domainEvent);
     }
@@ -38,7 +38,7 @@ public class TransactionalDomainEventPublisher implements DomainEventPublisher {
     @Override
     public void publishAfterCommit(@NonNull DomainEvent event) {
         if (!TransactionSynchronizationManager.isActualTransactionActive()) {
-            throw new BusinessLogicException("发布领域事件必须在事务中进行: " + event.getClass().getSimpleName());
+            throw new BusinessException("发布领域事件必须在事务中进行: " + event.getClass().getSimpleName());
         }
 
         // 在事务中，注册同步器延迟到事务提交后发布

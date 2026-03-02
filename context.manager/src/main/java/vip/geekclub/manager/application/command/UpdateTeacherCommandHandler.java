@@ -4,6 +4,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import vip.geekclub.framework.command.VoidCommandHandler;
+import vip.geekclub.framework.exception.NotFoundException;
 import vip.geekclub.framework.exception.ValidationException;
 import vip.geekclub.manager.application.command.dto.UpdateTeacherCommand;
 import vip.geekclub.manager.domain.model.Teacher;
@@ -25,7 +26,7 @@ public class UpdateTeacherCommandHandler implements VoidCommandHandler<UpdateTea
     public void executeVoid(UpdateTeacherCommand command) {
         // 1. 获取教师
         Teacher teacher = teacherRepository.findById(command.id())
-                .orElseThrow(() -> new ValidationException("指定的教师不存在"));
+                .orElseThrow(() -> new NotFoundException("指定的教师不存在"));
 
         // 2. 统一验证更新命令
         teacherCreationUpdateValidator.validateForUpdate(command, teacher);

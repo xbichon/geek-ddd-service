@@ -4,6 +4,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import vip.geekclub.framework.command.VoidCommandHandler;
+import vip.geekclub.framework.exception.NotFoundException;
 import vip.geekclub.framework.exception.ValidationException;
 import vip.geekclub.manager.application.command.dto.DeleteTeacherCommand;
 import vip.geekclub.manager.domain.model.Teacher;
@@ -23,7 +24,7 @@ public class DeleteTeacherVoidCommandHandler implements VoidCommandHandler<Delet
     public void executeVoid(DeleteTeacherCommand command) {
         // 1. 获取教师
         Teacher teacher = teacherRepository.findById(command.id())
-                .orElseThrow(() -> new ValidationException("指定的教师不存在"));
+                .orElseThrow(() -> new NotFoundException("指定的教师不存在"));
 
         // 2. 验证是否可以删除
         teacher.validateDeletable();

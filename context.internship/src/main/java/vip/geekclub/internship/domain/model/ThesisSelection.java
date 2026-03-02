@@ -7,7 +7,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import vip.geekclub.framework.domain.model.AggregateRoot;
-import vip.geekclub.framework.exception.BusinessLogicException;
+import vip.geekclub.framework.exception.BusinessException;
 import vip.geekclub.framework.utils.AssertUtil;
 import vip.geekclub.internship.domain.value.SelectionType;
 import vip.geekclub.internship.domain.value.SelectorValue;
@@ -107,19 +107,19 @@ public class ThesisSelection implements AggregateRoot<Long> {
      */
     private void validateSelectorsCount(List<SelectorValue> studentIds) {
         if (studentIds == null || studentIds.isEmpty()) {
-            throw new BusinessLogicException("选择者列表不能为空");
+            throw new BusinessException("选择者列表不能为空");
         }
 
         int count = studentIds.size();
         if (this.selectionType == SelectionType.INDIVIDUAL) {
             // 个人形式：成员数只能是1个
             if (studentIds.size() != 1) {
-                throw new BusinessLogicException("个人选题形式只能选择1个学生");
+                throw new BusinessException("个人选题形式只能选择1个学生");
             }
         } else {
             // 小组形式：成员数2-5个
             if (count < 2 || count > 5) {
-                throw new BusinessLogicException("小组选题形式成员数量必须在2-5人之间");
+                throw new BusinessException("小组选题形式成员数量必须在2-5人之间");
             }
         }
     }

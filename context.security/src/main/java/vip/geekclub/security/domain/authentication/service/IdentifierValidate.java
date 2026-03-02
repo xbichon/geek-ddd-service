@@ -1,7 +1,7 @@
 package vip.geekclub.security.domain.authentication.service;
 
 import org.springframework.stereotype.Service;
-import vip.geekclub.framework.exception.BusinessException;
+import vip.geekclub.framework.exception.AppException;
 import vip.geekclub.security.domain.authentication.model.IdentifierRule;
 import vip.geekclub.security.domain.authentication.value.IdentifierType;
 import vip.geekclub.security.domain.authentication.value.IdentifierValue;
@@ -29,7 +29,7 @@ public class IdentifierValidate {
                 .findFirst();
 
         if (identifierType.isPresent() && !identifierType.get().match(identifierValue.value())) {
-            throw new BusinessException(400, "标识符格式错误");
+            throw new AppException(400, "标识符格式错误");
         }
     }
 

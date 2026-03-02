@@ -6,7 +6,7 @@ import vip.geekclub.internship.generated.Tables;
 import vip.geekclub.internship.generated.tables.InternTable;
 import vip.geekclub.internship.generated.tables.SelectorTable;
 import org.springframework.stereotype.Service;
-import vip.geekclub.framework.exception.BusinessException;
+import vip.geekclub.framework.exception.AppException;
 import vip.geekclub.internship.application.query.dto.InternInfoResult;
 
 import java.util.List;
@@ -27,7 +27,7 @@ public class InternQueryService {
      *
      * @param authId 用户认证ID
      * @return 实习生ID
-     * @throws BusinessException 当实习生不存在时抛出404异常
+     * @throws AppException 当实习生不存在时抛出404异常
      */
     public Long getInternIdByAuthId(String authId) {
         var record = dslContext
@@ -37,7 +37,7 @@ public class InternQueryService {
                 .fetchOne();
 
         if (record == null) {
-            throw new BusinessException(404, "当前用户不是实习生");
+            throw new AppException(404, "当前用户不是实习生");
         }
 
         return record.get(internTable.ID);
@@ -80,7 +80,7 @@ public class InternQueryService {
         
         // 如果找不到当前用户，说明该用户已经选择了论文
         if (currentUser == null) {
-            throw new BusinessException(400, "当前用户已选择论文，不在未选题学生列表中");
+            throw new AppException(400, "当前用户已选择论文，不在未选题学生列表中");
         }
         
         // 将当前用户移到列表第一行

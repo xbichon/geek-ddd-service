@@ -4,6 +4,7 @@ import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import vip.geekclub.framework.command.VoidCommandHandler;
+import vip.geekclub.framework.exception.BusinessException;
 import vip.geekclub.framework.exception.NotFoundException;
 import vip.geekclub.framework.exception.ValidationException;
 import vip.geekclub.security.domain.authorization.model.Permission;
@@ -26,7 +27,7 @@ public class UpdatePermissionCommandHandler implements VoidCommandHandler<Update
         // 2. 验证权限码不重复
         if (!permission.getPermissionCode().code().equals(command.code()) &&
             permissionRepository.existsByCode(command.code())) {
-            throw new ValidationException("权限码已经存在");
+            throw new BusinessException("权限码已经存在");
         }
 
         // 3. 更新权限信息

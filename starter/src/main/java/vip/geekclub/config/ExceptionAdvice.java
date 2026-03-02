@@ -12,13 +12,13 @@ import org.springframework.web.bind.MissingServletRequestParameterException;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.servlet.resource.NoResourceFoundException;
 import vip.geekclub.framework.controller.ApiResponse;
-import vip.geekclub.framework.exception.BusinessException;
+import vip.geekclub.framework.exception.AppException;
 import jakarta.validation.ConstraintViolation;
 import jakarta.validation.ConstraintViolationException;
 import jakarta.validation.ValidationException;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ExceptionHandler;
-import vip.geekclub.framework.exception.JwtParseException;
+import vip.geekclub.support.jwt.JwtParseException;
 
 import java.util.stream.Collectors;
 
@@ -41,8 +41,8 @@ public class ExceptionAdvice {
     /**
      * 处理业务异常
      */
-    @ExceptionHandler(BusinessException.class)
-    public ResponseEntity<@NonNull ApiResponse<?>> handleBusinessException(BusinessException businessException) {
+    @ExceptionHandler(AppException.class)
+    public ResponseEntity<@NonNull ApiResponse<?>> handleBusinessException(AppException businessException) {
         log.warn("业务异常",businessException);
         return ResponseEntity.ok(ApiResponse.fail(businessException.getCode(), businessException.getMessage()));
     }
@@ -137,7 +137,7 @@ public class ExceptionAdvice {
         }
 
         return switch (e.getCause().getCause()) {
-            case BusinessException businessException -> handleBusinessException(businessException);
+            case AppException businessException -> handleBusinessException(businessException);
             case ValidationException validationException -> handleValidationException(validationException);
             case null, default -> handleGlobalException(e);
         };

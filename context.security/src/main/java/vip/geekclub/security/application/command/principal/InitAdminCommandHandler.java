@@ -4,7 +4,7 @@ import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import vip.geekclub.framework.command.VoidCommandHandler;
-import vip.geekclub.framework.exception.BusinessException;
+import vip.geekclub.framework.exception.AppException;
 import vip.geekclub.security.domain.authentication.model.Identifier;
 import vip.geekclub.security.domain.authentication.model.Password;
 import vip.geekclub.security.domain.authentication.service.IdentifierValidate;
@@ -39,7 +39,7 @@ public class InitAdminCommandHandler implements VoidCommandHandler<InitAdminComm
 
         Integer systemAdminCount = roleRepository.countByUserTypeAndSystemAdminIsTrue(command.userType());
         if (systemAdminCount > 0) {
-            throw new BusinessException(500, "系统已存在系统管理员");
+            throw new AppException(500, "系统已存在系统管理员");
         }
 
         // 认证信息查重（检查用户名是否已存在）

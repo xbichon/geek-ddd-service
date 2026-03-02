@@ -4,6 +4,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
+import vip.geekclub.framework.exception.BusinessException;
+import vip.geekclub.framework.exception.NotFoundException;
 import vip.geekclub.framework.exception.ValidationException;
 import vip.geekclub.manager.application.command.dto.CreateTeacherCommand;
 import vip.geekclub.manager.application.command.dto.UpdateTeacherCommand;
@@ -28,7 +30,7 @@ public class TeacherCreationUpdateValidator {
      */
     private void validatePhoneUnique(String phone) {
         if (StringUtils.hasText(phone) && teacherRepository.existsByPhone(phone)) {
-            throw new ValidationException("已存在相同手机号的教师");
+            throw new BusinessException("已存在相同手机号的教师");
         }
     }
 
@@ -37,7 +39,7 @@ public class TeacherCreationUpdateValidator {
      */
     private void validateEmailUnique(String email) {
         if (StringUtils.hasText(email) && teacherRepository.existsByEmail(email)) {
-            throw new ValidationException("已存在相同邮箱的教师");
+            throw new BusinessException("已存在相同邮箱的教师");
         }
     }
 
@@ -49,10 +51,10 @@ public class TeacherCreationUpdateValidator {
      */
     private void validateDepartment(Long departmentId) {
         Department department = departmentRepository.findById(departmentId)
-                .orElseThrow(() -> new ValidationException("指定的部门不存在"));
+                .orElseThrow(() -> new NotFoundException("指定的部门不存在"));
 
         if (department.isDisabled()) {
-            throw new ValidationException("所属部门已禁用，不能操作教师");
+            throw new BusinessException("所属部门已禁用，不能操作教师");
         }
     }
 

@@ -1,9 +1,11 @@
-package vip.geekclub.framework.exception;
+package vip.geekclub.support.jwt;
+
+import vip.geekclub.framework.exception.AppException;
 
 /**
  * JWT解析异常
  */
-public class JwtParseException  extends BusinessException{
+public class JwtParseException  extends AppException {
     public JwtParseException(String message, Throwable cause) {
         super(401, message, cause);
     }

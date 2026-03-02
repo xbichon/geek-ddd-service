@@ -6,6 +6,7 @@ import lombok.*;
 import org.apache.commons.lang3.StringUtils;
 import vip.geekclub.framework.domain.model.AggregateRoot;
 import vip.geekclub.framework.domain.model.EntitySupport;
+import vip.geekclub.framework.exception.BusinessException;
 import vip.geekclub.framework.exception.ValidationException;
 import vip.geekclub.framework.utils.AssertUtil;
 
@@ -108,7 +109,7 @@ public class Department extends EntitySupport implements AggregateRoot<Long> {
         if (parentDepartment != null) {
             // 验证父部门必须是启用状态
             if (parentDepartment.isDisabled()) {
-                throw new ValidationException("父部门已禁用，不能添加子部门");
+                throw new BusinessException("父部门已禁用，不能添加子部门");
             }
             
             level = parentDepartment.getLevel() + 1;
@@ -140,7 +141,7 @@ public class Department extends EntitySupport implements AggregateRoot<Long> {
      */
     public void validateDeletable() {
         if (isRoot()) {
-            throw new ValidationException("根部门不能删除");
+            throw new BusinessException("根部门不能删除");
         }
     }
 

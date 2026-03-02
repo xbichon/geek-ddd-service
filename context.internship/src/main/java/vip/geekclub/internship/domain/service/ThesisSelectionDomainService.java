@@ -3,6 +3,8 @@ package vip.geekclub.internship.domain.service;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
+import vip.geekclub.framework.exception.BusinessException;
+import vip.geekclub.framework.exception.NotFoundException;
 import vip.geekclub.framework.exception.ValidationException;
 import vip.geekclub.internship.domain.model.TeamApplication;
 import vip.geekclub.internship.domain.model.ThesisSelection;
@@ -42,7 +44,7 @@ public class ThesisSelectionDomainService {
                              List<SelectorValue> studentIds, TeamApplicationValue teamApplicationValue) {
         // 1. 业务规则：检查论文是否存在
         if (!thesisRepository.existsById(thesisId)) {
-            throw new ValidationException("论文不存在");
+            throw new NotFoundException("论文不存在");
         }
 
         // 2. 业务规则：检查学生是否已选过论文
@@ -51,12 +53,12 @@ public class ThesisSelectionDomainService {
                 .toList();
         long existingCount = thesisSelectionRepository.countBySelectorsStudentIdIn(studentIdList);
         if (existingCount > 0) {
-            throw new ValidationException("学生不能重复选择论文");
+            throw new BusinessException("学生不能重复选择论文");
         }
 
         // 3. 业务规则：检查论文是否已满（使用乐观锁）
         if (thesisRepository.incrementSelectionCount(thesisId) == 0) {
-            throw new ValidationException("论文选择人数已达上限");
+            throw new BusinessException("论文选择人数已达上限");
         }
 
         // 4. 创建并保存选题实体

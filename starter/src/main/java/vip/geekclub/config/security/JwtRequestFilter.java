@@ -4,7 +4,7 @@ import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 import vip.geekclub.framework.security.SessionStore;
 import vip.geekclub.framework.security.UserAuthentication;
-import vip.geekclub.framework.exception.JwtParseException;
+import vip.geekclub.support.jwt.JwtParseException;
 
 import vip.geekclub.support.HttpUtil;
 import jakarta.servlet.FilterChain;
