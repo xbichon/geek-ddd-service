@@ -1,4 +1,4 @@
-package vip.geekclub.support;
+package vip.geekclub.support.initialize;
 
 import liquibase.Contexts;
 import liquibase.LabelExpression;
