@@ -93,7 +93,7 @@
         </dependency>
         <dependency>
             <groupId>vip.geekclub</groupId>
-            <artifactId>integration</artifactId>
+            <artifactId>facade</artifactId>
             <version>0.0.1-SNAPSHOT</version>
             <scope>compile</scope>
         </dependency>

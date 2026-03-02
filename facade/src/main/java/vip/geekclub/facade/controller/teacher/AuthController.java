@@ -1,4 +1,4 @@
-package vip.geekclub.integration.controller.teacher;
+package vip.geekclub.facade.controller.teacher;
 
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotBlank;
@@ -11,7 +11,7 @@ import vip.geekclub.framework.controller.ApiResponse;
 import vip.geekclub.framework.security.SessionStore;
 import vip.geekclub.framework.security.UserAuthentication;
 import vip.geekclub.framework.security.UserPrincipal;
-import vip.geekclub.integration.facade.SecurityFacade;
+import vip.geekclub.facade.service.SecurityFacade;
 import vip.geekclub.support.CaptchaKit;
 
 /**

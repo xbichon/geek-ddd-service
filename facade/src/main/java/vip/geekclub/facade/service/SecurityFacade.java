@@ -1,4 +1,4 @@
-package vip.geekclub.integration.facade;
+package vip.geekclub.facade.service;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
