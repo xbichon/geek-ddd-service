@@ -3,16 +3,17 @@ spring:
     lazy-initialization: true
   autoconfigure:
     exclude:
-      - org.springframework.boot.actuate.autoconfigure.endpoint.EndpointAutoConfiguration
+#      - org.springframework.boot.actuate.autoconfigure.endpoint.EndpointAutoConfiguration
       - org.springframework.boot.actuate.autoconfigure.endpoint.web.WebEndpointAutoConfiguration
+#      - org.springframework.boot.actuate.autoconfigure.endpoint.jmx.JmxEndpointAutoConfiguration
       - org.springframework.boot.actuate.autoconfigure.info.InfoContributorAutoConfiguration
   datasource:
     url: jdbc:mysql://localhost:3306/${spring.datasource.name}?useSSL=true&serverTimezone=Asia/Shanghai&useUnicode=true&characterEncoding=utf-8&allowPublicKeyRetrieval=true&useConfigs=maxPerformance
     username: root
-    password: 12345678
+    password: 666666
     name: geek_data
     driver-class-name: com.mysql.cj.jdbc.Driver
-    hikari:
+    Hikari:
       connection-timeout: 1000
       maximum-pool-size: 5
       minimum-idle: 2
